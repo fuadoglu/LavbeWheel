@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "note": "Application progress, not documentation completion. All work packages start unimplemented.",
+  "workPackages": [
+    {
+      "id": "WP01",
+      "status": "not-started",
+      "branch": null,
+      "commit": null,
+      "evidence": [],
+      "blockers": []
+    },
+    {
+      "id": "WP02",
+      "status": "not-started",
+      "branch": null,
+      "commit": null,
+      "evidence": [],
+      "blockers": []
+    },
+    {
+      "id": "WP03",
+      "status": "not-started",
+      "branch": null,
+      "commit": null,
+      "evidence": [],
+      "blockers": []
+    },
+    {
+      "id": "WP04",
+      "status": "not-started",
+      "branch": null,
+      "commit": null,
+      "evidence": [],
+      "blockers": []
+    },
+    {
+      "id": "WP05",
+      "status": "not-started",
+      "branch": null,
+      "commit": null,
+      "evidence": [],
+      "blockers": []
+    },
+    {
+      "id": "WP06",
+      "status": "not-started",
+      "branch": null,
+      "commit": null,
+      "evidence": [],
+      "blockers": []
+    },
+    {
+      "id": "WP07",
+      "status": "not-started",
+      "branch": null,
+      "commit": null,
+      "evidence": [],
+      "blockers": []
+    },
+    {
+      "id": "WP08",
+      "status": "not-started",
+      "branch": null,
+      "commit": null,
+      "evidence": [],
+      "blockers": []
+    },
+    {
+      "id": "WP09",
+      "status": "not-started",
+      "branch": null,
+      "commit": null,
+      "evidence": [],
+      "blockers": []
+    },
+    {
+      "id": "WP10",
+      "status": "not-started",
+      "branch": null,
+      "commit": null,
+      "evidence": [],
+      "blockers": []
+    },
+    {
+      "id": "WP11",
+      "status": "not-started",
+      "branch": null,
+      "commit": null,
+      "evidence": [],
+      "blockers": []
+    },
+    {
+      "id": "WP12",
+      "status": "not-started",
+      "branch": null,
+      "commit": null,
+      "evidence": [],
+      "blockers": []
+    }
+  ]
+}

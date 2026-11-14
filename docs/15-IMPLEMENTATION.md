@@ -57,3 +57,7 @@ WP01 loads config/seo registry and defines build artifact schema; WP04 preserves
 ## Visual execution order
 
 WP04 includes high-fidelity screen family, component state gallery and working final-selection moment under docs/27–29. Review before repeating the design across tools. Preserve actual-device performance and localization gates. Final visual owner review belongs in release evidence, not fabricated approval metadata.
+
+## GitHub and continuity contract
+
+Follow [GitHub workflow](30-GITHUB-WORKFLOW.md) and maintain [progress](progress.json). Work follows dependencies; do not claim a WP verified without exit evidence. Localization/research/content preparation starts with WP01 and continues through WP09. CI and manual approvals are separate. Before each task inspect actual source so the historical docs-only baseline is not mistaken for permanent repository state.

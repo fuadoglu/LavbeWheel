@@ -1,15 +1,29 @@
-## Behavior
+## Problem and resulting behavior
 
-Describe the concrete problem and resulting behavior.
+Describe the final behavior for a reviewer without conversation history.
 
-## Requirements
+## Requirements and scope
 
-List affected requirement IDs and contract/schema changes.
+WP IDs / requirement IDs:
+Affected contracts and source-of-truth files:
 
-## Validation
+## Validation actually executed
 
-List commands actually run and evidence. Mark not-run checks explicitly.
+Command or manual method | Result | Evidence / build
+--- | --- | ---
 
-## Data and rollout
+Not-run checks and reasons:
+Pre-existing failures versus introduced regressions:
 
-Describe migration, privacy, rollback and remaining external inputs where relevant.
+## Visual / SEO / privacy impact
+
+Screenshots, motion traces or generated-route audit where relevant. Synthetic data only.
+
+## Data, compatibility and rollback
+
+Migrations, old-client/PWA compatibility, recovery and rollback procedure:
+
+## Remaining inputs and deployment state
+
+External blockers:
+Documented / implemented / verified / approved / deployed:

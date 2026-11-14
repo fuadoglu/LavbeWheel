@@ -169,3 +169,9 @@ Sorğu–səhifə xəritəsi, indeks siyasətləri, URL ssenariləri və 110 dil
 [Art-direksiya](docs/27-ART-DIRECTION.md) · [Komponentlər və animasiya](docs/28-COMPONENT-MOTION.md) · [Dizayn qəbulu](docs/29-DESIGN-ACCEPTANCE.md)
 
 Lavbe-nin istiqaməti: **sakit interfeys, ifadəli çarx**. Yüksək dizayn keyfiyyəti hədəfdir; real ekranlar, hərəkət, cihaz testləri və vizual qəbul tamamlanmadan əldə edilmiş nəticə sayılmır.
+
+## 🤖 Agent və GitHub iş qaydaları
+
+[AGENTS.md](AGENTS.md) · [Branch/commit/PR və buraxılış qaydaları](docs/30-GITHUB-WORKFLOW.md) · [İcra vəziyyəti](docs/progress.json)
+
+GitHub qaydalarının sənədləşdirilməsi onların hesab parametrlərində avtomatik aktivləşdirilməsi demək deyil. İcra edilmiş, yoxlanmış və yayımlanmış işlər ayrı statuslarla izlənəcək.

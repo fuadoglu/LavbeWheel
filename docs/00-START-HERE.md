@@ -39,3 +39,7 @@ No public MVP. No guarantee of permanent zero maintenance, ad approval, legal ce
 ## SEO reading order
 
 Read docs/25 and docs/26 via [execution](25-SEO-EXECUTION.md) and [acceptance](26-SEO-ACCEPTANCE.md) before route/content generation. These supplements make SEO a primary release requirement.
+
+## Repository behavior
+
+[GitHub workflow](30-GITHUB-WORKFLOW.md) and [application progress](progress.json) define change ownership, branches/PRs, evidence and session continuation. Root AGENTS.md is the operative agent entry point.

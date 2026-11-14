@@ -39,3 +39,10 @@ Application implementation and all production gates remain pending.
 - Added component state matrix, motion timeline and design-craft tokens.
 - Added DES-01–10 gates with executed-screen, real-device and owner-review evidence.
 - Clarified that existing schematic boards do not constitute a finished design or award-level result.
+
+## Agent and GitHub workflow hardening — 2026-11-14
+
+- Added explicit branch/commit/PR, conflict, concurrency and change-ownership rules.
+- Added execution/continuation, CI integrity, authorization and release boundaries.
+- Added initial application progress register and evidence-focused PR template.
+- Distinguished desired repository protections from actually enabled GitHub settings.
