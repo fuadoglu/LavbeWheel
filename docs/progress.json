@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 persistence is implemented and configured CI passed; WP04-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 persistence is implemented and configured CI passed; WP04 is in progress; WP05-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -181,11 +181,20 @@
     },
     {
       "id": "WP04",
-      "status": "not-started",
-      "branch": null,
+      "status": "in-progress",
+      "branch": "feat/wp04-visual-system",
       "commit": null,
-      "evidence": [],
-      "blockers": []
+      "evidence": [
+        {
+          "command": "npm run build --workspace @lavbe/web",
+          "result": "PASS; Astro static production build completed for the first WP04 classic tool screen",
+          "artifact": "apps/web/dist/index.html",
+          "scope": "Build validation only; visual/device acceptance and other tool layouts remain open"
+        }
+      ],
+      "blockers": [
+        "WP04 requires the remaining tool screen layouts, component state coverage, executed visual evidence, real-device screenshots/traces, keyboard review and owner visual acceptance."
+      ]
     },
     {
       "id": "WP05",

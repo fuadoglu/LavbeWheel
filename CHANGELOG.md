@@ -1,5 +1,12 @@
 # Changelog
 
+## WP04 visual system — in progress — 2026-11-14
+
+- Replaced the marketing hero with a compact tool header and a working-first wheel/editor workspace that reflows for mobile.
+- Added persistent light/dark theme control and translated its accessible labels in both locale drafts.
+- Darkened wheel segment colors to improve white label contrast and aligned the spin control text with each theme's foreground token.
+- First classic screen production build passes; remaining tool layouts, real-device evidence, keyboard review and visual signoff remain open.
+
 ## WP03 session persistence — 2026-11-14
 
 - Added IndexedDB session and lease stores with a v1-to-v2 migration, per-tab writer coordination, lease renewal and revision compare-and-swap.

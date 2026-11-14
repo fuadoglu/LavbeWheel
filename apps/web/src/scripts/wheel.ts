@@ -26,7 +26,7 @@ const saveStatus: HTMLElement = storageStatus;
 const ctx = wheelCanvas.getContext('2d');
 if (!ctx) throw new Error('Canvas is unavailable');
 const context: CanvasRenderingContext2D = ctx;
-const palette = ['#9a7bea','#ffc76a','#66c9b2','#f58b8d','#7ca9e8','#ed9cc5','#8dce79','#f0a467'];
+const palette = ['#5941b8','#9b5600','#14725d','#b3434c','#315eaa','#a43f73','#3d772f','#a34e12'];
 function getTabWriterId(): string {
   const key = 'lavbe.writer-owner';
   try {
