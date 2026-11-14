@@ -2,6 +2,8 @@ import { readdir, readFile, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { compile } from 'json-schema-to-typescript';
+import { Ajv2020 } from 'ajv/dist/2020.js';
+import standaloneCode from 'ajv/dist/standalone/index.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const schemaDir = path.join(root, 'contracts');
@@ -31,4 +33,32 @@ for (const filename of schemas) {
     await writeFile(output, content);
     console.log(`Generated ${path.relative(root, output)}`);
   }
+}
+
+const sessionSchema = JSON.parse(await readFile(path.join(schemaDir, 'session.schema.json'), 'utf8'));
+const sessionValidatorAjv = new Ajv2020({ code: { source: true, esm: true }, strict: true, strictRequired: false, strictTypes: false, validateFormats: false });
+const validator = sessionValidatorAjv.compile(sessionSchema);
+const validatorOutput = path.join(root, 'packages/session/src/generated/session-schema-validator.js');
+const standaloneValidator = standaloneCode(sessionValidatorAjv, validator)
+  .replaceAll('require("ajv/dist/runtime/ucs2length").default', 'sessionUcs2Length');
+const validatorCode = `function sessionUcs2Length(value) { let length = 0; for (let index = 0; index < value.length; index += 1) { length += 1; const code = value.charCodeAt(index); if (code >= 0xd800 && code <= 0xdbff && index + 1 < value.length) { const next = value.charCodeAt(index + 1); if ((next & 0xfc00) === 0xdc00) index += 1; } } return length; }\n${standaloneValidator}\n`;
+const validatorDeclaration = `declare const validate: ((data: unknown) => boolean) & { errors: Array<{ instancePath: string; message?: string }> | null };\nexport default validate;\n`;
+if (check) {
+  let existing;
+  try { existing = await readFile(validatorOutput, 'utf8'); } catch { existing = ''; }
+  if (existing !== validatorCode) {
+    console.error(`Generated session validator is stale: ${path.relative(root, validatorOutput)} (run npm run contracts:generate)`);
+    process.exitCode = 1;
+  }
+  let existingDeclaration;
+  try { existingDeclaration = await readFile(validatorOutput.replace(/\.js$/, '.d.ts'), 'utf8'); } catch { existingDeclaration = ''; }
+  if (existingDeclaration !== validatorDeclaration) {
+    console.error(`Generated session validator declaration is stale: ${path.relative(root, validatorOutput.replace(/\.js$/, '.d.ts'))} (run npm run contracts:generate)`);
+    process.exitCode = 1;
+  }
+} else {
+  await mkdir(path.dirname(validatorOutput), { recursive: true });
+  await writeFile(validatorOutput, validatorCode);
+  await writeFile(validatorOutput.replace(/\.js$/, '.d.ts'), validatorDeclaration);
+  console.log(`Generated ${path.relative(root, validatorOutput)}`);
 }

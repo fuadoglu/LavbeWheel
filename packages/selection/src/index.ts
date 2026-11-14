@@ -31,4 +31,4 @@ export function browserRandomSource(): RandomSource {
 
 export { balanceTeams, chooseInteger, chooseWeighted, shuffle } from './algorithms.ts';
 export { beginShuffledCycle, drawShuffledCycle, removeWinner, resetCycle } from './cycles.ts';
-export { validateWheelSemantics } from './semantics.ts';
+export { normalizeWheelForStorage, validateWheelSemantics } from './semantics.ts';

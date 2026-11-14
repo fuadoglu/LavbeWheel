@@ -10,14 +10,14 @@ A fast, multilingual wheel and social-game platform designed for phones, tablets
 
 **[Azərbaycan dilində](README.md) · [Start here](docs/00-START-HERE.md) · [Product specification](docs/01-PRODUCT.md) · [Codex execution](docs/15-IMPLEMENTATION.md) · [Release gates](docs/16-ACCEPTANCE.md)**
 
-![Status: specification](docs/assets/badges/status.svg)
+![Status: WP03 session persistence implemented; CI pending](docs/assets/badges/status.svg)
 ![Release: complete scope](docs/assets/badges/release.svg)
 ![Locales: 110 planned](docs/assets/badges/locales.svg)
 ![Hosting: shared compatible](docs/assets/badges/hosting.svg)
 
 </div>
 
-> **Repository status:** documentation and executable contract examples only. The application, translations, game library, administration panel and integrations are **not implemented**. Badges describe the specification; they are not passing test, security, accessibility or legal certifications. Target domain: **lavbe.com**; this repository does not establish a live deployment.
+> **Repository status:** WP01 foundation and WP02 selection semantics passed CI. WP03 now implements local session persistence, atomic result commits/recovery, writer leases and IndexedDB migration; its branch is undergoing CI/review. Only the classic names wheel is currently usable. API, reports UI, games, reviewed translations and integrations remain open. Badges describe the specification; they are not security, accessibility or legal certifications. Target domain: **lavbe.com**; the site is not deployed.
 
 ## 🎯 Product promise
 
@@ -109,7 +109,7 @@ The check validates relative links, unique locale codes, SVG XML, required contr
 python3 scripts/validate_contracts.py
 ```
 
-The WP01 foundation now includes a local Azerbaijani classic-wheel slice, locked Node/PHP manifests, generated TypeScript contracts, config checks, and application CI. The other tools and full persistence, API, reporting, games, reviewed locales, and integrations remain unimplemented. See the [implementation plan](docs/15-IMPLEMENTATION.md) and [progress evidence](docs/progress.json); a local build does not mean a public release.
+The WP01 foundation and WP02 selection package passed CI. WP03 implements IndexedDB session storage, writer coordination, atomic result recovery and JSON import/export primitives. The classic names wheel is the only usable tool; user-facing import/export controls, reports, other tools, API, games, reviewed locales and integrations remain open. See the [implementation plan](docs/15-IMPLEMENTATION.md) and [progress evidence](docs/progress.json); a local build does not mean a public release.
 
 ## 🔬 Readiness review
 
@@ -138,6 +138,6 @@ No explicit sexual content, public user-content marketplace, chat, live multi-de
 
 **Lavbe · Built around the moment of choice.**
 
-Specification baseline: **2026-11-14** · Application status: **not implemented**
+Specification baseline: **2026-11-14** · Application status: **WP01–WP02 verified · WP03 implemented, review pending**
 
 </div>

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "scope": "Implementation evidence only; not release approval or deployment evidence.",
-  "branch": "feat/wp02-selection",
+  "branch": "feat/wp03-session",
   "baseCommit": "e6f95280d774adca17d27c3d622df7e85fcfc7a6",
   "workPackages": {
     "WP01": {
@@ -132,6 +132,71 @@
         "Uniform selection primitives and semantic rules do not establish complete tool behavior or release acceptance."
       ],
       "commit": "b836d18"
+    },
+    "WP03": {
+      "status": "implemented",
+      "evidence": [
+        {
+          "command": "npm run contracts:generate && npm run contracts:check",
+          "result": "PASS; deterministic generated JSON Schema validator",
+          "artifact": "packages/session/src/generated/session-schema-validator.js"
+        },
+        {
+          "command": "npm run check",
+          "result": "PASS; all TypeScript/Astro checks, 0 diagnostics",
+          "artifact": "packages/session/src/"
+        },
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 38 checks including session invariants, IndexedDB transactions, CAS/lease, import/export and storage-failure injection",
+          "artifact": "tests/unit/session.test.ts"
+        },
+        {
+          "command": "npm run test:e2e",
+          "result": "PASS; 5 Chromium flows include migration, persistent spin, cross-tab lock and crash recovery",
+          "artifact": "tests/e2e/wheel.spec.ts"
+        },
+        {
+          "command": "npm run test:api",
+          "result": "PASS; PHP runtime and shared semantic vectors",
+          "artifact": "apps/api/tests/"
+        },
+        {
+          "command": "npm run test:a11y",
+          "result": "PASS; automated root-page WCAG 2.1 A/AA scan",
+          "artifact": "tests/e2e/wheel.spec.ts"
+        },
+        {
+          "command": "npm run test:seo",
+          "result": "PASS; build and root-page smoke",
+          "artifact": "apps/web/dist/index.html"
+        },
+        {
+          "command": "npm run test:content",
+          "result": "PASS; 110 metadata records and two draft catalogs; 108 translations pending",
+          "artifact": "content/locales/"
+        },
+        {
+          "command": "npm audit --audit-level=moderate",
+          "result": "PASS; 0 findings",
+          "artifact": "package-lock.json"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-wp01-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; docs/schema/fixtures/reference semantics/SEO integrity",
+          "artifact": "scripts/validate_docs.py"
+        },
+        {
+          "command": "git diff --check",
+          "result": "PASS; clean whitespace",
+          "artifact": "working tree"
+        }
+      ],
+      "limitations": [
+        "User-facing JSON import/export controls are not implemented yet.",
+        "Retention/pruning and quota recovery/export prompts remain open for reports and UI.",
+        "Cross-browser/device manual acceptance remains pending."
+      ]
     }
   },
   "requirements": {
