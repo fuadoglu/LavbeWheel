@@ -302,6 +302,10 @@ export interface PublishManifest {
   createdAt: string;
   state: 'exporting' | 'validating' | 'building' | 'awaiting-promotion' | 'deploying';
   /**
+   * Null before the build completes; the exact artifact hash thereafter, including the owner-approved value during deployment.
+   */
+  artifactHash: string | null;
+  /**
    * @minItems 1
    * @maxItems 10000
    */
@@ -1077,4 +1081,9 @@ export interface PublishManifest {
   }[];
   mode: 'publish' | 'rollback';
   rollbackArtifactHash: string | null;
+  signatureAlgorithm: 'Ed25519';
+  /**
+   * Ed25519 signature over RFC 8785 canonical JSON of the complete manifest envelope, including signatureAlgorithm and excluding signature.
+   */
+  signature: string;
 }

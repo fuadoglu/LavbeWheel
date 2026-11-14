@@ -30,6 +30,13 @@
 - **Alternative rejected:** having the client guess server-generated metadata or letting the runner trust the supplied digest would make validation impossible or weaken the integrity boundary.
 - **Acceptance impact:** the request is computable before job creation and deterministic across the clients. This does not authorize deployment or mark any editorial content reviewed.
 
+### 2026-11-15 — WP08 signed runner manifests
+
+- **Problem / requirements:** A canonical digest proves content consistency but does not authenticate the API envelope or its changing job state/artifact approval fields to the runner.
+- **Selected behavior:** The API signs RFC 8785 canonical JSON for the complete manifest envelope (including `signatureAlgorithm`, excluding `signature`) with an Ed25519 secret key. The trusted runner pins the corresponding raw public key and verifies every manifest response in addition to HTTPS and the expiring job-scoped bearer credential. Signing material is operator-managed outside the repository.
+- **Alternative rejected:** Treating TLS transport plus the content digest as a detached signature would leave the specified signed-manifest requirement ambiguous and couple trust only to the network endpoint.
+- **Acceptance impact:** A runner detects a forged or modified manifest envelope and refuses to build or deploy. Signing-key rotation requires coordinated public-key pin updates before changing the API signer.
+
 ## Concrete baseline defaults
 
 1,000 entries; 120 graphemes/label; 80/title; weight 1–1,000; 1–10 s spin, default 4; 10–24 px wheel labels; share TTL 30 days (1/7/30/90); 256 KiB share body; bottle 2–20 seats; teams 2–50; six families ×50 reviewed cards; 10,000 local results/session and 20 sessions; 30 MiB managed PWA cache. These are selected specification defaults, not owner-provided measured capacities. Changes require synchronized config/contracts/docs and evidence.

@@ -13,6 +13,9 @@ if (!Totp::verify('GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ', '287082', 59, 0)) {
     throw new RuntimeException('TOTP implementation failed the RFC 6238 SHA-1 test vector.');
 }
 $testConfig = new Config('https://lavbe.test', 'https://lavbe.test', getenv('LAVBE_TEST_DATABASE_DSN'), getenv('LAVBE_TEST_DATABASE_USER') ?: '', getenv('LAVBE_TEST_DATABASE_PASSWORD') ?: '', 'http-test', str_repeat('h', 32), str_repeat('t', 32));
+$manifestSigningPair = sodium_crypto_sign_seed_keypair(str_repeat('m', SODIUM_CRYPTO_SIGN_SEEDBYTES));
+$manifestSigningSecret = sodium_crypto_sign_secretkey($manifestSigningPair);
+$manifestSigningPublic = sodium_crypto_sign_publickey($manifestSigningPair);
 $testPdo = Database::connect($testConfig);
 $adminAuth = new AdminAuthService($testPdo, $testConfig, new Crypto($testConfig));
 $admin = $adminAuth->bootstrapOwner('owner_test', 'TestPassword!Asecure123');
@@ -47,6 +50,7 @@ $environment = array_merge($environment, [
     'LAVBE_ENCRYPTION_KEY_ID' => 'http-test',
     'LAVBE_ENCRYPTION_KEY' => str_repeat('h', 32),
     'LAVBE_RATE_KEY' => str_repeat('t', 32),
+    'LAVBE_MANIFEST_SIGNING_SECRET_KEY' => base64_encode($manifestSigningSecret),
     'LAVBE_ALLOW_INSECURE_LOCAL' => '1',
     'LAVBE_AUTO_MIGRATE' => '1',
 ]);
@@ -195,11 +199,19 @@ try {
     $badDigestRequest=$publishRequestFor($version['id']);$badDigestRequest['manifestHash']=str_repeat('0',64);
     [$badDigestStatus,,$badDigestError]=$send('/api/admin/v1/publish-jobs','POST',$adminMutationHeaders,json_encode($badDigestRequest,JSON_THROW_ON_ERROR));
     if($badDigestStatus!==409||($badDigestError['error']['code']??null)!=='REVISION_CONFLICT')throw new RuntimeException('Publish job accepted a mismatched manifest digest.');
+    [$emptyPublicationStatus,,$emptyPublication]=$send('/api/admin/v1/publication','GET',$adminCookie);
+    $assertOpenApiKeys($emptyPublication,$adminOpenApi['components']['schemas']['PublicationState'],'Empty publication state');
+    if($emptyPublicationStatus!==200||$emptyPublication['active']!==null||$emptyPublication['knownGood']!==[])throw new RuntimeException('Empty publication state contract failed.');
     [$firstJob,$firstRunner,$firstHash]=$startPublish($version['id']);
     [$badRunnerStatus]=$send('/api/admin/v1/runner/jobs/'.$firstJob['id'].'/manifest','GET',['Authorization'=>'Bearer '.str_repeat('x',43)]);
     if($badRunnerStatus!==401)throw new RuntimeException('Runner accepted a credential outside its job scope.');
     [$firstManifestStatus,,$firstManifest]=$send('/api/admin/v1/runner/jobs/'.$firstJob['id'].'/manifest','GET',['Authorization'=>'Bearer '.$firstRunner]);
     $assertOpenApiKeys($firstManifest,$adminOpenApi['components']['schemas']['PublishManifest'],'Publish manifest response');
+    $signatureEncoded=strtr($firstManifest['signature']??'','-_','+/');$signatureBytes=base64_decode($signatureEncoded.str_repeat('=',(4-strlen($signatureEncoded)%4)%4),true);
+    $unsignedManifest=$firstManifest;unset($unsignedManifest['signature']);
+    if(($firstManifest['signatureAlgorithm']??null)!=='Ed25519'||$signatureBytes===false||!sodium_crypto_sign_verify_detached($signatureBytes,\Lavbe\Api\Admin\CanonicalJson::encode($unsignedManifest),$manifestSigningPublic))throw new RuntimeException('Runner manifest signature verification failed.');
+    $tamperedManifest=$unsignedManifest;$tamperedManifest['state']='building';
+    if(sodium_crypto_sign_verify_detached($signatureBytes,\Lavbe\Api\Admin\CanonicalJson::encode($tamperedManifest),$manifestSigningPublic))throw new RuntimeException('Runner manifest signature did not detect envelope tampering.');
     $artifactA=str_repeat('b',64);
     [$invalidTransitionStatus]=$runStatus($firstJob['id'],$firstRunner,'succeeded',$artifactA);
     [$firstValidateStatus]= $runStatus($firstJob['id'],$firstRunner,'validating');
@@ -208,7 +220,11 @@ try {
     [$badPromoteStatus]=$send('/api/admin/v1/publish-jobs/'.$firstJob['id'].'/promote','POST',$adminMutationHeaders,json_encode(['artifactHash'=>str_repeat('d',64)],JSON_THROW_ON_ERROR));
     [$promoteStatus,$promoteHeaders,$promoted]=$send('/api/admin/v1/publish-jobs/'.$firstJob['id'].'/promote','POST',$adminMutationHeaders,json_encode(['artifactHash'=>$artifactA],JSON_THROW_ON_ERROR));
     [$firstSuccessStatus,,$firstSucceeded]=$runStatus($firstJob['id'],$firstRunner,'succeeded',$artifactA);
-    if($firstManifestStatus!==200||$firstManifest['mode']!=='publish'||$firstManifest['manifestHash']!==$firstHash||$invalidTransitionStatus!==409||$firstValidateStatus!==200||$firstBuildStatus!==200||$awaitingStatus!==200||$badPromoteStatus!==409||$promoteStatus!==202||$firstSuccessStatus!==200||$firstSucceeded['state']!=='succeeded')throw new RuntimeException('Reviewed content publication state machine failed.');
+    [$duplicateSuccessStatus,,$duplicateSuccess]=$runStatus($firstJob['id'],$firstRunner,'succeeded',$artifactA);
+    if($firstManifestStatus!==200||$firstManifest['mode']!=='publish'||$firstManifest['manifestHash']!==$firstHash||$invalidTransitionStatus!==409||$firstValidateStatus!==200||$firstBuildStatus!==200||$awaitingStatus!==200||$badPromoteStatus!==409||$promoteStatus!==202||$firstSuccessStatus!==200||$firstSucceeded['state']!=='succeeded'||$duplicateSuccessStatus!==200||$duplicateSuccess['state']!=='succeeded')throw new RuntimeException('Reviewed content publication state machine or retry-safe success acknowledgment failed.');
+    [$activePublicationStatus,,$activePublication]=$send('/api/admin/v1/publication','GET',$adminCookie);
+    $assertOpenApiKeys($activePublication,$adminOpenApi['components']['schemas']['PublicationState'],'Active publication state');
+    if($activePublicationStatus!==200||$activePublication['active']['jobId']!==$firstJob['id']||$activePublication['active']['artifactHash']!==$artifactA||count($activePublication['knownGood'])!==1)throw new RuntimeException('Active publication pointer or known-good artifact listing failed.');
     $secondImport=[...$import,'expectedRevision'=>1];
     [$secondImportStatus,,$secondVersion]=$send('/api/admin/v1/imports','POST',$adminMutationHeaders,json_encode($secondImport,JSON_THROW_ON_ERROR));
     [$secondValidateStatus,,$secondValidation]=$send('/api/admin/v1/versions/'.$secondVersion['id'].'/validate','POST',$adminMutationHeaders,'{}');

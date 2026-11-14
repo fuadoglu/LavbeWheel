@@ -7,8 +7,11 @@
     "buildId",
     "createdAt",
     "state",
+    "artifactHash",
     "mode",
     "rollbackArtifactHash",
+    "signatureAlgorithm",
+    "signature",
     "versions"
   ],
   "properties": {
@@ -27,6 +30,11 @@
     },
     "state": {
       "enum": ["exporting", "validating", "building", "awaiting-promotion", "deploying"]
+    },
+    "artifactHash": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Null before the build completes; the exact artifact hash thereafter, including the owner-approved value during deployment."
     },
     "versions": {
       "type": "array",
@@ -1929,6 +1937,14 @@
         "null"
       ],
       "pattern": "^[a-f0-9]{64}$"
+    },
+    "signatureAlgorithm": {
+      "const": "Ed25519"
+    },
+    "signature": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{86}$",
+      "description": "Ed25519 signature over RFC 8785 canonical JSON of the complete manifest envelope, including signatureAlgorithm and excluding signature."
     }
   }
 }

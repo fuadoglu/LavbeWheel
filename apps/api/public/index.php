@@ -29,7 +29,7 @@ try {
     $crypto = new Crypto($config);
     $schemaRoot = dirname(__DIR__, 3) . '/contracts';
     $content = new ContentService($pdo, $crypto, new JsonSchemaValidator($schemaRoot));
-    $admin = new AdminKernel($config, new AdminAuthService($pdo, $config, $crypto), $content, new AdminOperationsService($pdo), new PublishService($pdo,$content));
+    $admin = new AdminKernel($config, new AdminAuthService($pdo, $config, $crypto), $content, new AdminOperationsService($pdo), new PublishService($pdo,$content,$config->manifestSigningSecretKey));
     $adminResponse = $admin->handle($request);
     if ($adminResponse !== null) $adminResponse->emit();
     $shares = new ShareService($pdo, $config, $crypto, new WheelRequestValidator(new WheelSemanticValidator()));

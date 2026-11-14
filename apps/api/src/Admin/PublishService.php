@@ -9,7 +9,7 @@ use Lavbe\Api\Http\ApiException;
 
 final class PublishService
 {
-    public function __construct(private readonly PDO $pdo,private readonly ContentService $content){}
+    public function __construct(private readonly PDO $pdo,private readonly ContentService $content,private readonly ?string $manifestSigningSecretKey=null){}
 
     public function create(array $input,string $actor,int $now):array
     {
@@ -31,6 +31,32 @@ final class PublishService
 
     public function get(string $id):array{return $this->job($id);}
 
+    public function list(?string $cursor):array
+    {
+        if($cursor===null){$q=$this->pdo->query('SELECT id,job_type,state,artifact_hash,error_code,rollback_target_hash,created_at FROM publish_jobs ORDER BY created_at DESC,id DESC LIMIT 51');}
+        else{
+            if(!preg_match('/^[A-Za-z0-9_-]{1,200}$/',$cursor))throw new ApiException(400,'VALIDATION_ERROR','The page cursor is invalid.');
+            $decoded=base64_decode(strtr($cursor,'-_','+/').str_repeat('=',(4-strlen($cursor)%4)%4),true);
+            $parts=$decoded===false?[]:explode("\n",$decoded);
+            if(count($parts)!==2||!preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(?:\.\d{1,6})?$/',$parts[0])||!preg_match('/^[A-Za-z0-9_-]{8,64}$/',$parts[1]))throw new ApiException(400,'VALIDATION_ERROR','The page cursor is invalid.');
+            $q=$this->pdo->prepare('SELECT id,job_type,state,artifact_hash,error_code,rollback_target_hash,created_at FROM publish_jobs WHERE created_at<:createdBefore OR (created_at=:createdAt AND id<:id) ORDER BY created_at DESC,id DESC LIMIT 51');
+            $q->execute(['createdBefore'=>$parts[0],'createdAt'=>$parts[0],'id'=>$parts[1]]);
+        }
+        $rows=$q->fetchAll();$next=null;if(count($rows)>50){$last=$rows[49];$next=rtrim(strtr(base64_encode($last['created_at']."\n".$last['id']),'+/','-_'),'=');$rows=array_slice($rows,0,50);}
+        return ['items'=>array_map(static fn(array $row):array=>[
+            'id'=>$row['id'],'state'=>$row['state'],'artifactHash'=>$row['artifact_hash']===null?null:bin2hex($row['artifact_hash']),
+            'errorCode'=>$row['error_code'],'mode'=>$row['job_type'],'rollbackTargetHash'=>$row['rollback_target_hash']===null?null:bin2hex($row['rollback_target_hash']),
+        ],$rows),'nextCursor'=>$next];
+    }
+
+    public function active():array
+    {
+        $active=$this->pdo->query('SELECT a.job_id,LOWER(HEX(a.artifact_hash)) artifact_hash,DATE_FORMAT(a.updated_at,\'%Y-%m-%dT%H:%i:%sZ\') updated_at FROM active_publications a WHERE a.singleton_id=1')->fetch();
+        $history=$this->pdo->query('SELECT h.job_id,LOWER(HEX(h.artifact_hash)) artifact_hash,DATE_FORMAT(h.released_at,\'%Y-%m-%dT%H:%i:%sZ\') released_at FROM publication_history h ORDER BY h.released_at DESC LIMIT 50')->fetchAll();
+        return ['active'=>$active?['jobId'=>$active['job_id'],'artifactHash'=>$active['artifact_hash'],'updatedAt'=>$active['updated_at']]:null,
+            'knownGood'=>array_map(static fn(array $row):array=>['jobId'=>$row['job_id'],'artifactHash'=>$row['artifact_hash'],'releasedAt'=>$row['released_at']],$history)];
+    }
+
     public function manifest(string $id,string $credential,int $now):array
     {
         $job=$this->runnerJob($id,$credential,$now);
@@ -39,7 +65,11 @@ final class PublishService
         $versions=$this->jobVersions($id);
         if(!hash_equals(bin2hex($job['manifest_hash']),CanonicalJson::hash($versions)))throw new ApiException(409,'REVISION_CONFLICT','The saved publication manifest failed its integrity check.');
         $rollback=$job['rollback_target_hash']===null?null:bin2hex($job['rollback_target_hash']);
-        return ['manifestHash'=>bin2hex($job['manifest_hash']),'buildId'=>$id,'createdAt'=>gmdate('Y-m-d\TH:i:s\Z',strtotime($job['created_at'].' UTC')),'state'=>$job['state'],'mode'=>$job['job_type'],'rollbackArtifactHash'=>$rollback,'versions'=>$versions];
+        if($this->manifestSigningSecretKey===null||strlen($this->manifestSigningSecretKey)!==SODIUM_CRYPTO_SIGN_SECRETKEYBYTES)throw new ApiException(503,'SERVICE_UNAVAILABLE','The manifest signer is not configured.',30);
+        $manifest=['manifestHash'=>bin2hex($job['manifest_hash']),'buildId'=>$id,'createdAt'=>gmdate('Y-m-d\TH:i:s\Z',strtotime($job['created_at'].' UTC')),'state'=>$job['state'],'artifactHash'=>$job['artifact_hash']===null?null:bin2hex($job['artifact_hash']),'mode'=>$job['job_type'],'rollbackArtifactHash'=>$rollback,'signatureAlgorithm'=>'Ed25519','versions'=>$versions];
+        $signature=sodium_crypto_sign_detached(CanonicalJson::encode($manifest),$this->manifestSigningSecretKey);
+        $manifest['signature']=rtrim(strtr(base64_encode($signature),'+/','-_'),'=');
+        return $manifest;
     }
 
     public function update(string $id,string $credential,array $input,int $now):array
@@ -50,9 +80,15 @@ final class PublishService
         $this->runnerJob($id,$credential,$now);
         $this->pdo->beginTransaction();
         try{
-            $q=$this->pdo->prepare('SELECT state,job_type,artifact_hash,rollback_target_hash,actor_id FROM publish_jobs WHERE id=:id FOR UPDATE');$q->execute(['id'=>$id]);$job=$q->fetch();
+            $q=$this->pdo->prepare('SELECT state,job_type,artifact_hash,rollback_target_hash,actor_id,error_code FROM publish_jobs WHERE id=:id FOR UPDATE');$q->execute(['id'=>$id]);$job=$q->fetch();
             if(!$job)throw new ApiException(404,'NOT_FOUND','The publish job was not found.');
             $next=$input['state'];$current=$job['state'];$artifact=$input['artifactHash'];$error=$input['errorCode'];
+            if(in_array($current,['succeeded','failed'],true)&&$next===$current
+                &&(($current==='succeeded'&&$artifact!==null&&$job['artifact_hash']!==null&&hash_equals(bin2hex($job['artifact_hash']),$artifact))
+                    ||($current==='failed'&&$artifact===null&&$error===$job['error_code']))) {
+                $this->pdo->commit();
+                return $this->job($id);
+            }
             $allowed=['queued'=>['exporting','failed'],'exporting'=>['exporting','validating','failed'],'validating'=>['validating','building','failed'],'building'=>['building','awaiting-promotion','failed'],'awaiting-promotion'=>['awaiting-promotion','failed'],'deploying'=>['deploying','succeeded','failed']];
             if(!in_array($next,$allowed[$current]??[],true))throw new ApiException(409,'REVISION_CONFLICT','The runner job state transition is invalid.');
             if(($next==='awaiting-promotion'||$next==='succeeded')&&$artifact===null)throw new ApiException(400,'VALIDATION_ERROR','A completed build requires its artifact hash.');
@@ -65,9 +101,8 @@ final class PublishService
             }elseif($next==='awaiting-promotion'){
                 if($job['job_type']!=='publish')throw new ApiException(409,'REVISION_CONFLICT','Rollback jobs do not enter the promotion queue.');
             }
-            $update=$this->pdo->prepare('UPDATE publish_jobs SET state=:state,artifact_hash=COALESCE(UNHEX(:artifact),artifact_hash),error_code=:error,runner_token_hash=IF(:terminal=1,NULL,runner_token_hash),updated_at=FROM_UNIXTIME(:now) WHERE id=:id');
-            $terminal=in_array($next,['failed','succeeded'],true)?1:0;
-            $update->execute(['state'=>$next,'artifact'=>$artifact,'error'=>$error,'terminal'=>$terminal,'now'=>$now,'id'=>$id]);
+            $update=$this->pdo->prepare('UPDATE publish_jobs SET state=:state,artifact_hash=COALESCE(UNHEX(:artifact),artifact_hash),error_code=:error,updated_at=FROM_UNIXTIME(:now) WHERE id=:id');
+            $update->execute(['state'=>$next,'artifact'=>$artifact,'error'=>$error,'now'=>$now,'id'=>$id]);
             $this->audit($job['actor_id'],'publish.runner.'.$next,$id);
             $this->pdo->commit();return $this->job($id);
         }catch(\Throwable $e){if($this->pdo->inTransaction())$this->pdo->rollBack();throw $e;}

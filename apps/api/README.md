@@ -4,7 +4,7 @@ The API requires PHP 8.3+, PDO MySQL, intl, mbstring and sodium, plus MySQL 8.0+
 
 ## Configuration
 
-Provide the variables in `.env.example` through the host's secret manager or a protected file outside the document root. `LAVBE_APP_ORIGIN` and `LAVBE_PUBLIC_ORIGIN` must be HTTPS origins without a path. HTTP is accepted only when `LAVBE_ALLOW_INSECURE_LOCAL=1` is explicitly set for local development/tests. Generate independent keys with `php -r 'echo base64_encode(random_bytes(32)), PHP_EOL;'`; decode the base64 values before assigning the two key variables.
+Provide the variables in `.env.example` through the host's secret manager or a protected file outside the document root. `LAVBE_APP_ORIGIN` and `LAVBE_PUBLIC_ORIGIN` must be HTTPS origins without a path. HTTP is accepted only when `LAVBE_ALLOW_INSECURE_LOCAL=1` is explicitly set for local development/tests. Generate independent 32-byte encryption/rate keys and a libsodium Ed25519 signing keypair; store the 64-byte `LAVBE_MANIFEST_SIGNING_SECRET_KEY` base64 value only in the API secret manager. After configuration, `php apps/api/bin/show-manifest-public-key.php` prints the raw public key as unpadded base64url for pinning in the trusted runner. Keep key generation output out of logs and artifacts.
 
 For encryption-key rotation, make the new `LAVBE_ENCRYPTION_KEY_ID` active and provide `LAVBE_ENCRYPTION_KEYS` as a JSON object mapping every retained key ID to its base64-encoded 32-byte key. Reads accept retained key IDs; new payloads use the active key. Keep old keys until all ciphertext encrypted with them has expired and backups containing it have passed retention. The rate-limit HMAC secret is independent and must not be used as an encryption key.
 
@@ -20,7 +20,7 @@ Configure the web server so `/api/v1/*` reaches `public/index.php`, denies acces
 
 After applying migrations, run `composer bootstrap-admin --working-dir=apps/api -- <username>` from a protected terminal. Enter a password with at least 14 characters when prompted, then enroll the one-time displayed TOTP secret and store the one-time recovery codes in the approved password manager. Do not redirect this command's output to a log or CI artifact. Bootstrap refuses to create a second initial owner. The initial owner provisions additional roles with `composer provision-admin --working-dir=apps/api -- <username> <owner|editor|reviewer|publisher>`; the command displays a new one-time MFA secret and recovery codes.
 
-The current WP08 implementation exposes MFA login/session/logout, strict encrypted content draft import, validation, review and version listing/detail, owner user updates, audit listing and admin share revocation. Publication runner, manifest signing, promotion/rollback and the admin panel remain in progress; do not use this partial API to publish content.
+WP08 includes MFA login/session/logout, strict encrypted content draft import, validation/review, owner operations, signed publication manifests, scoped runner status, promotion/rollback, and the internal admin panel. The runner and panel are still undergoing end-to-end verification; production-host deployment adapters and credentials remain operator inputs.
 
 The application does not emit request bodies, network keys, authorization headers or capabilities to logs. Host-level access logs and backups still require the retention/redaction controls in `docs/11-PRIVACY-SECURITY.md` and `docs/17-OPERATIONS.md`.
 

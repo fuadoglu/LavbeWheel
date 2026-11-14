@@ -446,6 +446,36 @@
       "commit": "c54910c",
       "evidence": [
         {
+          "command": "npm run check && npm run test:unit",
+          "result": "PASS on working tree; all TypeScript/Astro/config/contracts checks pass and 62 unit tests pass, including signed runner and atomic local deployment adapter",
+          "artifact": "command output",
+          "scope": "Pre-commit working tree; CI not yet run for these changes"
+        },
+        {
+          "command": "npm run test:e2e",
+          "result": "PASS; 14 browser tests including admin MFA flow mock, mobile/tablet layout, session recovery and automated accessibility",
+          "artifact": "command output",
+          "scope": "Synthetic/mocked admin API; not a live database-backed browser test"
+        },
+        {
+          "command": "npm run test:content && npm run test:seo",
+          "result": "PASS; content structure validates with 108 locales pending native review; static root SEO smoke passes",
+          "artifact": "apps/web/dist/",
+          "scope": "No translation review, SEO-01–12 route crawl or production origin/CDN verification"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; docs/contract/schema fixtures/reference vectors/SEO registry checks",
+          "artifact": "command output",
+          "scope": "Schema and reference validation; not runtime PHP/TypeScript parity or live API conformance"
+        },
+        {
+          "command": "npm run test:api",
+          "result": "PASS; isolated local MariaDB 12.1 lifecycle HTTP integration, including RFC 6238 TOTP, strict schemas, MFA/session/recovery, content review, Ed25519 manifest verification/tamper rejection, publish failure/retry, promotion, rollback and owner operations",
+          "artifact": "apps/api/tests/http-integration.php",
+          "scope": "Synthetic data in disposable lavbe_api_test only; MySQL 8.4 CI remains required for this working-tree commit"
+        },
+        {
           "command": "LAVBE_TEST_DATABASE_* npm run test:api",
           "result": "PASS; RFC 6238 TOTP, strict six-kind schemas, MySQL migration/lifecycle, live MFA/session/CSRF/recovery, encrypted import, source/placeholder/markup checks, review/stale revision, CLI-provisioned editor role gates, owner audit/user update/session revocation, last-owner protection and real admin share revocation",
           "artifact": "apps/api/tests/http-integration.php",

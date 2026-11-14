@@ -115,10 +115,22 @@ final class AdminKernel
                     $this->operations->revokeShare($m[1],$payload['reasonCode'],$session['userId'],$now);
                     return new Response(204,$headers);
                 }
+                if($path==='/api/admin/v1/publish-jobs'&&$request->method==='GET'){
+                    $this->requireRole($session,['owner','editor','reviewer','publisher']);
+                    $cursor=$request->query['cursor']??null;
+                    if($cursor!==null&&!is_string($cursor))throw new ApiException(400,'VALIDATION_ERROR','The page cursor is invalid.');
+                    $result=$this->publishing->list($cursor);
+                    if($result['nextCursor']!==null)$headers['X-Next-Cursor']=$result['nextCursor'];
+                    return new Response(200,[...$headers,'Content-Type'=>'application/json; charset=utf-8'],$result['items']);
+                }
                 if($path==='/api/admin/v1/publish-jobs'&&$request->method==='POST'){
                     $this->requireRole($session,['owner','publisher']);
                     $created=$this->publishing->create($payload,$session['userId'],$now);
                     return new Response(202,[...$headers,'Content-Type'=>'application/json; charset=utf-8','X-Runner-Credential'=>$created['runnerCredential']],$created['job']);
+                }
+                if($path==='/api/admin/v1/publication'&&$request->method==='GET'){
+                    $this->requireRole($session,['owner','editor','reviewer','publisher']);
+                    return new Response(200,[...$headers,'Content-Type'=>'application/json; charset=utf-8'],$this->publishing->active());
                 }
                 if(preg_match('#^/api/admin/v1/publish-jobs/([A-Za-z0-9_-]{8,64})$#',$path,$m)&&$request->method==='GET'){
                     $this->requireRole($session,['owner','editor','reviewer','publisher']);

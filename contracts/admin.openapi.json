@@ -3,7 +3,7 @@
   "info": {
     "title": "Lavbe administration API",
     "version": "1.0.0-spec",
-    "description": "Partially implemented administration API contract. /api/admin/v1 responses are no-store; no wildcard CORS. Cookie-authenticated mutations require Origin and X-CSRF-Token. Runner operations require independent short-lived scoped credentials. Record schemas are strict; arbitrary executable content is forbidden. Manifest digest covers sorted immutable versions only; buildId/createdAt are excluded envelope metadata. Job creation returns a scoped runner credential once in X-Runner-Credential."
+    "description": "Partially implemented administration API contract. /api/admin/v1 responses are no-store; no wildcard CORS. Cookie-authenticated mutations require Origin and X-CSRF-Token. Runner operations require independent short-lived scoped credentials. Record schemas are strict; arbitrary executable content is forbidden. Manifest digest covers sorted immutable versions only; buildId/createdAt are excluded envelope metadata. The complete manifest envelope is Ed25519 signed. Job creation returns a scoped runner credential once in X-Runner-Credential."
   },
   "servers": [
     {
@@ -1214,7 +1214,82 @@
         }
       }
     },
+    "/api/admin/v1/publication": {
+      "get": {
+        "operationId": "getPublicationState",
+        "summary": "getPublicationState",
+        "description": "Allowed role(s): owner, editor, reviewer, publisher. Exposes the active artifact and up to 50 known-good rollback targets; no user content is returned.",
+        "responses": {
+          "200": {
+            "description": "Current publication pointer and known-good artifacts",
+            "headers": { "Cache-Control": { "schema": { "const": "no-store" } } },
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PublicationState" } } }
+          },
+          "401": {
+            "description": "Authentication required",
+            "headers": { "Cache-Control": { "schema": { "const": "no-store" } } },
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          },
+          "403": {
+            "description": "Role rejected",
+            "headers": { "Cache-Control": { "schema": { "const": "no-store" } } },
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          },
+          "503": {
+            "description": "Temporarily unavailable",
+            "headers": { "Cache-Control": { "schema": { "const": "no-store" } } },
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          }
+        }
+      }
+    },
     "/api/admin/v1/publish-jobs": {
+      "get": {
+        "operationId": "listPublishJobs",
+        "summary": "listPublishJobs",
+        "description": "Allowed role(s): owner, editor, reviewer, publisher. Returns at most 50 job records; the scoped runner credential is never listed.",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 200 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Publish jobs, newest first",
+            "headers": {
+              "Cache-Control": { "schema": { "const": "no-store" } },
+              "X-Next-Cursor": { "description": "Present only when another page is available.", "schema": { "type": "string", "minLength": 1, "maxLength": 200 } }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "maxItems": 50,
+                  "items": { "$ref": "#/components/schemas/Job" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid cursor",
+            "headers": { "Cache-Control": { "schema": { "const": "no-store" } } },
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          },
+          "401": {
+            "description": "Authentication required",
+            "headers": { "Cache-Control": { "schema": { "const": "no-store" } } },
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          },
+          "403": {
+            "description": "Role rejected",
+            "headers": { "Cache-Control": { "schema": { "const": "no-store" } } },
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          }
+        }
+      },
       "post": {
         "operationId": "createPublishJob",
         "summary": "createPublishJob",
@@ -4816,7 +4891,8 @@
               "string",
               "null"
             ],
-            "pattern": "^[a-f0-9]{64}$"
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "SHA-256 of the deterministic immutable static artifact tree; promotion and deployment must use this exact value."
           },
           "errorCode": {
             "type": [
@@ -4837,6 +4913,42 @@
               "null"
             ],
             "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      },
+      "PublicationState": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["active", "knownGood"],
+        "properties": {
+          "active": {
+            "oneOf": [
+              { "type": "null" },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["jobId", "artifactHash", "updatedAt"],
+                "properties": {
+                  "jobId": { "type": "string", "pattern": "^[A-Za-z0-9_-]{8,64}$" },
+                  "artifactHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+                  "updatedAt": { "type": "string", "format": "date-time" }
+                }
+              }
+            ]
+          },
+          "knownGood": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["jobId", "artifactHash", "releasedAt"],
+              "properties": {
+                "jobId": { "type": "string", "pattern": "^[A-Za-z0-9_-]{8,64}$" },
+                "artifactHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+                "releasedAt": { "type": "string", "format": "date-time" }
+              }
+            }
           }
         }
       },
@@ -4929,8 +5041,11 @@
           "buildId",
           "createdAt",
           "state",
+          "artifactHash",
           "mode",
           "rollbackArtifactHash",
+          "signatureAlgorithm",
+          "signature",
           "versions"
         ],
         "properties": {
@@ -4949,6 +5064,11 @@
           },
           "state": {
             "enum": ["exporting", "validating", "building", "awaiting-promotion", "deploying"]
+          },
+          "artifactHash": {
+            "type": ["string", "null"],
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "Null before the build completes; then the exact owner-approved artifact hash."
           },
           "versions": {
             "type": "array",
@@ -6845,12 +6965,20 @@
               "rollback"
             ]
           },
-          "rollbackArtifactHash": {
+        "rollbackArtifactHash": {
             "type": [
               "string",
               "null"
             ],
             "pattern": "^[a-f0-9]{64}$"
+        },
+        "signatureAlgorithm": {
+          "const": "Ed25519"
+        },
+        "signature": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{86}$",
+          "description": "Ed25519 signature over RFC 8785 canonical JSON of the complete manifest envelope, including signatureAlgorithm and excluding signature."
           }
         }
       }
