@@ -183,13 +183,25 @@
       "id": "WP04",
       "status": "in-progress",
       "branch": "feat/wp04-visual-system",
-      "commit": "a8b9327",
+      "commit": "a8b9327c780108aec35415b03a4dfe5fdb11d724",
       "evidence": [
         {
           "command": "npm run build --workspace @lavbe/web",
           "result": "PASS; Astro static production build completed for the first WP04 classic tool screen",
           "artifact": "apps/web/dist/index.html",
           "scope": "Build validation only; visual/device acceptance and other tool layouts remain open"
+        },
+        {
+          "command": "Opened http://127.0.0.1:4322/ in the local browser and inspected the accessibility tree",
+          "result": "PASS; compact navigation, wheel canvas, spin control, participant editor and theme control render in the first working screen",
+          "artifact": "Local browser session at 127.0.0.1:4322 (not a durable screenshot)",
+          "scope": "Single local Chromium-sized viewport; no real-device or keyboard acceptance"
+        },
+        {
+          "command": "WCAG relative luminance contrast calculation for wheel segment palette against white labels",
+          "result": "PASS for the eight segment pairs; contrast ratios range from 5.41:1 to 7.31:1",
+          "artifact": "apps/web/src/scripts/wheel.ts palette",
+          "scope": "Canvas segment label colors only; does not cover full interface contrast"
         }
       ],
       "blockers": [
