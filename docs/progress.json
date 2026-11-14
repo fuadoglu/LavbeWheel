@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 session persistence is implemented and awaiting review/CI evidence; WP04-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 persistence is implemented and configured CI passed; WP04-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -165,6 +165,12 @@
           "command": "git diff --check",
           "result": "PASS; clean whitespace",
           "artifact": "working tree"
+        },
+        {
+          "command": "GitHub Actions verify job on PR #3",
+          "result": "PASS; all configured application checks completed",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43595432275",
+          "scope": "Automated CI; user-facing persistence controls and review remain open"
         }
       ],
       "blockers": [

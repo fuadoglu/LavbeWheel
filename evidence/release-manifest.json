@@ -190,13 +190,19 @@
           "command": "git diff --check",
           "result": "PASS; clean whitespace",
           "artifact": "working tree"
+        },
+        {
+          "command": "GitHub Actions verify job on PR #3",
+          "result": "PASS; all configured application checks completed",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43595432275",
+          "scope": "Automated CI; not review or release approval"
         }
       ],
       "limitations": [
         "User-facing JSON import/export controls are not implemented yet.",
         "Retention/pruning and quota recovery/export prompts remain open for reports and UI.",
         "Cross-browser/device manual acceptance remains pending.",
-        "GitHub Actions for PR #3 has not run yet; implementation remains unverified until CI completes."
+        "PR review/merge remains pending; user-facing persistence controls and retention/quota recovery UX remain open."
       ],
       "commit": "1f50c6ecce9910dd70648a730df0d67ae58d7cbd"
     }

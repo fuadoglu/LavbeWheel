@@ -17,7 +17,7 @@ A fast, multilingual wheel and social-game platform designed for phones, tablets
 
 </div>
 
-> **Repository status:** WP01 foundation and WP02 selection semantics passed CI. WP03 now implements local session persistence, atomic result commits/recovery, writer leases and IndexedDB migration; its branch is undergoing CI/review. Only the classic names wheel is currently usable. API, reports UI, games, reviewed translations and integrations remain open. Badges describe the specification; they are not security, accessibility or legal certifications. Target domain: **lavbe.com**; the site is not deployed.
+> **Repository status:** WP01 foundation and WP02 selection semantics passed CI. WP03 now implements local session persistence, atomic result commits/recovery, writer leases and IndexedDB migration; its configured CI passed and PR review is pending. Only the classic names wheel is currently usable. API, reports UI, games, reviewed translations and integrations remain open. Badges describe the specification; they are not security, accessibility or legal certifications. Target domain: **lavbe.com**; the site is not deployed.
 
 ## 🎯 Product promise
 
@@ -138,6 +138,6 @@ No explicit sexual content, public user-content marketplace, chat, live multi-de
 
 **Lavbe · Built around the moment of choice.**
 
-Specification baseline: **2026-11-14** · Application status: **WP01–WP02 verified · WP03 implemented, review pending**
+Specification baseline: **2026-11-14** · Application status: **WP01–WP02 verified · WP03 implemented, CI passed, review pending**
 
 </div>
