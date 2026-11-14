@@ -311,6 +311,12 @@
           "command": "git diff --check",
           "result": "PASS; clean whitespace",
           "artifact": "working tree"
+        },
+        {
+          "command": "GitHub Actions on PR #5",
+          "result": "PASS; Documentation and contracts validate plus Application foundation verify workflows passed on WP05 head",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43599972838 and https://github.com/fuadoglu/LavbeWheel/actions/runs/43599972822",
+          "scope": "CI only; review/merge/device acceptance remain separate"
         }
       ],
       "blockers": [

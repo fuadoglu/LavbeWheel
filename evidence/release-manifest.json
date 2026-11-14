@@ -303,6 +303,12 @@
           "result": "PASS; docs, schemas, fixtures, reference semantics and SEO registry checks",
           "artifact": "docs/ and contracts/",
           "scope": "Documentation/spec reference only"
+        },
+        {
+          "command": "GitHub Actions on PR #5",
+          "result": "PASS; Documentation and contracts validate plus Application foundation verify workflows passed on WP05 head",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43599972838 and https://github.com/fuadoglu/LavbeWheel/actions/runs/43599972822",
+          "scope": "CI only; review/merge/device acceptance remain separate"
         }
       ],
       "limitations": [
