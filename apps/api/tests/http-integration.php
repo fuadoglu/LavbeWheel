@@ -256,6 +256,16 @@ try {
     $activeAfterRollback=$testPdo->query('SELECT job_id,LOWER(HEX(artifact_hash)) artifact FROM active_publications WHERE singleton_id=1')->fetch();
     [$rolledBackJobStatus,,$rolledBackJob]=$send('/api/admin/v1/publish-jobs/'.$secondJob['id'],'GET',$adminCookie);
     if($rollbackStatus!==202||$rollbackManifestStatus!==200||$rollbackManifest['mode']!=='rollback'||$rollbackManifest['rollbackArtifactHash']!==$artifactA||$rollbackSuccess!==200||$rolledBack['state']!=='succeeded'||$activeAfterRollback['job_id']!==$rollbackJob['id']||$activeAfterRollback['artifact']!==$artifactA||$rolledBackJobStatus!==200||$rolledBackJob['state']!=='rolled-back')throw new RuntimeException('Known-good publication rollback failed.');
+    $syntheticJobIds=[];$insertJob=$testPdo->prepare("INSERT INTO publish_jobs(id,job_type,state,manifest_hash,actor_id,created_at,updated_at) VALUES (:id,'publish','failed',:manifest,:actor,'2099-01-01 00:00:00.000000','2099-01-01 00:00:00.000000')");
+    for($i=0;$i<51;$i++){$id=bin2hex(random_bytes(16));$syntheticJobIds[]=$id;$insertJob->execute(['id'=>$id,'manifest'=>str_repeat('m',32),'actor'=>$admin['userId']]);}
+    [$jobsFirstStatus,$jobsFirstHeaders,$jobsFirst]=$send('/api/admin/v1/publish-jobs','GET',$adminCookie);
+    if($jobsFirstStatus!==200||count($jobsFirst)!==50||!isset($jobsFirstHeaders['x-next-cursor']))throw new RuntimeException('Publish-job first page did not return exactly 50 rows and a continuation cursor.');
+    foreach($jobsFirst as $job){$assertOpenApiKeys($job,$adminOpenApi['components']['schemas']['Job'],'Publish-job list item');if(array_key_exists('runnerCredential',$job))throw new RuntimeException('Publish-job list exposed a runner credential.');}
+    [$jobsSecondStatus,$jobsSecondHeaders,$jobsSecond]=$send('/api/admin/v1/publish-jobs?cursor='.rawurlencode($jobsFirstHeaders['x-next-cursor']),'GET',$adminCookie);
+    $pagedJobIds=array_column($jobsFirst,'id');foreach($jobsSecond as $job)$pagedJobIds[]=$job['id'];
+    if($jobsSecondStatus!==200||count($jobsSecond)!==5||isset($jobsSecondHeaders['x-next-cursor'])||count(array_intersect($syntheticJobIds,$pagedJobIds))!==51)throw new RuntimeException('Publish-job cursor pagination lost, repeated or mis-sized rows.');
+    [$invalidJobsCursorStatus]=$send('/api/admin/v1/publish-jobs?cursor=not-a-valid-cursor','GET',$adminCookie);
+    if($invalidJobsCursorStatus!==400)throw new RuntimeException('Publish-job endpoint accepted a malformed cursor.');
     [$auditStatus, , $auditEvents] = $send('/api/admin/v1/audit','GET',$adminCookie);
     if($auditStatus!==200||!is_array($auditEvents)||count($auditEvents)<4) throw new RuntimeException('Owner audit-event list failed.');
     foreach($auditEvents as $event){$keys=array_keys($event);sort($keys);if($keys!==['action','actorId','at','id','objectId'])throw new RuntimeException('Audit event response differs from OpenAPI.');}
@@ -280,7 +290,7 @@ try {
     if ($recoveryStatus !== 200 || $reusedRecoveryStatus !== 401 || ($reusedRecoveryError['error']['code'] ?? '') !== 'AUTHENTICATION_REQUIRED') {
         throw new RuntimeException('One-time admin recovery code did not enforce single use (first=' . $recoveryStatus . ', replay=' . $reusedRecoveryStatus . ', replayCode=' . ($reusedRecoveryError['error']['code'] ?? 'none') . ').');
     }
-    fwrite(STDOUT, "PASS: live HTTP sharing, admin MFA/content review, publication failure/promotion/rollback, role-gated owner operations and share revocation.\n");
+    fwrite(STDOUT, "PASS: live HTTP sharing, admin MFA/content review, signed publication failure/promotion/rollback, 50-row job pagination, role-gated owner operations and share revocation.\n");
 } finally {
     proc_terminate($process);
     proc_close($process);

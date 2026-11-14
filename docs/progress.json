@@ -471,9 +471,9 @@
         },
         {
           "command": "npm run test:api",
-          "result": "PASS; isolated local MariaDB 12.1 lifecycle HTTP integration, including RFC 6238 TOTP, strict schemas, MFA/session/recovery, content review, Ed25519 manifest verification/tamper rejection, publish failure/retry, promotion, rollback and owner operations",
+          "result": "PASS; isolated MariaDB lifecycle + live HTTP share/admin/publish workflow; Ed25519 signature/tamper checks, publish failure/retry, promotion/rollback, strict job response shape, 50-row cursor pagination and malformed cursor rejection",
           "artifact": "apps/api/tests/http-integration.php",
-          "scope": "Synthetic data in disposable lavbe_api_test; local MariaDB 12.1 and GitHub MySQL 8.4 application CI both pass for commit 04195b6"
+          "scope": "Synthetic data in disposable lavbe_api_test; local MariaDB 12.1. Latest pagination assertions are in working tree after CI-verified commit 04195b6; run GitHub CI for the follow-up test commit."
         },
         {
           "command": "LAVBE_TEST_DATABASE_* npm run test:api",
