@@ -183,7 +183,7 @@
       "id": "WP04",
       "status": "in-progress",
       "branch": "feat/wp04-visual-system",
-      "commit": null,
+      "commit": "a8b9327",
       "evidence": [
         {
           "command": "npm run build --workspace @lavbe/web",
