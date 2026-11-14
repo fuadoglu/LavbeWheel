@@ -84,10 +84,18 @@ final class AdminAuthService
         $this->pdo->beginTransaction();
         try {
             if ($recoveryIndex !== null) {
-                $recoveryHashes = json_decode($user['recovery_hashes'], true, flags: JSON_THROW_ON_ERROR);
-                $recoveryHashes[$recoveryIndex] = null;
-                $consume = $this->pdo->prepare('UPDATE admin_users SET recovery_hashes=:updated WHERE id=:id AND recovery_hashes=:previous');
-                $consume->execute(['updated' => json_encode($recoveryHashes, JSON_THROW_ON_ERROR), 'id' => $user['id'], 'previous' => $user['recovery_hashes']]);
+                $lock = $this->pdo->prepare('SELECT recovery_hashes FROM admin_users WHERE id=:id AND disabled_at IS NULL FOR UPDATE');
+                $lock->execute(['id' => $user['id']]);
+                $current = $lock->fetchColumn();
+                $recoveryHashes = is_string($current) ? json_decode($current, true, flags: JSON_THROW_ON_ERROR) : [];
+                $currentIndex = null;
+                foreach ($recoveryHashes as $index => $hash) {
+                    if (is_string($hash) && password_verify($mfaCode, $hash)) { $currentIndex = $index; break; }
+                }
+                if ($currentIndex === null) throw new ApiException(401, 'AUTHENTICATION_REQUIRED', 'The credentials could not be verified.');
+                $recoveryHashes[$currentIndex] = null;
+                $consume = $this->pdo->prepare('UPDATE admin_users SET recovery_hashes=:updated WHERE id=:id');
+                $consume->execute(['updated' => json_encode($recoveryHashes, JSON_THROW_ON_ERROR), 'id' => $user['id']]);
                 if ($consume->rowCount() !== 1) throw new ApiException(401, 'AUTHENTICATION_REQUIRED', 'The credentials could not be verified.');
             }
         $insert = $this->pdo->prepare('INSERT INTO admin_sessions(session_hash,user_id,csrf_cipher,csrf_nonce,csrf_key_id,issued_at,last_seen_at,idle_expires_at,absolute_expires_at) VALUES (:hash,:user,:cipher,:nonce,:keyId,FROM_UNIXTIME(:issued),FROM_UNIXTIME(:lastSeen),FROM_UNIXTIME(:idle),FROM_UNIXTIME(:absolute))');

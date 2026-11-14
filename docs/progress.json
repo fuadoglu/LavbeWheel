@@ -471,6 +471,12 @@
           "command": "git diff --check",
           "result": "PASS; no whitespace errors",
           "artifact": "working tree"
+        },
+        {
+          "command": "GitHub Actions application foundation on PR #8 (run 43645518129)",
+          "result": "FAIL; MySQL 8.4 integration exposed a recovery-code single-use issue not reproduced on local MariaDB 12.1; recovery consumption now locks and rechecks the account row transactionally, and the CI rerun is pending",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43645518129",
+          "scope": "Failure is addressed by the next commit; do not treat this run as passing evidence"
         }
       ],
       "blockers": [

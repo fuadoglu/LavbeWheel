@@ -177,7 +177,7 @@ try {
     if($versionsStatus!==200||count($versions)!==3||!in_array($version['id'],array_column($versions,'id'),true)) throw new RuntimeException('Admin content version listing failed.');
     [$reusedRecoveryStatus, , $reusedRecoveryError] = $send('/api/admin/v1/session', 'POST', $adminOrigin, $recoveryBody);
     if ($recoveryStatus !== 200 || $reusedRecoveryStatus !== 401 || ($reusedRecoveryError['error']['code'] ?? '') !== 'AUTHENTICATION_REQUIRED') {
-        throw new RuntimeException('One-time admin recovery code did not enforce single use.');
+        throw new RuntimeException('One-time admin recovery code did not enforce single use (first=' . $recoveryStatus . ', replay=' . $reusedRecoveryStatus . ', replayCode=' . ($reusedRecoveryError['error']['code'] ?? 'none') . ').');
     }
     fwrite(STDOUT, "PASS: live HTTP public share and admin MFA/session/CSRF/content import/validation/review lifecycle.\n");
 } finally {
