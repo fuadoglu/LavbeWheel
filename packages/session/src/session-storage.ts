@@ -26,15 +26,41 @@ function assertResultsOnlyAppend(current: SessionEnvelope, next: SessionEnvelope
   }
 }
 
-function assertPresentationOnlyUpdate(current: SessionEnvelope, next: SessionEnvelope): void {
+function assertSafeSessionUpdate(current: SessionEnvelope, next: SessionEnvelope): void {
+  const beforeGame = current.game;
+  const afterGame = next.game;
+  if (JSON.stringify(beforeGame) !== JSON.stringify(afterGame)) {
+    if (!beforeGame || !afterGame) throw new SessionConflictError('Game state cannot be removed by a session update');
+    const stable = (game: NonNullable<SessionEnvelope['game']>) => ({
+      packId: game.packId,
+      packVersion: game.packVersion,
+      locale: game.locale,
+      usedCardIds: game.usedCardIds,
+      nextTurnIndex: game.nextTurnIndex,
+      packSnapshot: game.packSnapshot,
+    });
+    if (JSON.stringify(stable(beforeGame)) !== JSON.stringify(stable(afterGame))) throw new SessionConflictError('Game pack, used cards and turn order are immutable during a session update');
+    const sameActive = beforeGame.activeResultId === afterGame.activeResultId;
+    const pause = afterGame.phase === 'paused' && afterGame.resumePhase === (beforeGame.phase === 'ready' || beforeGame.phase === 'selecting-player' ? 'ready' : 'awaiting-complete-or-skip') && sameActive;
+    const resume = beforeGame.phase === 'paused' && afterGame.phase === beforeGame.resumePhase && afterGame.resumePhase === null && sameActive;
+    const reveal = beforeGame.phase === 'revealing-card' && afterGame.phase === 'awaiting-complete-or-skip' && sameActive;
+    const resolve = beforeGame.phase === 'awaiting-complete-or-skip' && (afterGame.phase === 'ready' || afterGame.phase === 'exhausted') && afterGame.activeResultId === null && afterGame.resumePhase === null;
+    const end = (beforeGame.phase === 'ready' || beforeGame.phase === 'exhausted') && afterGame.phase === 'ended' && afterGame.activeResultId === null && afterGame.resumePhase === null;
+    if (!pause && !resume && !reveal && !resolve && !end) throw new SessionConflictError('Invalid game state transition');
+    if (resolve && current.results.at(-1)?.id !== beforeGame.activeResultId) throw new SessionConflictError('Only the latest active card can be resolved');
+  }
   const order = { pending: 0, revealed: 1, acknowledged: 2 } as const;
   if (next.results.length !== current.results.length) throw new SessionConflictError('Session updates cannot add or remove committed results');
   for (const [index, before] of current.results.entries()) {
     const after = next.results[index]!;
-    const beforeData = { ...before, presentation: undefined };
-    const afterData = { ...after, presentation: undefined };
+    const beforeData = { ...before, presentation: undefined, ...(before.kind === 'card' ? { status: undefined } : {}) };
+    const afterData = { ...after, presentation: undefined, ...(after.kind === 'card' ? { status: undefined } : {}) };
     if (JSON.stringify(beforeData) !== JSON.stringify(afterData) || order[after.presentation] < order[before.presentation] || order[after.presentation] > order[before.presentation] + 1) {
       throw new SessionConflictError('Committed result data is immutable and presentation cannot move backwards');
+    }
+    if (before.kind === 'card' && after.kind === 'card' && before.status !== after.status) {
+      const resolvingActiveCard = before.status === 'pending' && (after.status === 'completed' || after.status === 'skipped') && beforeGame?.phase === 'awaiting-complete-or-skip' && beforeGame.activeResultId === before.id && afterGame?.activeResultId === null && (afterGame.phase === 'ready' || afterGame.phase === 'exhausted');
+      if (!resolvingActiveCard) throw new SessionConflictError('Only the active pending game card can be completed or skipped');
     }
   }
 }
@@ -213,7 +239,7 @@ export async function updateSession(envelope: SessionEnvelope, ownerId: string, 
     ]);
     if (!lease || lease.ownerId !== ownerId || lease.expiresAt <= now || !current || current.revision !== expectedRevision) throw new SessionConflictError('Session lease or revision changed');
     assertStableSessionHistory(current.envelope, envelope);
-    assertPresentationOnlyUpdate(current.envelope, envelope);
+    assertSafeSessionUpdate(current.envelope, envelope);
     const revision = expectedRevision + 1;
     sessions.put({ sessionId: envelope.sessionId, envelope, revision, updatedAt: new Date(now).toISOString() } satisfies StoredSession);
     await done;

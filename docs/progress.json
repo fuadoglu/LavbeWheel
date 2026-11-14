@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 persistence is implemented and configured CI passed; WP04 remains in progress; WP05 reports are in progress; WP06-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local bottle/game tools and draft source packs are implemented; WP07-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -321,11 +321,73 @@
     },
     {
       "id": "WP06",
-      "status": "not-started",
-      "branch": null,
-      "commit": null,
-      "evidence": [],
-      "blockers": []
+      "status": "implemented",
+      "branch": "feat/wp06-games",
+      "commit": "a3c194a13b07959b371d746f923ae9545621e293",
+      "evidence": [
+        {
+          "command": "npm run check",
+          "result": "PASS; contracts/config, selection/session TypeScript and Astro checks, 0 diagnostics",
+          "artifact": "command output"
+        },
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 53 tests including bottle seat/cycle geometry and game draw/skip/pause/resume/exhaustion/session persistence",
+          "artifact": "tests/unit/game-engine.test.ts"
+        },
+        {
+          "command": "npm run test:e2e",
+          "result": "PASS; 13 Chromium flows including bottle no-repeat/reset, game restore and mobile route overflow",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Chromium automation; physical devices remain unverified"
+        },
+        {
+          "command": "npm run test:a11y",
+          "result": "PASS; 3 automated Axe WCAG 2.1 A/AA scans for home, bottle and game states",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Automated only; manual keyboard/screen-reader review remains open"
+        },
+        {
+          "command": "npm run test:content",
+          "result": "PASS; 6 English draft packs contain 300 schema-valid cards with unique IDs and matching canonical hashes",
+          "artifact": "content/packs/en/",
+          "scope": "Suitability, cultural and translation review are not inferred"
+        },
+        {
+          "command": "npm run test:seo",
+          "result": "PASS; build emits /, /bottle/ and /games/; root-page smoke passes",
+          "artifact": "apps/web/dist/",
+          "scope": "SEO check only validates root HTML; full route/canonical crawl is pending WP09"
+        },
+        {
+          "command": "npm run screenshots:wp06",
+          "result": "PASS; 5 local Chromium screenshots of setup, active card and bottle result states",
+          "artifact": "evidence/wp06/screenshots/README.md",
+          "scope": "Synthetic names/local preview only; no device or owner approval"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; documentation, contracts, reference semantics and SEO registry validation",
+          "artifact": "docs/ and contracts/",
+          "scope": "Documentation/reference validation only"
+        },
+        {
+          "command": "npm run test:pwa",
+          "result": "BLOCKED as expected; PWA-01 belongs to WP10; manifest/service worker absent",
+          "artifact": "scripts/validate-pwa.mjs"
+        },
+        {
+          "method": "Visible local preview at http://127.0.0.1:4322/bottle/ and /games/",
+          "result": "PASS; both new routes opened in the browser",
+          "artifact": "local dev server",
+          "scope": "Local only; not deployed"
+        }
+      ],
+      "blockers": [
+        "All six 50-card English packs remain draft; safety, suitability, culture and translation approval are pending and are not inferred from structural checks.",
+        "Physical-device, cross-browser and manual accessibility review remains open.",
+        "WP04’s broader visual-system acceptance and WP09’s 110-locale public route/SEO work remain open."
+      ]
     },
     {
       "id": "WP07",

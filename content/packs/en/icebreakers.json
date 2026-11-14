@@ -1,0 +1,367 @@
+{
+  "schemaVersion": 1,
+  "id": "pack_icebreakers",
+  "version": 1,
+  "family": "icebreakers",
+  "locale": "en",
+  "minPlayers": 2,
+  "maxPlayers": 20,
+  "audience": "family",
+  "intensity": "gentle",
+  "cards": [
+    {
+      "id": "card_icebreakers_001",
+      "kind": "question",
+      "text": "What tiny thing improved your day this week?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_002",
+      "kind": "question",
+      "text": "Which place nearby would you like to explore?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_003",
+      "kind": "question",
+      "text": "What song can lift your mood quickly?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_004",
+      "kind": "question",
+      "text": "What is something you learned recently?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_005",
+      "kind": "question",
+      "text": "Which season feels most like you?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_006",
+      "kind": "question",
+      "text": "What snack would you bring on a trip?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_007",
+      "kind": "question",
+      "text": "What kind of weather makes you happiest?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_008",
+      "kind": "question",
+      "text": "What hobby would you try for one afternoon?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_009",
+      "kind": "question",
+      "text": "Which animal would make a fun neighbor?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_010",
+      "kind": "question",
+      "text": "What is your favorite way to spend a quiet hour?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_011",
+      "kind": "question",
+      "text": "What smell reminds you of a good memory?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_012",
+      "kind": "question",
+      "text": "Which fictional place would you visit for a day?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_013",
+      "kind": "question",
+      "text": "What is a skill you would enjoy learning?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_014",
+      "kind": "question",
+      "text": "What color have you been drawn to lately?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_015",
+      "kind": "question",
+      "text": "What simple meal do you like making?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_016",
+      "kind": "question",
+      "text": "What is the best thing about your neighborhood?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_017",
+      "kind": "question",
+      "text": "Which small task do you find satisfying?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_018",
+      "kind": "question",
+      "text": "What would you name a friendly robot?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_019",
+      "kind": "question",
+      "text": "What kind of museum would you visit first?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_020",
+      "kind": "question",
+      "text": "What is a useful thing someone taught you?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_021",
+      "kind": "question",
+      "text": "Which sound do you find calming?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_022",
+      "kind": "question",
+      "text": "What is a game you enjoyed as a child?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_023",
+      "kind": "question",
+      "text": "What would you plant if you had a small garden?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_024",
+      "kind": "question",
+      "text": "What is your favorite thing to do outdoors?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_025",
+      "kind": "question",
+      "text": "Which book or film world would you explore?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_026",
+      "kind": "question",
+      "text": "What is a kind gesture you still remember?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_027",
+      "kind": "question",
+      "text": "Which everyday invention do you appreciate?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_028",
+      "kind": "question",
+      "text": "What is something you collect or like noticing?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_029",
+      "kind": "question",
+      "text": "What would your ideal picnic include?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_030",
+      "kind": "question",
+      "text": "What is a topic you can happily learn about?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_031",
+      "kind": "question",
+      "text": "Which local place deserves more visitors?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_032",
+      "kind": "question",
+      "text": "What makes a room feel welcoming to you?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_033",
+      "kind": "question",
+      "text": "What is a small goal you have for this month?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_034",
+      "kind": "question",
+      "text": "Which fruit would you happily eat every day?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_035",
+      "kind": "question",
+      "text": "What would you put in a time-capsule note?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_036",
+      "kind": "question",
+      "text": "What is a tradition you would like to start?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_037",
+      "kind": "question",
+      "text": "What kind of art do you enjoy looking at?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_038",
+      "kind": "question",
+      "text": "What is one thing you like about mornings?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_039",
+      "kind": "question",
+      "text": "Which imaginary pet would suit you best?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_040",
+      "kind": "question",
+      "text": "What is your favorite way to celebrate good news?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_041",
+      "kind": "question",
+      "text": "What would you explore if you had an extra hour?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_042",
+      "kind": "question",
+      "text": "What is a comfort item you appreciate?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_043",
+      "kind": "question",
+      "text": "Which subject would you take for fun?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_044",
+      "kind": "question",
+      "text": "What is a view you would enjoy seeing again?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_045",
+      "kind": "question",
+      "text": "What makes you laugh in a gentle way?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_046",
+      "kind": "question",
+      "text": "What is something you are looking forward to?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_047",
+      "kind": "question",
+      "text": "Which helpful app or tool do you like?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_048",
+      "kind": "question",
+      "text": "What would you cook for a friendly gathering?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_049",
+      "kind": "question",
+      "text": "What is one thing you hope to make this year?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_icebreakers_050",
+      "kind": "question",
+      "text": "What question do you enjoy being asked?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    }
+  ],
+  "review": {
+    "status": "draft",
+    "sourceHash": "dcbb3fff357bf23405ab23b86013a2ff682143efdb7712bd80b4d378ef58063a"
+  }
+}

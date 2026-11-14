@@ -1,8 +1,8 @@
 {
   "version": 1,
   "scope": "Implementation evidence only; not release approval or deployment evidence.",
-  "branch": "feat/wp05-reports",
-  "baseCommit": "54107be353b2a2e58db9f46fdabd720659211e9e",
+  "branch": "feat/wp06-games",
+  "baseCommit": "58cfc5a3fbbadc10bd6794205950196b42976bc3",
   "workPackages": {
     "WP01": {
       "status": "verified",
@@ -312,6 +312,62 @@
         "108 locale catalogs, native translation review, manual accessibility, device/browser review and release approval remain pending."
       ],
       "commit": "2533550b4b7444b7eb0f7f8eb5bea19aa2a4517d"
+    },
+    "WP06": {
+      "status": "implemented",
+      "baseCommit": "58cfc5a3fbbadc10bd6794205950196b42976bc3",
+      "commit": "a3c194a13b07959b371d746f923ae9545621e293",
+      "evidence": [
+        {
+          "command": "npm run check",
+          "result": "PASS; contracts/config, TS packages and Astro diagnostics (0 warnings/errors/hints)"
+        },
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 53 tests incl. cycles, game phases, durable card result transitions and session factories",
+          "artifact": "tests/unit/game-engine.test.ts"
+        },
+        {
+          "command": "npm run test:e2e",
+          "result": "PASS; 13 Chromium flows including bottle and game pages",
+          "artifact": "tests/e2e/wheel.spec.ts"
+        },
+        {
+          "command": "npm run test:a11y",
+          "result": "PASS; 3 Axe WCAG 2.1 A/AA page-state scans",
+          "scope": "Automated only"
+        },
+        {
+          "command": "npm run test:content",
+          "result": "PASS; 300 English cards across six draft families match pack schema, source hashes and unique IDs",
+          "artifact": "content/packs/en/"
+        },
+        {
+          "command": "npm run test:seo",
+          "result": "PASS; static build emits three routes; root-page smoke passes",
+          "scope": "Route SEO/canonical graph not verified"
+        },
+        {
+          "command": "npm run screenshots:wp06",
+          "result": "PASS; 5 local Chromium screenshots",
+          "artifact": "evidence/wp06/screenshots/README.md"
+        },
+        {
+          "method": "Visible local preview at /bottle/ and /games/",
+          "result": "PASS; both pages opened in local browser",
+          "scope": "Local only; not deployed"
+        },
+        {
+          "command": "npm run test:pwa",
+          "result": "BLOCKED as expected until WP10 supplies the manifest and service worker",
+          "artifact": "scripts/validate-pwa.mjs"
+        }
+      ],
+      "limitations": [
+        "All source packs are draft. No content-suitability, cultural or translation approval is inferred.",
+        "Cross-browser/device and manual accessibility review remain pending.",
+        "WP04 visual acceptance and WP09 110-locale SEO/routes remain open."
+      ]
     }
   },
   "requirements": {
