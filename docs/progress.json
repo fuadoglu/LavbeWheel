@@ -62,9 +62,9 @@
     },
     {
       "id": "WP02",
-      "status": "in-progress",
+      "status": "verified",
       "branch": "feat/wp02-selection",
-      "commit": null,
+      "commit": "b836d18",
       "evidence": [
         {
           "command": "npm run check",
@@ -95,6 +95,12 @@
           "command": "npm audit --audit-level=moderate && git diff --check",
           "result": "PASS; 0 vulnerabilities and clean diff whitespace",
           "artifact": "package-lock.json"
+        },
+        {
+          "command": "GitHub Actions verify job on PR #2",
+          "result": "PASS; all configured application checks completed",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43593182473",
+          "scope": "Automated CI; review/merge remain separate"
         }
       ],
       "blockers": []
