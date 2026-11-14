@@ -1,7 +1,7 @@
 import { uniformIndex, browserRandomSource } from '@lavbe/selection';
 import {
   acquireWriterLease, commitSelectionResult, createLocalWheelSession, listSessions, loadWheelDraft,
-  recoverUnacknowledgedResult, releaseWriterLease, renewWriterLease, saveInitialSession,
+  buildRoundReports, exportRoundReportCsv, paginateReportRows, recoverUnacknowledgedResult, releaseWriterLease, renewWriterLease, saveInitialSession,
   saveWheelDraft, updateSession, validateSessionEnvelope,
 } from '@lavbe/session';
 import type { SessionEnvelope } from '@lavbe/contracts';
@@ -20,6 +20,17 @@ const participantPanel = document.querySelector<HTMLElement>('#participants');
 const storageStatus = document.querySelector<HTMLElement>('#storage-status');
 const historyList = document.querySelector<HTMLOListElement>('#history-list');
 const historyEmpty = document.querySelector<HTMLParagraphElement>('#history-empty');
+const reportRoundSelect = document.querySelector<HTMLSelectElement>('#report-round');
+const reportRows = document.querySelector<HTMLTableSectionElement>('#report-rows');
+const reportSummary = document.querySelector<HTMLParagraphElement>('#report-summary');
+const reportEmpty = document.querySelector<HTMLParagraphElement>('#report-empty');
+const reportScrollHint = document.querySelector<HTMLParagraphElement>('#report-scroll-hint');
+const reportTable = document.querySelector<HTMLDivElement>('#report-table-scroll');
+const reportExport = document.querySelector<HTMLButtonElement>('#report-export');
+const reportPagination = document.querySelector<HTMLElement>('#report-pagination');
+const reportPageNumber = document.querySelector<HTMLElement>('#report-page');
+const historyPagination = document.querySelector<HTMLElement>('#history-pagination');
+const historyPageNumber = document.querySelector<HTMLElement>('#history-page');
 if (!canvas || !input || !button || !result || !count || !reset || !storageStatus) throw new Error('Wheel interface is incomplete');
 const wheelCanvas: HTMLCanvasElement = canvas;
 const entriesInput: HTMLTextAreaElement = input;
@@ -61,17 +72,117 @@ function shouldReduceMotion(): boolean {
   return preference === 'reduced' || (preference === 'system' && matchMedia('(prefers-reduced-motion: reduce)').matches);
 }
 
-function renderHistory(): void {
-  if (!historyList || !historyEmpty) return;
-  const items = session?.results.filter((entry) => entry.kind === 'entry').slice(-50).reverse() ?? [];
+let historyPage = 0;
+let reportRowsPage = 0;
+function renderHistory(report = session && reportRoundSelect ? buildRoundReports(session).find((item) => item.roundId === reportRoundSelect.value) : undefined): void {
+  if (!historyList || !historyEmpty || !historyPagination || !historyPageNumber) return;
+  const page = paginateReportRows(report?.events ?? [], historyPage, 50);
+  historyPage = page.page;
+  const items = page.items;
   historyList.replaceChildren(...items.map((item) => {
     const row = document.createElement('li');
-    row.textContent = messages.messages.resultWinner.replace('{name}', item.label);
+    const title = document.createElement('span');
+    title.textContent = messages.messages.resultWinner.replace('{name}', item.label);
+    const detail = document.createElement('small');
+    const roundNumber = (session?.rounds.findIndex((candidate) => candidate.id === report?.roundId) ?? -1) + 1;
+    const time = new Intl.DateTimeFormat('az', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(item.committedAt));
+    const state = item.presentation === 'pending' ? messages.messages.reportStatePending : item.presentation === 'revealed' ? messages.messages.reportStateRevealed : messages.messages.reportStateAcknowledged;
+    detail.textContent = `#${item.sequence} · ${messages.messages.reportHistoryTime.replace('{time}', time)} · ${messages.messages.reportHistoryRound.replace('{number}', String(roundNumber))} · ${state}`;
+    row.append(title, detail);
     return row;
   }));
-  historyEmpty.hidden = items.length > 0;
-  historyList.hidden = items.length === 0;
+  historyEmpty.hidden = page.total > 0;
+  historyList.hidden = page.total === 0;
+  historyPagination.hidden = page.pageCount <= 1;
+  historyPageNumber.textContent = messages.messages.reportHistoryPage.replace('{current}', String(page.page + 1)).replace('{total}', String(page.pageCount));
+  const older = document.querySelector<HTMLButtonElement>('#history-older');
+  const newer = document.querySelector<HTMLButtonElement>('#history-newer');
+  if (older) older.disabled = page.page + 1 >= page.pageCount;
+  if (newer) newer.disabled = page.page === 0;
 }
+
+function renderReport(): void {
+  if (!session || !reportRoundSelect || !reportRows || !reportSummary || !reportEmpty || !reportScrollHint || !reportTable || !reportExport) return;
+  const reports = buildRoundReports(session);
+  reportRoundSelect.replaceChildren(...reports.map((report, index) => {
+    const option = document.createElement('option');
+    option.value = report.roundId;
+    const date = new Intl.DateTimeFormat('az', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(report.startedAt));
+    option.textContent = messages.messages.reportRoundOption.replace('{number}', String(index + 1)).replace('{date}', date);
+    return option;
+  }));
+  if (reports.length) {
+    const selectedRound = reports.find((report) => report.roundId === manuallySelectedRoundId) ?? reports.at(-1)!;
+    reportRoundSelect.value = selectedRound.roundId;
+    if (manuallySelectedRoundId && !reports.some((report) => report.roundId === manuallySelectedRoundId)) manuallySelectedRoundId = selectedRound.roundId;
+  }
+  const report = reports.find((item) => item.roundId === reportRoundSelect.value);
+  const summaryCount = report?.resultCount ?? 0;
+  const modeKey = report?.mode === 'independent' ? 'reportModeIndependent' : report?.mode === 'remove-winner' ? 'reportModeRemoveWinner' : report?.mode === 'shuffled-cycle' ? 'reportModeShuffledCycle' : 'reportModeUnavailable';
+  reportSummary.textContent = messages.messages.reportResultsCount.replace('{count}', String(summaryCount)).replace('{distinct}', String(report?.distinctSelectedCount ?? 0)).replace('{mode}', messages.messages[modeKey]);
+  reportRows.replaceChildren();
+  const rows = report?.rows ?? [];
+  const rowPage = paginateReportRows(rows, reportRowsPage, 50);
+  reportRowsPage = rowPage.page;
+  const formatPercent = (value: number | null) => value === null ? messages.messages.reportNotChance : new Intl.NumberFormat('az', { style: 'percent', maximumFractionDigits: 1 }).format(value);
+  for (const item of rowPage.items) {
+    const tr = document.createElement('tr');
+    const participant = document.createElement('th');
+    participant.scope = 'row';
+    participant.className = 'report-entry';
+    participant.append(document.createTextNode(item.label));
+    if (!item.isCurrentCandidate) {
+      const note = document.createElement('small');
+      note.textContent = messages.messages.reportInactive;
+      participant.append(note);
+    }
+    const countCell = document.createElement('td'); countCell.textContent = String(item.count);
+    const observedCell = document.createElement('td'); observedCell.textContent = formatPercent(item.observedShare);
+    const nextCell = document.createElement('td'); nextCell.textContent = formatPercent(item.nextChance);
+    tr.append(participant, countCell, observedCell, nextCell);
+    reportRows.append(tr);
+  }
+  const hasResults = Boolean(report?.resultCount);
+  reportEmpty.hidden = hasResults;
+  reportEmpty.textContent = reports.length ? messages.messages.reportEmpty : messages.messages.reportRoundsEmpty;
+  reportTable.hidden = !rows.length;
+  reportScrollHint.hidden = !rows.length;
+  if (reportPagination && reportPageNumber) {
+    reportPagination.hidden = rowPage.pageCount <= 1;
+    reportPageNumber.textContent = messages.messages.reportHistoryPage.replace('{current}', String(rowPage.page + 1)).replace('{total}', String(rowPage.pageCount));
+    const older = document.querySelector<HTMLButtonElement>('#report-older');
+    const newer = document.querySelector<HTMLButtonElement>('#report-newer');
+    if (older) older.disabled = rowPage.page + 1 >= rowPage.pageCount;
+    if (newer) newer.disabled = rowPage.page === 0;
+  }
+  reportExport.disabled = !report || !hasResults;
+  renderHistory(report);
+}
+
+let manuallySelectedRoundId: string | null = null;
+reportRoundSelect?.addEventListener('change', () => {
+  manuallySelectedRoundId = reportRoundSelect.value;
+  historyPage = 0;
+  reportRowsPage = 0;
+  renderReport();
+});
+reportExport?.addEventListener('click', () => {
+  if (!session || !reportRoundSelect) return;
+  const report = buildRoundReports(session).find((item) => item.roundId === reportRoundSelect.value);
+  if (!report?.resultCount) return;
+  const blob = new Blob([exportRoundReportCsv(report)], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = messages.messages.reportDownloadName;
+  anchor.click();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1_000);
+});
+
+document.querySelector<HTMLButtonElement>('#history-older')?.addEventListener('click', () => { historyPage += 1; renderHistory(); });
+document.querySelector<HTMLButtonElement>('#history-newer')?.addEventListener('click', () => { historyPage -= 1; renderHistory(); });
+document.querySelector<HTMLButtonElement>('#report-older')?.addEventListener('click', () => { reportRowsPage += 1; renderReport(); });
+document.querySelector<HTMLButtonElement>('#report-newer')?.addEventListener('click', () => { reportRowsPage -= 1; renderReport(); });
 
 function draw(rotation = angle): void {
   const size = wheelCanvas.width, center = size / 2, radius = center - 7;
@@ -207,6 +318,7 @@ async function persistPresentation(presentation: 'revealed' | 'acknowledged'): P
 async function recoverInterruptedResult(): Promise<void> {
   if (!session) return;
   renderHistory();
+  renderReport();
   const pending = recoverUnacknowledgedResult(session);
   const latest = pending ?? session.results.at(-1) ?? null;
   if (!latest || latest.kind !== 'entry') return;
@@ -316,6 +428,7 @@ void (async () => {
     names = entriesInput.value.split(/\r?\n/).map((name) => name.trim()).filter(Boolean).slice(0, limits.entries.max);
     await initializeSession(names);
     renderHistory();
+    renderReport();
     displayLatestResult();
     if (!editedBeforeRestore && saved === null && session) {
       entriesInput.value = currentWheel().entries.map((entry) => entry.label).join('\n');
@@ -387,6 +500,7 @@ spinButton.addEventListener('click', () => {
     sessionRevision = await commitSelectionResult(next, writerId, sessionRevision);
     session = next;
     renderHistory();
+    renderReport();
     showResultAndAnimate(eligible.findIndex((entry) => entry.id === winner.id), winner.label);
   })().catch(markPersistenceFailure);
 });

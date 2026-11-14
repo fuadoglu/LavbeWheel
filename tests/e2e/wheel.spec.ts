@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-test('classic wheel can select an entry and save the local list', async ({ page }) => {
+test('classic wheel can select an entry and save the local list', async ({ page }, testInfo) => {
   await page.goto('/');
   await expect(page.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır');
   const entries = page.getByRole('textbox', { name: 'İştirakçı adları, hər sətirdə bir ad' });
@@ -17,6 +17,20 @@ test('classic wheel can select an entry and save the local list', async ({ page 
   selectedPixel.forEach((channel, index) => expect(Math.abs(channel - expectedPixel[index]!)).toBeLessThanOrEqual(2));
   await page.getByRole('tab', { name: 'Nəticələr' }).click();
   await expect(page.locator('#history-list')).toContainText(selected!);
+  await page.getByRole('tab', { name: /Nəticələr|Results/ }).click();
+  await expect(page.locator('#report-summary')).toContainText('1 seçim');
+  await expect(page.locator('#report-table-scroll')).toBeVisible();
+  await expect(page.locator('#report-rows')).toContainText(selected!.split(': ').at(-1)!);
+  await expect(page.locator('#report-export')).toBeEnabled();
+  const downloadPromise = page.waitForEvent('download');
+  await page.locator('#report-export').click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toMatch(/round-report|raund-hesabati/);
+  const reportPath = testInfo.outputPath(download.suggestedFilename());
+  await download.saveAs(reportPath);
+  const csv = await (await import('node:fs/promises')).readFile(reportPath, 'utf8');
+  expect(csv).toContain('observed_share');
+  expect(csv).toContain('next_chance');
   await page.reload();
   await expect(entries).toHaveValue('Aylin\nMurad\nLeyla');
   await expect(page.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır');
@@ -24,6 +38,7 @@ test('classic wheel can select an entry and save the local list', async ({ page 
   expect(await getSelectedSectorPixel()).toEqual(selectedPixel);
   await page.getByRole('tab', { name: 'Nəticələr' }).click();
   await expect(page.locator('#history-list')).toContainText(selected!);
+  await expect(page.locator('#history-list')).toContainText('#1');
   const stored = await page.evaluate(async () => new Promise<{ resultCount: number; presentation: string }>((resolve, reject) => {
     const request = indexedDB.open('lavbe-wheel');
     request.onerror = () => reject(request.error);
@@ -56,6 +71,9 @@ test('@a11y the root screen has no automated WCAG A/AA violations', async ({ pag
   await page.goto('/');
   const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   expect(results.violations).toEqual([]);
+  await page.getByRole('tab', { name: 'Nəticələr' }).click();
+  const reportResults = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(reportResults.violations).toEqual([]);
 });
 
 test('mobile board matches the 390px screen contract and theme preference survives reload', async ({ page }) => {
