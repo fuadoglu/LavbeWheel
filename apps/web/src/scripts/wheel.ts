@@ -1,7 +1,7 @@
 import { uniformIndex, browserRandomSource } from '@lavbe/selection';
 import {
   acquireWriterLease, commitSelectionResult, createLocalWheelSession, listSessions, loadWheelDraft,
-  buildRoundReports, exportRoundReportCsv, paginateReportRows, recoverUnacknowledgedResult, releaseWriterLease, renewWriterLease, saveInitialSession,
+  buildRoundReport, exportRoundReportCsv, listReportRounds, paginateReportRows, recoverUnacknowledgedResult, releaseWriterLease, renewWriterLease, saveInitialSession,
   saveWheelDraft, updateSession, validateSessionEnvelope,
 } from '@lavbe/session';
 import type { SessionEnvelope } from '@lavbe/contracts';
@@ -22,6 +22,7 @@ const historyList = document.querySelector<HTMLOListElement>('#history-list');
 const historyEmpty = document.querySelector<HTMLParagraphElement>('#history-empty');
 const reportRoundSelect = document.querySelector<HTMLSelectElement>('#report-round');
 const reportRows = document.querySelector<HTMLTableSectionElement>('#report-rows');
+const reportTableHeading = document.querySelector<HTMLTableCellElement>('#report-table-heading');
 const reportSummary = document.querySelector<HTMLParagraphElement>('#report-summary');
 const reportEmpty = document.querySelector<HTMLParagraphElement>('#report-empty');
 const reportScrollHint = document.querySelector<HTMLParagraphElement>('#report-scroll-hint');
@@ -74,7 +75,7 @@ function shouldReduceMotion(): boolean {
 
 let historyPage = 0;
 let reportRowsPage = 0;
-function renderHistory(report = session && reportRoundSelect ? buildRoundReports(session).find((item) => item.roundId === reportRoundSelect.value) : undefined): void {
+function renderHistory(report = session && reportRoundSelect ? buildRoundReport(session, reportRoundSelect.value) : null): void {
   if (!historyList || !historyEmpty || !historyPagination || !historyPageNumber) return;
   const page = paginateReportRows(report?.events ?? [], historyPage, 50);
   historyPage = page.page;
@@ -82,7 +83,8 @@ function renderHistory(report = session && reportRoundSelect ? buildRoundReports
   historyList.replaceChildren(...items.map((item) => {
     const row = document.createElement('li');
     const title = document.createElement('span');
-    title.textContent = messages.messages.resultWinner.replace('{name}', item.label);
+    const teams = item.teams?.map((team, index) => `${messages.messages.reportTeam.replace('{number}', String(index + 1))}: ${team.join(' / ')}`).join(' · ');
+    title.textContent = item.kind === 'teams' ? teams ?? '' : item.kind === 'card' ? `${item.label} — ${item.text ?? ''}` : item.kind === 'number' ? item.label : messages.messages.resultWinner.replace('{name}', item.label);
     const detail = document.createElement('small');
     const roundNumber = (session?.rounds.findIndex((candidate) => candidate.id === report?.roundId) ?? -1) + 1;
     const time = new Intl.DateTimeFormat('az', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(item.committedAt));
@@ -103,7 +105,7 @@ function renderHistory(report = session && reportRoundSelect ? buildRoundReports
 
 function renderReport(): void {
   if (!session || !reportRoundSelect || !reportRows || !reportSummary || !reportEmpty || !reportScrollHint || !reportTable || !reportExport) return;
-  const reports = buildRoundReports(session);
+  const reports = listReportRounds(session);
   reportRoundSelect.replaceChildren(...reports.map((report, index) => {
     const option = document.createElement('option');
     option.value = report.roundId;
@@ -116,10 +118,14 @@ function renderReport(): void {
     reportRoundSelect.value = selectedRound.roundId;
     if (manuallySelectedRoundId && !reports.some((report) => report.roundId === manuallySelectedRoundId)) manuallySelectedRoundId = selectedRound.roundId;
   }
-  const report = reports.find((item) => item.roundId === reportRoundSelect.value);
+  const report = buildRoundReport(session, reportRoundSelect.value);
   const summaryCount = report?.resultCount ?? 0;
   const modeKey = report?.mode === 'independent' ? 'reportModeIndependent' : report?.mode === 'remove-winner' ? 'reportModeRemoveWinner' : report?.mode === 'shuffled-cycle' ? 'reportModeShuffledCycle' : 'reportModeUnavailable';
-  reportSummary.textContent = messages.messages.reportResultsCount.replace('{count}', String(summaryCount)).replace('{distinct}', String(report?.distinctSelectedCount ?? 0)).replace('{mode}', messages.messages[modeKey]);
+  const isNumberReport = report?.tool === 'numbers';
+  if (reportTableHeading) reportTableHeading.textContent = isNumberReport ? messages.messages.reportNumbersHeading : report?.tool === 'teams' ? messages.messages.reportTeamHeading : report?.tool === 'game' ? messages.messages.reportCardHeading : messages.messages.reportEntry;
+  reportSummary.textContent = isNumberReport
+    ? messages.messages.reportNumbersCount.replace('{count}', String(summaryCount)).replace('{distinct}', String(report?.distinctSelectedCount ?? 0))
+    : messages.messages.reportResultsCount.replace('{count}', String(summaryCount)).replace('{distinct}', String(report?.distinctSelectedCount ?? 0)).replace('{mode}', messages.messages[modeKey]);
   reportRows.replaceChildren();
   const rows = report?.rows ?? [];
   const rowPage = paginateReportRows(rows, reportRowsPage, 50);
@@ -168,7 +174,7 @@ reportRoundSelect?.addEventListener('change', () => {
 });
 reportExport?.addEventListener('click', () => {
   if (!session || !reportRoundSelect) return;
-  const report = buildRoundReports(session).find((item) => item.roundId === reportRoundSelect.value);
+  const report = buildRoundReport(session, reportRoundSelect.value);
   if (!report?.resultCount) return;
   const blob = new Blob([exportRoundReportCsv(report)], { type: 'text/csv;charset=utf-8' });
   const url = URL.createObjectURL(blob);

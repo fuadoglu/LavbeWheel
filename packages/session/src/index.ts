@@ -2,8 +2,8 @@ import type { WheelConfig } from '@lavbe/contracts';
 export { loadWheelDraft, saveWheelDraft } from './draft-storage.ts';
 export { acquireWriterLease, commitSelectionResult, exportSessionJSON, importSessionJSON, listSessions, loadSession, releaseWriterLease, renewWriterLease, remapImportedSession, saveInitialSession, SessionConflictError, updateSession } from './session-storage.ts';
 export { createLocalWheelSession } from './session-factory.ts';
-export { buildRoundReports, exportRoundReportCsv, paginateReportRows } from './reporting.ts';
-export type { ReportPage, RoundReport, RoundReportEvent, RoundReportRow } from './reporting.ts';
+export { buildRoundReport, exportRoundReportCsv, listReportRounds, paginateReportRows } from './reporting.ts';
+export type { ReportPage, ReportRoundSummary, RoundReport, RoundReportEvent, RoundReportRow } from './reporting.ts';
 export { normalizeSessionForStorage, recoverUnacknowledgedResult, validateSessionEnvelope } from './session-validation.ts';
 export type { SessionValidation, SessionValidationError } from './session-validation.ts';
 

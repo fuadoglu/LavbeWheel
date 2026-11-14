@@ -79,6 +79,11 @@
     "storageLoading": "Yaddaş yoxlanılır…",
     "resetSamples": "Nümunələri qaytar",
     "footerTagline": "Seçim anı üçün düşünülmüş təcrübə",
-    "footerPromise": "Sadə. Ədalətli. Birlikdə."
+    "footerPromise": "Sadə. Ədalətli. Birlikdə.",
+    "reportNumbersCount": "{count} nəticə · {distinct} fərqli rəqəm",
+    "reportTeam": "Komanda {number}",
+    "reportNumbersHeading": "Rəqəm",
+    "reportTeamHeading": "İştirakçı",
+    "reportCardHeading": "İştirakçı / oyun kartı"
   }
 }

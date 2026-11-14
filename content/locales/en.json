@@ -79,6 +79,11 @@
     "storageLoading": "Checking local storage…",
     "resetSamples": "Restore examples",
     "footerTagline": "An experience made for the moment of choice",
-    "footerPromise": "Simple. Fair. Together."
+    "footerPromise": "Simple. Fair. Together.",
+    "reportNumbersCount": "{count} outcomes · {distinct} distinct numbers",
+    "reportTeam": "Team {number}",
+    "reportNumbersHeading": "Number",
+    "reportTeamHeading": "Participant",
+    "reportCardHeading": "Participant / game card"
   }
 }
