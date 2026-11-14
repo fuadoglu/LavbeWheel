@@ -183,7 +183,7 @@
       "id": "WP04",
       "status": "in-progress",
       "branch": "feat/wp04-visual-system",
-      "commit": "33b7f919adf8f93026fb58a08030f878468aa365",
+      "commit": "1d30d7528ff3363c8a6ea98bf6aeab261ad51703",
       "evidence": [
         {
           "command": "npm run build --workspace @lavbe/web",
@@ -210,7 +210,7 @@
         },
         {
           "command": "npm run test:e2e",
-          "result": "PASS; 8 Chromium flows, including light/dark Axe, mobile/tab/landscape geometry, keyboard tabs, visible mobile edit completion, theme/motion persistence, result/highlight recovery and session integrity",
+          "result": "PASS; 8 Chromium flows, including light/dark Axe, mobile/tab/landscape geometry (including the corrected 1024px 58/42 workspace split), keyboard tabs, visible mobile edit completion, theme/motion persistence, result/highlight recovery and session integrity",
           "artifact": "tests/e2e/wheel.spec.ts",
           "scope": "Chromium automation only; no actual mobile device or assistive-technology acceptance"
         },
