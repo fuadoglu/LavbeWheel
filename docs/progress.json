@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 persistence is implemented and configured CI passed; WP04 classic visual system is in progress; WP05-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 persistence is implemented and configured CI passed; WP04 remains in progress; WP05 reports are in progress; WP06-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -250,18 +250,74 @@
         }
       ],
       "blockers": [
-        "WP04 still needs bottle, social-game, reports, share and library tool-screen designs and remaining visual states; this branch currently implements the classic screen.",
+        "Bottle, social-game, share and library screen families and their visual states remain open; classic/report screens are present in separate implementation slices.",
         "Actual device/browser, screen-reader, keyboard-with-native-mobile-keyboard, Arabic/RTL and long-German acceptance remains pending.",
         "Final wordmark/app-icon deliverables, motion/audio device review and owner visual approval remain pending; screenshot evidence is not approval."
       ]
     },
     {
       "id": "WP05",
-      "status": "not-started",
-      "branch": null,
-      "commit": null,
-      "evidence": [],
-      "blockers": []
+      "status": "in-progress",
+      "branch": "feat/wp05-reports",
+      "commit": "2533550b4b7444b7eb0f7f8eb5bea19aa2a4517d",
+      "evidence": [
+        {
+          "command": "npm run check",
+          "result": "PASS; generated contracts/config checks, TS packages and Astro (0 errors, warnings, hints)",
+          "artifact": "command output"
+        },
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 47 unit tests covering selection/session invariants plus reports for entries, numbers, team rosters and game cards",
+          "artifact": "tests/unit/reporting.test.ts"
+        },
+        {
+          "command": "npm run test:e2e",
+          "result": "PASS; 8 Chromium flows including report rendering, history, CSV download, responsive UI and crash recovery",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Chromium automation only; physical devices and assistive technology remain unverified"
+        },
+        {
+          "command": "npm run test:a11y",
+          "result": "PASS; automated Axe WCAG 2.1 A/AA scan",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Automated scan; manual keyboard/screen-reader acceptance remains open"
+        },
+        {
+          "command": "npm run test:content",
+          "result": "PASS; 110 locale metadata records and two draft catalogs with matching keys/placeholders",
+          "artifact": "content/locales/",
+          "scope": "108 catalogs and native translation review remain pending"
+        },
+        {
+          "command": "npm run test:seo",
+          "result": "PASS; static build and root-page HTML smoke",
+          "artifact": "apps/web/dist/index.html",
+          "scope": "Route graph and production origin are not verified"
+        },
+        {
+          "command": "npm run validate:docs",
+          "result": "PASS; docs, schemas, fixtures, semantic references and SEO registry checks",
+          "artifact": "docs/ and contracts/",
+          "scope": "Specification/reference checks; not application release evidence"
+        },
+        {
+          "command": "npm run test:pwa",
+          "result": "BLOCKED as expected; PWA-01 belongs to WP10 and manifest/service worker are not implemented",
+          "artifact": "scripts/validate-pwa.mjs"
+        },
+        {
+          "method": "Visible browser smoke at http://127.0.0.1:4322/",
+          "result": "PASS; local Lavbe classic wheel opened in the in-app browser",
+          "artifact": "local dev server",
+          "scope": "Local only; no deployment"
+        }
+      ],
+      "blockers": [
+        "WP05 still needs explicit clear-report/export-confirmation UX and local retention/pruning warnings and safeguards.",
+        "The report library currently renders the classic wheel UI; number, teams and game UI integrations depend on their tool work packages, though the report model and CSV support those result types.",
+        "Cross-browser/device review and manual keyboard/screen-reader acceptance remain open."
+      ]
     },
     {
       "id": "WP06",

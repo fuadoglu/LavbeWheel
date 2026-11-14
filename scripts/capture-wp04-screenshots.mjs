@@ -34,6 +34,25 @@ try {
   await resultPage.screenshot({ path: path.join(output, 'classic-390-light-result.png'), fullPage: true });
   await resultPage.getByRole('tab', { name: 'Nəticələr' }).click();
   await resultPage.screenshot({ path: path.join(output, 'classic-390-light-history.png'), fullPage: true });
+  for (const expectedCount of [2, 3]) {
+    await resultPage.waitForFunction(() => document.querySelector('#spin')?.hasAttribute('disabled') === false);
+    await resultPage.getByRole('button', { name: 'Çarxı fırlat' }).click();
+    await resultPage.waitForFunction(async (count) => {
+      const open = indexedDB.open('lavbe-wheel');
+      const db = await new Promise((resolve, reject) => { open.onsuccess = () => resolve(open.result); open.onerror = () => reject(open.error); });
+      const records = await new Promise((resolve, reject) => {
+        const request = db.transaction('sessions', 'readonly').objectStore('sessions').getAll();
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+      db.close();
+      return (records[0]?.envelope.results.length ?? 0) >= count;
+    }, expectedCount);
+  }
+  await resultPage.waitForFunction(() => document.querySelector('#spin')?.hasAttribute('disabled') === false);
+  await resultPage.screenshot({ path: path.join(output, 'classic-390-light-report.png'), fullPage: true });
+  await resultPage.setViewportSize({ width: 768, height: 1024 });
+  await resultPage.screenshot({ path: path.join(output, 'classic-768-portrait-report.png'), fullPage: true });
 
   const settingsPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await settingsPage.addInitScript(() => localStorage.setItem('lavbe.theme', 'dark'));

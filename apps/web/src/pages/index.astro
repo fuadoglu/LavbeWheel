@@ -64,9 +64,32 @@ Kamran</textarea>
             <div class="editor-divider"></div><div class="participant-tip"><span class="tip-icon" aria-hidden="true">↵</span><span>{m.participantTip}</span></div>
           </div>
           <section class="tab-panel" id="panel-results" role="tabpanel" aria-labelledby="tab-results" tabindex="0" hidden>
-            <div class="workspace-heading"><div><span class="section-kicker">{m.tabResults}</span><h2>{m.historyCaption}</h2></div></div>
+            <div class="workspace-heading"><div><span class="section-kicker">{m.tabResults}</span><h2>{m.reportHeading}</h2></div></div>
+            <div class="report-controls">
+              <label class="sr-only" for="report-round">{m.reportRound}</label>
+              <select id="report-round" class="motion-select" aria-label={m.reportRound}></select>
+              <button id="report-export" class="report-export" type="button" disabled>{m.reportExport}</button>
+            </div>
+            <p class="report-summary" id="report-summary" aria-live="polite"></p>
+            <p class="report-empty" id="report-empty">{m.reportEmpty}</p>
+            <p class="report-scroll-hint" id="report-scroll-hint" hidden>{m.reportScrollHint}</p>
+            <div class="report-table-scroll" id="report-table-scroll" tabindex="0" aria-label={m.reportScrollHint} hidden>
+              <table class="report-table"><thead><tr><th id="report-table-heading" scope="col">{m.reportEntry}</th><th scope="col">{m.reportCount}</th><th scope="col">{m.reportObservedShare}</th><th scope="col">{m.reportNextChance}</th></tr></thead><tbody id="report-rows"></tbody></table>
+            </div>
+            <nav class="report-pagination" id="report-pagination" aria-label={m.reportHeading} hidden>
+              <button id="report-older" type="button">{m.reportHistoryOlder}</button>
+              <span id="report-page" aria-live="polite"></span>
+              <button id="report-newer" type="button">{m.reportHistoryNewer}</button>
+            </nav>
+            <div class="editor-divider"></div>
+            <h3 class="history-subheading">{m.historyCaption}</h3>
             <p class="empty-history" id="history-empty">{m.historyEmpty}</p>
             <ol class="history-list" id="history-list" aria-label={m.historyCaption} hidden></ol>
+            <nav class="report-pagination" id="history-pagination" aria-label={m.historyCaption} hidden>
+              <button id="history-older" type="button">{m.reportHistoryOlder}</button>
+              <span id="history-page" aria-live="polite"></span>
+              <button id="history-newer" type="button">{m.reportHistoryNewer}</button>
+            </nav>
           </section>
           <section class="tab-panel settings-panel" id="panel-settings" role="tabpanel" aria-labelledby="tab-settings" tabindex="0" hidden>
             <div class="workspace-heading"><div><span class="section-kicker">{m.tabSettings}</span><h2>{m.settingsHeading}</h2></div></div>

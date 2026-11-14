@@ -1,8 +1,8 @@
 {
   "version": 1,
   "scope": "Implementation evidence only; not release approval or deployment evidence.",
-  "branch": "feat/wp04-visual-system",
-  "baseCommit": "3b87adaa25e6e884eada3ee8dfd74dd92f67d0ba",
+  "branch": "feat/wp05-reports",
+  "baseCommit": "54107be353b2a2e58db9f46fdabd720659211e9e",
   "workPackages": {
     "WP01": {
       "status": "verified",
@@ -254,6 +254,64 @@
         "Screenshot automation uses local Chromium, synthetic names and no production consent/ad states."
       ],
       "commit": "1d30d7528ff3363c8a6ea98bf6aeab261ad51703"
+    },
+    "WP05": {
+      "status": "in-progress",
+      "branch": "feat/wp05-reports",
+      "baseCommit": "54107be353b2a2e58db9f46fdabd720659211e9e",
+      "evidence": [
+        {
+          "command": "npm run check",
+          "result": "PASS; generated contracts/config, TypeScript packages and Astro diagnostics (0 errors/warnings/hints)"
+        },
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 47 unit tests including classic entry, number, team and game report semantics; immutable events, CSV formula defense and 50-row paging",
+          "artifact": "tests/unit/reporting.test.ts"
+        },
+        {
+          "command": "npm run test:e2e",
+          "result": "PASS; 8 Chromium flows include the report and CSV flow",
+          "artifact": "tests/e2e/wheel.spec.ts"
+        },
+        {
+          "command": "npm run test:a11y",
+          "result": "PASS; automated Axe WCAG 2.1 A/AA root scan",
+          "scope": "Automated only"
+        },
+        {
+          "command": "npm run test:content",
+          "result": "PASS; 110 locale metadata records and two draft catalogs with matching keys/placeholders",
+          "scope": "108 translations and review remain pending"
+        },
+        {
+          "command": "npm run test:seo",
+          "result": "PASS; static build and root-page smoke",
+          "artifact": "apps/web/dist/index.html",
+          "scope": "Route graph/production origin not verified"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; docs, schemas, fixtures, reference semantics and SEO registry integrity",
+          "artifact": "docs/ and contracts/"
+        },
+        {
+          "method": "Visible browser smoke at http://127.0.0.1:4322/",
+          "result": "PASS; opened local classic Lavbe UI",
+          "scope": "Local only; not deployed"
+        },
+        {
+          "command": "npm run test:pwa",
+          "result": "BLOCKED as expected; WP10/PWA-01 remains unimplemented",
+          "artifact": "scripts/validate-pwa.mjs"
+        }
+      ],
+      "limitations": [
+        "WP05 report model and CSV support entry, number, team and game outcomes; current UI integration exposes the classic wheel flow while other tool screens remain future work.",
+        "Explicit clear/export confirmation and safe local history retention/pruning UX remain unimplemented.",
+        "108 locale catalogs, native translation review, manual accessibility, device/browser review and release approval remain pending."
+      ],
+      "commit": "2533550b4b7444b7eb0f7f8eb5bea19aa2a4517d"
     }
   },
   "requirements": {
