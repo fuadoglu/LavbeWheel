@@ -7,6 +7,23 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: lavbe_api_test
+          MYSQL_ROOT_PASSWORD: lavbe-test-root-password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -plavbe-test-root-password"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LAVBE_TEST_DATABASE_DSN: mysql:host=127.0.0.1;port=3306;dbname=lavbe_api_test;charset=utf8mb4
+      LAVBE_TEST_DATABASE_USER: root
+      LAVBE_TEST_DATABASE_PASSWORD: lavbe-test-root-password
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
