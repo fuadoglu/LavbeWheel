@@ -46,3 +46,10 @@ Application implementation and all production gates remain pending.
 - Added execution/continuation, CI integrity, authorization and release boundaries.
 - Added initial application progress register and evidence-focused PR template.
 - Distinguished desired repository protections from actually enabled GitHub settings.
+
+## Curated open-source product icons — 2026-11-14
+
+- Vendored 52 Phosphor SVG assets from a pinned source commit, with MIT license.
+- Added semantic action map and regular/fill/duotone use boundaries.
+- Added restrained control effects and selection/reveal choreography with reduced-motion and performance requirements.
+- Kept documentation illustrations distinct from the product icon family.

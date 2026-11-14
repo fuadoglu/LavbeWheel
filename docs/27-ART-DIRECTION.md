@@ -47,3 +47,7 @@ No custom cursor for core controls, scroll hijacking, long intro, perpetual para
 ## Design deliverables before final implementation signoff
 
 High-fidelity classic/bottle/game/report/share/library screens at phone/tablet/desktop widths, both themes; complete component sheet; final wordmark/app-icon exports; representative Arabic/Chinese/long-German screens; motion storyboard and actual interactive prototype. Use original assets with license inventory. Review real screenshots rather than awarding the specification itself a quality score. Internal prototypes are part of production development, not public MVP releases.
+
+## Selected product icon family
+
+[Phosphor icon/effect contract](31-ICONS-EFFECTS.md) fixes the product family and curated local assets. Earlier optional icon-library wording is superseded: documentation icons remain documentation-only. No mixed product icon sets.

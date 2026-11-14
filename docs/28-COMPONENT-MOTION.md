@@ -35,3 +35,7 @@ Mute independent from motion. One restrained tick sample with rate cap; stop/res
 ## Consistency and verification
 
 All components consume semantic tokens; no one-off radius/shadow/style per page. Maintain storybook-equivalent component gallery (tool choice determined at bootstrap) with localized labels, both themes and all states. Provide screenshot tests for geometry/overflow, manual keyboard/screen-reader review and actual device audio/motion review. Static screenshots cannot prove smoothness. Whole-app consistency and reduced-motion parity are mandatory acceptance gates.
+
+## Selected product icon family
+
+[Phosphor icon/effect contract](31-ICONS-EFFECTS.md) fixes the product family and curated local assets. Earlier optional icon-library wording is superseded: documentation icons remain documentation-only. No mixed product icon sets.

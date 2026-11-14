@@ -175,3 +175,7 @@ Lavbe-nin istiqaməti: **sakit interfeys, ifadəli çarx**. Yüksək dizayn keyf
 [AGENTS.md](AGENTS.md) · [Branch/commit/PR və buraxılış qaydaları](docs/30-GITHUB-WORKFLOW.md) · [İcra vəziyyəti](docs/progress.json)
 
 GitHub qaydalarının sənədləşdirilməsi onların hesab parametrlərində avtomatik aktivləşdirilməsi demək deyil. İcra edilmiş, yoxlanmış və yayımlanmış işlər ayrı statuslarla izlənəcək.
+
+## 🧩 Məhsul ikonları
+
+**Phosphor Icons (MIT)** məhsulun vahid ikon dəsti seçilib. 52 SVG konkret mənbə commitindən repoya daxil edilib. [İkon və effekt qaydaları](docs/31-ICONS-EFFECTS.md) · [Lisenziya bildirişləri](THIRD_PARTY_NOTICES.md). Əvvəlki 36 ikon sənədlərin illüstrasiyasıdır; tətbiqin düymələrində qarışdırılmayacaq.

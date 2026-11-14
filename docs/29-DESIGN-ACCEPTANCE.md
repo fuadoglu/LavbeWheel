@@ -20,3 +20,7 @@ Review cycle: concept board → high-fidelity screen family → interactive sele
 Critical failures block release: unreadable controls, wrong landing result, missing labels, input loss, obscured CTA, keyboard trap, consent dark pattern or reduced-motion failure. Major inconsistencies also require correction before signoff. Minor subjective preferences are recorded and resolved by the owner; do not self-certify every visual as perfect.
 
 Every evidence item includes commit/build, viewport, device/browser, theme, locale, consent/ad state and approval/reviewer. Store synthetic data only. The current schematic contact sheet remains a layout aid, not completion evidence for DES-02 or DES-10.
+
+## Icon and effect evidence
+
+[Icon/effect contract](31-ICONS-EFFECTS.md) and config/icon-map.json extend DES-03/04/06. Verify local asset coverage, MIT notice retention, all control states, both themes and real-device motion; decorative screenshots do not prove behavior.

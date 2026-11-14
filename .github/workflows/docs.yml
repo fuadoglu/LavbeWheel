@@ -18,3 +18,4 @@ jobs:
       - run: python3 scripts/validate_semantics.py
 
       - run: python3 scripts/validate_seo_contract.py
+      - run: python3 scripts/validate_icons.py

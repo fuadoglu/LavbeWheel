@@ -87,3 +87,7 @@ Implementation PR complete != full product release-ready. WP status is not publi
 ## Required handoff format
 
 Report: resulting behavior; requirement/WP IDs; branch/commit/PR; executed checks and results; not-run checks with reason; migrations/rollback; real deployment state; next dependency-ready work and external blockers. Do not conflate documented, implemented, verified, approved and deployed.
+
+## Fixed icon family
+
+Use vendored Phosphor assets and config/icon-map.json, following docs/31-ICONS-EFFECTS.md. Do not mix documentation glyphs, emoji or other libraries into product controls. Retain THIRD_PARTY_NOTICES.md and the vendored MIT license in distribution. Effects must respect actual state, reduced motion and performance budgets.

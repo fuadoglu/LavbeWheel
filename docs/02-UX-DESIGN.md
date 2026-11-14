@@ -41,3 +41,7 @@ Undo entry changes for the last 20 local edits in a wheel, excluding committed h
 ## Visual craft supplements
 
 [Art direction](27-ART-DIRECTION.md), [component/motion contract](28-COMPONENT-MOTION.md) and [design acceptance](29-DESIGN-ACCEPTANCE.md) are mandatory. config/design-craft.json complements semantic tokens. Existing diagrams/documentation icons are not proof of final art direction or owner approval.
+
+## Selected product icon family
+
+[Phosphor icon/effect contract](31-ICONS-EFFECTS.md) fixes the product family and curated local assets. Earlier optional icon-library wording is superseded: documentation icons remain documentation-only. No mixed product icon sets.

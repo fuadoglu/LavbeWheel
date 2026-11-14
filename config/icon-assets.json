@@ -1,0 +1,269 @@
+{
+  "version": 1,
+  "library": "Phosphor Icons",
+  "license": "MIT",
+  "upstream": "https://github.com/phosphor-icons/core",
+  "commit": "2b75f3ad12b420c9504ef05df8d2564a28f8500e",
+  "assets": [
+    {
+      "name": "heart",
+      "weight": "duotone",
+      "path": "assets/icons/phosphor/duotone/heart.svg"
+    },
+    {
+      "name": "trophy",
+      "weight": "duotone",
+      "path": "assets/icons/phosphor/duotone/trophy.svg"
+    },
+    {
+      "name": "users-three",
+      "weight": "duotone",
+      "path": "assets/icons/phosphor/duotone/users-three.svg"
+    },
+    {
+      "name": "heart",
+      "weight": "fill",
+      "path": "assets/icons/phosphor/fill/heart.svg"
+    },
+    {
+      "name": "moon",
+      "weight": "fill",
+      "path": "assets/icons/phosphor/fill/moon.svg"
+    },
+    {
+      "name": "play",
+      "weight": "fill",
+      "path": "assets/icons/phosphor/fill/play.svg"
+    },
+    {
+      "name": "sun",
+      "weight": "fill",
+      "path": "assets/icons/phosphor/fill/sun.svg"
+    },
+    {
+      "name": "arrow-clockwise",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/arrow-clockwise.svg"
+    },
+    {
+      "name": "arrow-left",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/arrow-left.svg"
+    },
+    {
+      "name": "arrows-clockwise",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/arrows-clockwise.svg"
+    },
+    {
+      "name": "arrows-in",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/arrows-in.svg"
+    },
+    {
+      "name": "arrows-out",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/arrows-out.svg"
+    },
+    {
+      "name": "beer-bottle",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/beer-bottle.svg"
+    },
+    {
+      "name": "caret-down",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/caret-down.svg"
+    },
+    {
+      "name": "chart-bar",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/chart-bar.svg"
+    },
+    {
+      "name": "check",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/check.svg"
+    },
+    {
+      "name": "circle",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/circle.svg"
+    },
+    {
+      "name": "clock-counter-clockwise",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/clock-counter-clockwise.svg"
+    },
+    {
+      "name": "copy",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/copy.svg"
+    },
+    {
+      "name": "desktop",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/desktop.svg"
+    },
+    {
+      "name": "dice-five",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/dice-five.svg"
+    },
+    {
+      "name": "download-simple",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/download-simple.svg"
+    },
+    {
+      "name": "faders-horizontal",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/faders-horizontal.svg"
+    },
+    {
+      "name": "floppy-disk",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/floppy-disk.svg"
+    },
+    {
+      "name": "folder-open",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/folder-open.svg"
+    },
+    {
+      "name": "gear-six",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/gear-six.svg"
+    },
+    {
+      "name": "globe",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/globe.svg"
+    },
+    {
+      "name": "heart",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/heart.svg"
+    },
+    {
+      "name": "info",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/info.svg"
+    },
+    {
+      "name": "link-simple",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/link-simple.svg"
+    },
+    {
+      "name": "magnifying-glass",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/magnifying-glass.svg"
+    },
+    {
+      "name": "minus",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/minus.svg"
+    },
+    {
+      "name": "moon",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/moon.svg"
+    },
+    {
+      "name": "pause",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/pause.svg"
+    },
+    {
+      "name": "pencil-simple",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/pencil-simple.svg"
+    },
+    {
+      "name": "play",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/play.svg"
+    },
+    {
+      "name": "plus",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/plus.svg"
+    },
+    {
+      "name": "qr-code",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/qr-code.svg"
+    },
+    {
+      "name": "share-network",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/share-network.svg"
+    },
+    {
+      "name": "shield-check",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/shield-check.svg"
+    },
+    {
+      "name": "shuffle",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/shuffle.svg"
+    },
+    {
+      "name": "speaker-high",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/speaker-high.svg"
+    },
+    {
+      "name": "speaker-slash",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/speaker-slash.svg"
+    },
+    {
+      "name": "spinner-gap",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/spinner-gap.svg"
+    },
+    {
+      "name": "stop",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/stop.svg"
+    },
+    {
+      "name": "sun",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/sun.svg"
+    },
+    {
+      "name": "trash",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/trash.svg"
+    },
+    {
+      "name": "trophy",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/trophy.svg"
+    },
+    {
+      "name": "upload-simple",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/upload-simple.svg"
+    },
+    {
+      "name": "users-three",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/users-three.svg"
+    },
+    {
+      "name": "warning-circle",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/warning-circle.svg"
+    },
+    {
+      "name": "x",
+      "weight": "regular",
+      "path": "assets/icons/phosphor/regular/x.svg"
+    }
+  ]
+}
