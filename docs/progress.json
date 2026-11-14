@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 persistence is implemented and configured CI passed; WP04 classic visual system is in progress; WP05-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 persistence is implemented and configured CI passed; WP04 remains in progress; WP05 reports are in progress; WP06-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -250,18 +250,74 @@
         }
       ],
       "blockers": [
-        "WP04 still needs bottle, social-game, reports, share and library tool-screen designs and remaining visual states; this branch currently implements the classic screen.",
+        "Bottle, social-game, share and library screen families and their visual states remain open; classic/report screens are present in separate implementation slices.",
         "Actual device/browser, screen-reader, keyboard-with-native-mobile-keyboard, Arabic/RTL and long-German acceptance remains pending.",
         "Final wordmark/app-icon deliverables, motion/audio device review and owner visual approval remain pending; screenshot evidence is not approval."
       ]
     },
     {
       "id": "WP05",
-      "status": "not-started",
-      "branch": null,
-      "commit": null,
-      "evidence": [],
-      "blockers": []
+      "status": "in-progress",
+      "branch": "feat/wp05-reports",
+      "commit": "5c4fd18f4fe5efd59c4d9ba1920a1419fac43e2d",
+      "evidence": [
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 44 tests, including report round counts, duplicate-safe identity, removed winners, observed share vs current chance, no-repeat cycle state, CSV formula defense and 50-row pagination",
+          "artifact": "tests/unit/reporting.test.ts"
+        },
+        {
+          "command": "npm run test:e2e",
+          "result": "PASS; 8 Chromium flows, including report rendering, selection/history linkage, round statistics, CSV download and screen accessibility",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Chromium only; real devices and assistive technology remain unverified"
+        },
+        {
+          "command": "npm run test:a11y",
+          "result": "PASS; report panel and root screen pass Axe WCAG 2.1 A/AA automated scan",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Automated only; manual keyboard/screen-reader review remains open"
+        },
+        {
+          "command": "npm run check",
+          "result": "PASS; generated contracts/config, TypeScript packages and Astro diagnostics (0 errors/warnings/hints)",
+          "artifact": "command output"
+        },
+        {
+          "command": "npm run test:content",
+          "result": "PASS; two draft catalogs have matching keys/placeholders; 108 locale catalogs pending",
+          "artifact": "content/locales/",
+          "scope": "No translation review is inferred"
+        },
+        {
+          "command": "npm run test:seo",
+          "result": "PASS; static build and root-page smoke",
+          "artifact": "apps/web/dist/index.html",
+          "scope": "Route graph and production origin not verified"
+        },
+        {
+          "command": "npm run screenshots:wp04",
+          "result": "PASS; 11 local Chromium screenshot artifacts, including phone/tablet report states with synthetic data",
+          "artifact": "evidence/wp04/screenshots/README.md",
+          "scope": "Not device evidence or owner visual approval"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; documentation/contracts/semantic reference vectors/SEO registry integrity",
+          "artifact": "docs/ and contracts/",
+          "scope": "Documentation and reference checks only"
+        },
+        {
+          "command": "git diff --check",
+          "result": "PASS; clean whitespace",
+          "artifact": "working tree"
+        }
+      ],
+      "blockers": [
+        "Round-level aggregate reports are currently implemented for classic entry outcomes; number, team and game-card report semantics remain to be added.",
+        "Explicit clear-report/export-confirmation UX, full retention/pruning workflow and multi-session library reports remain open.",
+        "Cross-browser, actual-device, native keyboard and screen-reader acceptance remains pending."
+      ]
     },
     {
       "id": "WP06",
