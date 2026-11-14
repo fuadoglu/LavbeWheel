@@ -372,7 +372,7 @@
     "WP07": {
       "status": "implemented",
       "baseCommit": "bab5d9c40f1643b43b191bb9239da2d05f0e19b8",
-      "commit": null,
+      "commit": "49c50a227e9de30822e0e19ca5de2d3799cddaad",
       "evidence": [
         {
           "command": "LAVBE_TEST_DATABASE_* composer test --working-dir=apps/api",

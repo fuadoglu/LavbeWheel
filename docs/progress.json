@@ -393,7 +393,7 @@
       "id": "WP07",
       "status": "implemented",
       "branch": "feat/wp07-sharing-api",
-      "commit": null,
+      "commit": "49c50a227e9de30822e0e19ca5de2d3799cddaad",
       "evidence": [
         {
           "command": "LAVBE_TEST_DATABASE_* composer test --working-dir=apps/api",
