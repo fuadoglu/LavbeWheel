@@ -109,7 +109,7 @@
       "id": "WP03",
       "status": "implemented",
       "branch": "feat/wp03-session",
-      "commit": null,
+      "commit": "1f50c6ecce9910dd70648a730df0d67ae58d7cbd",
       "evidence": [
         {
           "command": "npm run contracts:generate && npm run contracts:check",

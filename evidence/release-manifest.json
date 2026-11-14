@@ -195,8 +195,10 @@
       "limitations": [
         "User-facing JSON import/export controls are not implemented yet.",
         "Retention/pruning and quota recovery/export prompts remain open for reports and UI.",
-        "Cross-browser/device manual acceptance remains pending."
-      ]
+        "Cross-browser/device manual acceptance remains pending.",
+        "GitHub Actions for PR #3 has not run yet; implementation remains unverified until CI completes."
+      ],
+      "commit": "1f50c6ecce9910dd70648a730df0d67ae58d7cbd"
     }
   },
   "requirements": {
