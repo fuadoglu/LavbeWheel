@@ -370,7 +370,7 @@
       ]
     },
     "WP07": {
-      "status": "implemented",
+      "status": "verified",
       "baseCommit": "bab5d9c40f1643b43b191bb9239da2d05f0e19b8",
       "commit": "49c50a227e9de30822e0e19ca5de2d3799cddaad",
       "evidence": [
@@ -405,11 +405,16 @@
           "command": "composer cleanup --working-dir=apps/api",
           "result": "PASS; cleanup CLI completed against isolated test DB",
           "artifact": "apps/api/bin/cleanup.php"
+        },
+        {
+          "command": "GitHub Actions verify job on PR #7 (run 43643541656) and push (run 43643536098)",
+          "result": "PASS; MySQL 8.4 service and all configured application checks",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43643541656",
+          "scope": "CI verification only; review/merge/deployment remain separate"
         }
       ],
       "limitations": [
-        "MySQL 8.4 CI check on the WP07 branch must pass before WP07 can be marked verified.",
-        "The PHP-rendered /s/{shareId}/ no-store shell and hosting integration remain to be completed in the release route/deployment work.",
+        "The PHP-rendered /s/{shareId}/ no-store shell and static-host routing remain open for the complete share experience.",
         "Production encryption keys, database, TLS origin and hosting have not been configured; no deployment has occurred."
       ]
     }

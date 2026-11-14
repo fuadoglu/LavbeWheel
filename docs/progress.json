@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local bottle/game tools and draft source packs are implemented; WP07 sharing API is implemented with local MariaDB HTTP evidence and MySQL 8.4 CI pending; WP08-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01, WP02 and WP07 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local bottle/game tools and draft source packs are implemented; WP08-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -391,7 +391,7 @@
     },
     {
       "id": "WP07",
-      "status": "implemented",
+      "status": "verified",
       "branch": "feat/wp07-sharing-api",
       "commit": "49c50a227e9de30822e0e19ca5de2d3799cddaad",
       "evidence": [
@@ -426,11 +426,16 @@
           "command": "composer cleanup --working-dir=apps/api",
           "result": "PASS; cleanup CLI completed against isolated test DB",
           "artifact": "apps/api/bin/cleanup.php"
+        },
+        {
+          "command": "GitHub Actions verify job on PR #7 (run 43643541656) and push (run 43643536098)",
+          "result": "PASS; MySQL 8.4 service, PHP integration suite, OpenAPI response object checks, failure lifecycle, full existing app checks and audit",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43643541656",
+          "scope": "CI verification only; review/merge/deployment remain separate"
         }
       ],
       "blockers": [
-        "MySQL 8.4 CI check on the WP07 branch must pass before WP07 can be marked verified.",
-        "The PHP-rendered /s/{shareId}/ no-store shell and hosting integration remain to be completed in the release route/deployment work.",
+        "The PHP-rendered /s/{shareId}/ no-store shell and static-host routing remain open for the complete share experience.",
         "Production encryption keys, database, TLS origin and hosting have not been configured; no deployment has occurred."
       ]
     },
