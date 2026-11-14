@@ -1,0 +1,121 @@
+---
+import '../styles/global.css';
+import { designTokens } from '../data/config';
+import adminMessages from '../data/admin-messages';
+import moonIcon from '../../../../assets/icons/phosphor/regular/moon.svg';
+import sunIcon from '../../../../assets/icons/phosphor/regular/sun.svg';
+const light = designTokens.themes.light;
+const m = adminMessages;
+---
+<!doctype html>
+<html lang="en" dir="ltr" data-theme-tokens={JSON.stringify(designTokens.themes)}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content={light.canvas} />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <meta name="referrer" content="same-origin" />
+    <title>{m.title} · Lavbe</title>
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const themes = JSON.parse(root.dataset.themeTokens || '{}');
+        const variables = { canvas: '--canvas-token', surface: '--surface-token', text: '--text-token', mutedText: '--muted-token', primary: '--primary-token', onPrimary: '--on-primary', border: '--border-token', focus: '--focus-token' };
+        let theme = 'light';
+        try { theme = localStorage.getItem('lavbe.theme') === 'dark' ? 'dark' : 'light'; } catch { /* Use accessible light defaults when storage is unavailable. */ }
+        root.dataset.theme = theme;
+        for (const [key, variable] of Object.entries(variables)) root.style.setProperty(variable, themes[theme][key]);
+      })();
+    </script>
+    <style>
+      .admin-layout{max-width:1120px;margin:0 auto;padding:28px 0 48px}.admin-panel{border:1px solid color-mix(in srgb,var(--line) 75%,transparent);border-radius:20px;background:var(--surface);box-shadow:var(--shadow);padding:clamp(18px,3vw,32px);margin-bottom:18px}.admin-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.admin-head h1{margin:5px 0 0;font-size:clamp(24px,4vw,34px);letter-spacing:-.04em}.admin-copy{max-width:64ch;margin:12px 0 0;color:var(--muted);font-size:14px;line-height:1.6}.admin-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.admin-toolbar button,.admin-button,.admin-row button,.admin-job button{min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--primary);font:650 13px ui-sans-serif,system-ui,sans-serif;cursor:pointer}.admin-button-primary{border-color:var(--primary);background:var(--primary);color:var(--on-primary)}.admin-button:disabled,.admin-toolbar button:disabled{opacity:.58;cursor:not-allowed}.admin-label{display:grid;gap:7px;color:var(--ink);font-size:13px;font-weight:700}.admin-input,.admin-textarea{width:100%;min-height:46px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:var(--soft);color:var(--ink);font:500 14px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}.admin-input[type=password],.admin-input[type=text]{font-family:ui-sans-serif,system-ui,sans-serif}.admin-textarea{min-height:220px;resize:vertical}.admin-form{display:grid;gap:15px;max-width:560px;margin-top:20px}.admin-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.72fr);gap:18px}.admin-list{display:grid;gap:10px;margin-top:18px}.admin-row,.admin-job{display:grid;grid-template-columns:minmax(150px,1.4fr) repeat(3,minmax(80px,.7fr)) auto;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:13px}.admin-row strong,.admin-job strong{overflow-wrap:anywhere}.admin-row small,.admin-job small{display:block;color:var(--muted);margin-top:3px}.admin-actions{display:flex;gap:7px;flex-wrap:wrap}.admin-row button{min-height:40px;padding:0 10px}.admin-check{display:flex;align-items:flex-start;gap:8px;color:var(--ink);font-size:13px;line-height:1.5}.admin-check input{width:20px;height:20px;accent-color:var(--primary)}.admin-status{min-height:24px;margin:13px 0 0;color:var(--muted);font-size:13px;line-height:1.5}.admin-status[data-kind=error]{color:#a32632}.admin-status[data-kind=success]{color:#187048}.admin-detail{margin-top:14px;padding:14px;border-radius:12px;background:var(--soft);overflow:auto}.admin-detail pre{max-height:360px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}.admin-secret{display:grid;gap:9px;margin-top:14px;padding:14px;border:1px solid #b68222;border-radius:12px;background:color-mix(in srgb,#b68222 8%,var(--surface))}.admin-secret code{overflow-wrap:anywhere;user-select:all}.admin-job{grid-template-columns:minmax(120px,1fr) minmax(100px,.8fr) minmax(120px,1fr) auto}.admin-muted{color:var(--muted);font-size:13px;line-height:1.55}.admin-identity{color:var(--muted);font-size:12px}.admin-identity strong{color:var(--ink)}[hidden]{display:none!important}
+      @media(max-width:760px){.shell{padding:0 18px}.topbar{gap:16px}.topbar nav{display:none}.admin-grid{grid-template-columns:1fr}.admin-row{grid-template-columns:1fr 1fr}.admin-row .admin-actions{grid-column:1/-1}.admin-job{grid-template-columns:1fr 1fr}.admin-job .admin-actions{grid-column:1/-1}}
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Lavbe home"><span class="brand-mark" aria-hidden="true">L</span><span>lavbe</span></a>
+        <nav aria-label={m.mainNavigation}><a href="/">{m.publicWheel}</a><a href="/bottle/">{m.publicBottle}</a><a href="/games/">{m.publicGames}</a></nav>
+        <div class="header-actions"><span class="locale" aria-label={m.consoleLanguage}>EN</span><button class="theme-toggle" id="admin-theme" type="button" aria-label={m.toggleTheme} data-light-icon={sunIcon.src} data-dark-icon={moonIcon.src}><img width="19" height="19" src={moonIcon.src} alt="" /></button></div>
+      </header>
+      <section class="tool-strip"><span class="tool-name">LAVBE / ADMIN</span><span class="tool-caption">{m.internalNote}</span><span class="tool-presence">{m.protectedSession}</span></section>
+      <section class="admin-layout">
+        <header class="admin-panel admin-head">
+          <div><span class="section-kicker">LAVBE / ADMIN</span><h1>{m.title}</h1><p class="admin-copy">{m.subtitle}</p></div>
+          <div class="admin-toolbar"><span class="admin-identity" id="admin-identity" hidden></span><button class="admin-button" id="admin-logout" type="button" hidden>{m.signOut}</button></div>
+        </header>
+        <p class="admin-status" id="admin-status" role="status" aria-live="polite">{m.loading}</p>
+        <section class="admin-panel" id="admin-login" aria-labelledby="admin-login-title" hidden>
+          <h2 id="admin-login-title">{m.signIn}</h2>
+          <form class="admin-form" id="admin-login-form" autocomplete="on">
+            <label class="admin-label" for="admin-username">{m.username}<input class="admin-input" id="admin-username" name="username" autocomplete="username" required maxlength="200" /></label>
+            <label class="admin-label" for="admin-password">{m.password}<input class="admin-input" id="admin-password" name="password" type="password" autocomplete="current-password" required maxlength="1024" /></label>
+            <label class="admin-label" for="admin-mfa">{m.mfa}<input class="admin-input" id="admin-mfa" name="mfaCode" inputmode="text" autocomplete="one-time-code" required pattern="(?:[0-9]{6}|[A-Fa-f0-9]{12})" /></label>
+            <button class="admin-button admin-button-primary" type="submit">{m.signIn}</button>
+          </form>
+        </section>
+        <div id="admin-workspace" hidden>
+          <div class="admin-grid">
+            <section class="admin-panel" aria-labelledby="versions-heading">
+              <div class="admin-head"><div><h2 id="versions-heading">{m.versions}</h2><p class="admin-muted">{m.versionsHelp}</p></div><button class="admin-button" id="admin-refresh" type="button">{m.refresh}</button></div>
+              <div class="admin-list" id="admin-versions"></div>
+              <p class="admin-muted" id="admin-empty" hidden>{m.empty}</p>
+              <button class="admin-button" id="admin-next" type="button" hidden>{m.loadNext}</button>
+            </section>
+            <section class="admin-panel" aria-labelledby="import-heading">
+              <h2 id="import-heading">{m.importHeading}</h2><p class="admin-muted">{m.importHelp}</p>
+              <form class="admin-form" id="admin-import-form">
+                <label class="admin-label" for="admin-import-json">{m.importJson}<textarea class="admin-textarea" id="admin-import-json" spellcheck="false" required></textarea></label>
+                <button class="admin-button admin-button-primary" type="submit">{m.import}</button>
+              </form>
+            </section>
+          </div>
+          <section class="admin-panel" aria-labelledby="publish-heading">
+            <h2 id="publish-heading">{m.publishHeading}</h2><p class="admin-muted">{m.publishHelp}</p>
+            <div class="admin-list" id="admin-publishable"></div>
+            <p class="admin-muted" id="admin-selected-count" aria-live="polite">{m.selectedSummary.replace('{count}', '0')}</p>
+            <button class="admin-button admin-button-primary" id="admin-publish" type="button">{m.publish}</button>
+            <div class="admin-secret" id="admin-credential-panel" hidden><strong>{m.runnerCredential}</strong><code id="admin-credential"></code><div class="admin-actions"><button class="admin-button" id="admin-copy-credential" type="button">{m.copy}</button><button class="admin-button" id="admin-dismiss-credential" type="button">{m.close}</button></div><p class="admin-muted">{m.runnerSecretHelp}</p></div>
+          </section>
+          <section class="admin-panel" aria-labelledby="jobs-heading"><h2 id="jobs-heading">{m.jobs}</h2><div class="admin-list" id="admin-jobs"></div><button class="admin-button" id="admin-jobs-next" type="button" hidden>{m.loadNext}</button></section>
+          <section class="admin-panel" id="admin-audit-panel" aria-labelledby="audit-heading" hidden><div class="admin-head"><h2 id="audit-heading">{m.audit}</h2><button class="admin-button" id="admin-audit-refresh" type="button">{m.refresh}</button></div><div class="admin-list" id="admin-audit"></div><button class="admin-button" id="admin-audit-next" type="button" hidden>{m.loadNext}</button></section>
+          <section class="admin-panel" id="admin-operations-panel" aria-labelledby="owner-ops-heading" hidden>
+            <h2 id="owner-ops-heading">{m.ownerOps}</h2>
+            <div class="admin-grid">
+              <form class="admin-form" id="admin-user-form">
+                <label class="admin-label" for="admin-user-id">{m.userId}<input class="admin-input" id="admin-user-id" name="id" required pattern="[A-Za-z0-9_-]{8,64}" /></label>
+                <label class="admin-label" for="admin-user-name">{m.newUsername}<input class="admin-input" id="admin-user-name" name="username" required minlength="3" maxlength="80" pattern="[A-Za-z0-9][A-Za-z0-9._-]{2,79}" /></label>
+                <label class="admin-label" for="admin-user-role">{m.newRole}<select class="admin-input" id="admin-user-role" name="role"><option value="owner">{m.roleOwner}</option><option value="editor">{m.roleEditor}</option><option value="reviewer">{m.roleReviewer}</option><option value="publisher">{m.rolePublisher}</option></select></label>
+                <label class="admin-check"><input type="checkbox" id="admin-user-disabled" name="disabled" /><span>{m.accountDisabled}</span></label>
+                <button class="admin-button admin-button-primary" type="submit">{m.updateUser}</button>
+              </form>
+              <form class="admin-form" id="admin-share-form">
+                <label class="admin-label" for="admin-share-id">{m.shareId}<input class="admin-input" id="admin-share-id" name="shareId" required minlength="20" maxlength="64" pattern="[A-Za-z0-9_-]{20,64}" /></label>
+                <label class="admin-label" for="admin-share-reason">{m.revokeReason}<select class="admin-input" id="admin-share-reason" name="reasonCode"><option value="abuse">{m.revokeAbuse}</option><option value="rights-request">{m.revokeRights}</option><option value="security">{m.revokeSecurity}</option><option value="operator">{m.revokeOperator}</option></select></label>
+                <button class="admin-button admin-button-primary" type="submit">{m.revokeShare}</button>
+              </form>
+            </div>
+          </section>
+        </div>
+      </section>
+      <footer><span>Lavbe <span class="footer-sep">·</span>{m.adminFooter}</span><span>{m.releaseNotice}</span></footer>
+    </main>
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const button = document.getElementById('admin-theme');
+        const names = { canvas: '--canvas-token', surface: '--surface-token', text: '--text-token', mutedText: '--muted-token', primary: '--primary-token', onPrimary: '--on-primary', border: '--border-token', focus: '--focus-token' };
+        button?.addEventListener('click', () => {
+          const themes = JSON.parse(root.dataset.themeTokens || '{}');
+          const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+          root.dataset.theme = next;
+          for (const [key, variable] of Object.entries(names)) root.style.setProperty(variable, themes[next][key]);
+          const icon = button.querySelector('img');
+          if (icon) icon.src = next === 'dark' ? button.dataset.lightIcon : button.dataset.darkIcon;
+        });
+      })();
+    </script>
+    <script src="../scripts/admin.ts"></script>
+  </body>
+</html>

@@ -21,7 +21,7 @@ if (!preg_match('/(?:^|;)dbname=lavbe_api_test(?:;|$)/', $dsn)) {
 $key = str_repeat('k', 32);
 $config = new Config('https://lavbe.test', 'https://lavbe.test', $dsn, getenv('LAVBE_TEST_DATABASE_USER') ?: '', getenv('LAVBE_TEST_DATABASE_PASSWORD') ?: '', 'test', $key, str_repeat('r', 32));
 $pdo = Database::connect($config);
-$pdo->exec('DROP TABLE IF EXISTS idempotency, rate_buckets, deletion_journal, shares, schema_migrations');
+$pdo->exec('DROP TABLE IF EXISTS active_publications, publication_history, publish_job_versions, audit_events, content_versions, admin_sessions, publish_jobs, admin_users, idempotency, rate_buckets, deletion_journal, shares, schema_migrations');
 (new MigrationRunner($pdo))->migrate();
 $service = new ShareService($pdo, $config, new Crypto($config), new WheelRequestValidator(new WheelSemanticValidator()));
 $wheel = json_decode(file_get_contents(dirname(__DIR__, 3) . '/contracts/examples/wheel.json'), true, flags: JSON_THROW_ON_ERROR);

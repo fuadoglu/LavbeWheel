@@ -17,6 +17,7 @@ final class Config
         public readonly string $rateKey,
         public readonly array $trustedProxies = [],
         public readonly array $encryptionKeys = [],
+        public readonly ?string $manifestSigningSecretKey = null,
     ) {}
 
     public static function fromEnvironment(): self
@@ -29,6 +30,8 @@ final class Config
         $user = self::env('LAVBE_DATABASE_USER');
         $password = self::env('LAVBE_DATABASE_PASSWORD');
         $keyId = self::env('LAVBE_ENCRYPTION_KEY_ID');
+        $manifestSigningEncoded = self::env('LAVBE_MANIFEST_SIGNING_SECRET_KEY');
+        $manifestSigningKey = base64_decode($manifestSigningEncoded, true);
         foreach ([$key, $rateKey] as $secret) {
             if (strlen($secret) !== SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES) {
                 throw new \RuntimeException('API secret configuration is invalid.');
@@ -49,6 +52,9 @@ final class Config
         }
         if (!preg_match('/^[A-Za-z0-9_-]{1,32}$/', $keyId)) {
             throw new \RuntimeException('API encryption key ID is invalid.');
+        }
+        if ($manifestSigningKey === false || strlen($manifestSigningKey) !== SODIUM_CRYPTO_SIGN_SECRETKEYBYTES) {
+            throw new \RuntimeException('Manifest signing key configuration is invalid.');
         }
         $proxies = array_values(array_filter(array_map('trim', explode(',', getenv('LAVBE_TRUSTED_PROXIES') ?: ''))));
         $keyRing = [$keyId => $key];
@@ -74,7 +80,7 @@ final class Config
                 $keyRing[$id] = $decoded;
             }
         }
-        return new self($origin, $publicOrigin, $dsn, $user, $password, $keyId, $key, $rateKey, $proxies, $keyRing);
+        return new self($origin, $publicOrigin, $dsn, $user, $password, $keyId, $key, $rateKey, $proxies, $keyRing, $manifestSigningKey);
     }
 
     private static function env(string $name): string

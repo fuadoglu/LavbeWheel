@@ -14,9 +14,9 @@ Pipeline: draft → validated → reviewed → published → archived. Source ed
 
 ## Static publication on shared hosting
 
-Panel saves revisions in MySQL; content export job produces a signed/hashed JSON manifest outside web root. CI or a trusted local build runner pulls it through an authenticated export endpoint, validates everything, builds static artifacts and runs checks. Owner approves promotion of a validated artifact; no direct edit to production static files. API serves current publication state and last known-good version. Secrets for export/deploy remain in the runner/host, not public config.
+Panel saves revisions in MySQL; a trusted local build runner pulls a canonical-hashed JSON manifest through an authenticated export endpoint, validates it, builds static artifacts and runs checks. Owner approves promotion of a validated artifact; no direct edit to production static files. The API exposes the active publication and up to 50 known-good rollback targets. Secrets for export/deploy remain in the runner/host, not public config.
 
-Panel publish job statuses: queued, exporting, validating, building, awaiting-promotion, deploying, succeeded, failed, rolled-back. Authenticated runner reports status with scoped credentials. Failure keeps current live release intact. Shared-host Node support is not assumed. Future builder/provider credential is an external launch input. Implement operator-friendly setup instructions rather than pretending the bridge exists now.
+Panel publish job statuses: queued, exporting, validating, building, awaiting-promotion, deploying, succeeded, failed, rolled-back. The API signs canonical manifest envelopes with Ed25519; the authenticated runner pins the public key, verifies the signature, checks source freshness and content schemas, and reports status with a one-job scoped credential. It records a deterministic tree hash and deploys only the exact owner-approved hash. Failure keeps the current active pointer intact. The included local adapter stages immutable releases and atomically switches a symlink; production hosting needs an operator-reviewed adapter. Runner key setup and operations: [docs/32-ADMIN-RUNNER.md](32-ADMIN-RUNNER.md). WP09 still integrates the reviewed publication snapshot into generated public routes; building a snapshot is not yet proof that publication content is visible in the product.
 
 ## Configuration safety
 
@@ -25,3 +25,5 @@ Allowlisted fields only: analytics/GTM/publisher IDs, approved consent provider 
 ## Required admin workflow evidence
 
 Import invalid pack, reject dangerous content, mark stale translation, review 110-locale coverage, publish failed build without touching live, promote known artifact, rollback, restore after data loss, revoke abusive share, disable ads and audit owner/editor access. Implement [admin OpenAPI](../contracts/admin.openapi.json) with integration tests; internal UI must handle errors and job progress without fake completion. User creation/MFA bootstrap remains an owner CLI workflow; user update never returns credential secrets. Admin lists return at most 50 records and X-Next-Cursor when another page exists.
+
+Manifest digest scope: `manifestHash` covers the RFC 8785 canonical UTF-8 bytes of the sorted immutable `versions` array only. `buildId` and `createdAt` are generated transport metadata and are excluded so the publisher can calculate the digest before job creation. Browser, API and runner must pass the shared vectors in `contracts/canonical-json-vectors.json`.

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01, WP02 and WP07 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local bottle/game tools and draft source packs are implemented; WP08-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01, WP02 and WP07 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local bottle/game tools and draft source packs are implemented; WP08 is in progress; WP09-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -441,11 +441,121 @@
     },
     {
       "id": "WP08",
-      "status": "not-started",
-      "branch": null,
-      "commit": null,
-      "evidence": [],
-      "blockers": []
+      "status": "in-progress",
+      "branch": "feat/wp08-admin",
+      "commit": "04195b6",
+      "evidence": [
+        {
+          "command": "npm run check && npm run test:unit",
+          "result": "PASS on working tree; all TypeScript/Astro/config/contracts checks pass and 62 unit tests pass, including signed runner and atomic local deployment adapter",
+          "artifact": "command output",
+          "scope": "Pre-commit working tree; CI not yet run for these changes"
+        },
+        {
+          "command": "npm run test:e2e",
+          "result": "PASS; 14 browser tests including admin MFA flow mock, mobile/tablet layout, session recovery and automated accessibility",
+          "artifact": "command output",
+          "scope": "Synthetic/mocked admin API; not a live database-backed browser test"
+        },
+        {
+          "command": "npm run test:content && npm run test:seo",
+          "result": "PASS; content structure validates with 108 locales pending native review; static root SEO smoke passes",
+          "artifact": "apps/web/dist/",
+          "scope": "No translation review, SEO-01–12 route crawl or production origin/CDN verification"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; docs/contract/schema fixtures/reference vectors/SEO registry checks",
+          "artifact": "command output",
+          "scope": "Schema and reference validation; not runtime PHP/TypeScript parity or live API conformance"
+        },
+        {
+          "command": "npm run test:api",
+          "result": "PASS; isolated MariaDB lifecycle + live HTTP share/admin/publish workflow; Ed25519 signature/tamper checks, publish failure/retry, promotion/rollback, strict job response shape, 50-row cursor pagination and malformed cursor rejection",
+          "artifact": "apps/api/tests/http-integration.php",
+          "scope": "Synthetic data in disposable lavbe_api_test; local MariaDB 12.1. Pagination changes are in commit b9febe9 and passed GitHub MySQL 8.4 API integration."
+        },
+        {
+          "command": "LAVBE_TEST_DATABASE_* npm run test:api",
+          "result": "PASS; RFC 6238 TOTP, strict six-kind schemas, MySQL migration/lifecycle, live MFA/session/CSRF/recovery, encrypted import, source/placeholder/markup checks, review/stale revision, CLI-provisioned editor role gates, owner audit/user update/session revocation, last-owner protection and real admin share revocation",
+          "artifact": "apps/api/tests/http-integration.php",
+          "scope": "Local PHP 8.4 + MariaDB 12.1 isolated lavbe_api_test; MySQL 8.4 CI not yet run for WP08"
+        },
+        {
+          "command": "npm run check && npm run test:unit",
+          "result": "PASS; TypeScript/Astro checks (0 diagnostics), 53 unit tests",
+          "artifact": "command output"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; docs, schema fixtures, semantic reference vectors and SEO registry",
+          "artifact": "command output",
+          "scope": "Reference/schema validation; not admin publication HTTP conformance"
+        },
+        {
+          "command": "composer validate --working-dir=apps/api --no-check-publish",
+          "result": "PASS with advisory missing-license metadata warning",
+          "artifact": "apps/api/composer.json"
+        },
+        {
+          "command": "git diff --check",
+          "result": "PASS; no whitespace errors",
+          "artifact": "working tree"
+        },
+        {
+          "command": "GitHub Actions application foundation on PR #8 (run 43645518129)",
+          "result": "FAIL; MySQL 8.4 integration exposed a recovery-code single-use issue not reproduced on local MariaDB 12.1; recovery consumption now locks and rechecks the account row transactionally, and the CI rerun is pending",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43645518129",
+          "scope": "Failure is addressed by the next commit; do not treat this run as passing evidence"
+        },
+        {
+          "command": "GitHub Actions verify + documentation checks on PR #8 commit 0a392c6 (runs 43645698280 and 43645698282)",
+          "result": "PASS; full configured application job including MySQL 8.4 API integration, E2E, a11y, SEO, audits and docs/contracts",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43645698280",
+          "scope": "These runs verify commit 0a392c6, before subsequent owner-operations working-tree changes"
+        },
+        {
+          "command": "LAVBE_TEST_DATABASE_* npm run test:api after owner operations",
+          "result": "PASS; PHP+MariaDB 12.1 live HTTP lifecycle includes strict owner/editor role gates, audit response keys, last-owner protection, session invalidation and public-share unavailability after admin revoke",
+          "artifact": "apps/api/tests/http-integration.php",
+          "scope": "Local isolated lavbe_api_test; MySQL 8.4 CI for these later working-tree changes is pending"
+        },
+        {
+          "command": "LAVBE_TEST_DATABASE_DSN=... npm run test:api",
+          "result": "PASS; local PHP 8.4 + MariaDB 12.1 live HTTP includes RFC 8785 PHP vectors, manifest digest mismatch rejection, scoped runner credential, publication failure isolation, exact artifact promotion and known-good rollback",
+          "artifact": "apps/api/tests/http-integration.php",
+          "scope": "Isolated lavbe_api_test only; MySQL 8.4 CI for this uncommitted publication slice is pending"
+        },
+        {
+          "command": "npm run contracts:generate && npm run contracts:check && npm run check && npm run test:unit",
+          "result": "PASS; generated schemas synchronized, TypeScript/Astro 0 diagnostics, 57 unit tests",
+          "artifact": "command output"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs && git diff --check",
+          "result": "PASS; docs/contracts/semantic/SEO integrity and no whitespace errors",
+          "artifact": "command output",
+          "scope": "Reference and schema validation; not deployment verification"
+        },
+        {
+          "command": "GitHub Actions application + documentation checks on PR #8 / push commit 04195b6",
+          "result": "PASS; MySQL 8.4 lifecycle HTTP integration, app check/unit/E2E/a11y/SEO/audit and docs/contracts checks",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43650849673 and https://github.com/fuadoglu/LavbeWheel/actions/runs/43650849671",
+          "scope": "This entry verifies exact SHA 04195b606e0663d78183651c7f2d31d69901f619; follow-up pagination test commit b9febe9 is separately verified below."
+        },
+        {
+          "command": "GitHub Actions application + documentation checks on PR #8 / pagination test commit b9febe9",
+          "result": "PASS; MySQL 8.4 API lifecycle/pagination tests, app check/unit/E2E/a11y/SEO/audit and documentation/contracts",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43651226610 and https://github.com/fuadoglu/LavbeWheel/actions/runs/43651226627",
+          "scope": "Both push and pull_request workflows verify exact SHA b9febe9; this follow-up adds 51-row pagination fixtures to previously CI-verified application code."
+        }
+      ],
+      "blockers": [
+        "Admin panel UI and full OpenAPI response/error conformance are not implemented.",
+        "RFC 8785 canonical JSON and shared server/runner parity vectors are implemented locally; no signed build runner or approved content exists yet.",
+        "Preset and CMP allowlists require operator-supplied reviewed IDs; empty defaults fail closed.",
+        "MySQL 8.4 CI for the publication changes, cross-device/admin UI and deployment/hosting remain unverified."
+      ]
     },
     {
       "id": "WP09",

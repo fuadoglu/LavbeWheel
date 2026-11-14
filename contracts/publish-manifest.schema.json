@@ -6,12 +6,19 @@
     "manifestHash",
     "buildId",
     "createdAt",
+    "state",
+    "artifactHash",
+    "mode",
+    "rollbackArtifactHash",
+    "signatureAlgorithm",
+    "signature",
     "versions"
   ],
   "properties": {
     "manifestHash": {
       "type": "string",
-      "pattern": "^[a-f0-9]{64}$"
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 of RFC 8785 canonical UTF-8 JSON for the sorted versions array only; buildId and createdAt are envelope metadata and are excluded."
     },
     "buildId": {
       "type": "string",
@@ -20,6 +27,14 @@
     "createdAt": {
       "type": "string",
       "format": "date-time"
+    },
+    "state": {
+      "enum": ["exporting", "validating", "building", "awaiting-promotion", "deploying"]
+    },
+    "artifactHash": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Null before the build completes; the exact artifact hash thereafter, including the owner-approved value during deployment."
     },
     "versions": {
       "type": "array",
@@ -1909,6 +1924,27 @@
           }
         }
       }
+    },
+    "mode": {
+      "enum": [
+        "publish",
+        "rollback"
+      ]
+    },
+    "rollbackArtifactHash": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "signatureAlgorithm": {
+      "const": "Ed25519"
+    },
+    "signature": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{86}$",
+      "description": "Ed25519 signature over RFC 8785 canonical JSON of the complete manifest envelope, including signatureAlgorithm and excluding signature."
     }
   }
 }

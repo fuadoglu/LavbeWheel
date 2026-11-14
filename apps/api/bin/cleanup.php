@@ -18,6 +18,7 @@ try {
     $journal->bindValue(':days', $backupDays, PDO::PARAM_INT);
     $journal->execute();
     $pdo->exec('DELETE FROM idempotency WHERE expires_at <= UTC_TIMESTAMP(6)');
+    $pdo->exec('UPDATE publish_jobs SET runner_token_hash=NULL WHERE runner_expires_at<=UTC_TIMESTAMP(6) AND runner_token_hash IS NOT NULL');
     $pdo->exec('DELETE FROM rate_buckets WHERE expires_at <= UTC_TIMESTAMP()');
     $pdo->exec('DELETE FROM deletion_journal WHERE retain_until <= UTC_TIMESTAMP(6)');
     $pdo->commit();

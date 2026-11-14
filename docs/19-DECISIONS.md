@@ -14,6 +14,28 @@
 | ADR-08 | Basic opt-in optional tags | Predictable privacy boundary, graceful provider failure |
 | ADR-09 | Static content publication through trusted builder | Admin panel works without Node on hosting |
 | ADR-10 | Reports grouped by explicit rounds | Prevents mixed rules from misleading statistics |
+| ADR-11 | Admin imports are stored as encrypted immutable content versions; the server resets imported review claims and derives reviewer identity/state itself | Prevents client-controlled approval state and protects unpublished editorial content |
+
+### 2026-11-15 — WP08 content import trust boundary
+
+- **Problem / requirements:** WP08 and `docs/14-ADMIN-CONTENT.md` require strict imported schemas, server-verified source/review state and protected drafts.
+- **Selected behavior:** Imported records are schema-checked, encrypted at rest, assigned a server revision and saved as `draft`; client-supplied `reviewed` state is discarded. UI source keys, source hashes, placeholders and unsafe markup are checked against the English catalog. Pack source hashes follow the recursive key-sort rule documented in `content/packs/README.md`.
+- **Alternative rejected:** trusting imported `status`, reviewer, or source-hash values would let an editor upload self-approved content and is not acceptable.
+- **Acceptance impact:** draft import/validation/review can be exercised locally. Full ICU parsing, remaining publication APIs and production publication remain open; this decision does not approve content or enable publishing.
+
+### 2026-11-15 — WP08 publication digest boundary
+
+- **Problem / requirements:** `PublishRequest` accepted `versionIds` and `manifestHash`, but the API creates `buildId` and `createdAt`; a publisher cannot compute a digest over server-generated envelope fields before submitting the request.
+- **Selected behavior:** `manifestHash` is SHA-256 over RFC 8785 canonical UTF-8 bytes of the sorted immutable `versions` array only. `buildId` and `createdAt` are envelope metadata and excluded. The browser and PHP implementation share `contracts/canonical-json-vectors.json`; the trusted runner must recompute the same versions digest before building.
+- **Alternative rejected:** having the client guess server-generated metadata or letting the runner trust the supplied digest would make validation impossible or weaken the integrity boundary.
+- **Acceptance impact:** the request is computable before job creation and deterministic across the clients. This does not authorize deployment or mark any editorial content reviewed.
+
+### 2026-11-15 — WP08 signed runner manifests
+
+- **Problem / requirements:** A canonical digest proves content consistency but does not authenticate the API envelope or its changing job state/artifact approval fields to the runner.
+- **Selected behavior:** The API signs RFC 8785 canonical JSON for the complete manifest envelope (including `signatureAlgorithm`, excluding `signature`) with an Ed25519 secret key. The trusted runner pins the corresponding raw public key and verifies every manifest response in addition to HTTPS and the expiring job-scoped bearer credential. Signing material is operator-managed outside the repository.
+- **Alternative rejected:** Treating TLS transport plus the content digest as a detached signature would leave the specified signed-manifest requirement ambiguous and couple trust only to the network endpoint.
+- **Acceptance impact:** A runner detects a forged or modified manifest envelope and refuses to build or deploy. Signing-key rotation requires coordinated public-key pin updates before changing the API signer.
 
 ## Concrete baseline defaults
 
