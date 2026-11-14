@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "sessionId": "session_demo01",
+  "wheelId": "wheel_demo01",
+  "engineVersion": "selection-v1",
+  "createdAt": "2026-11-14T09:00:00Z",
+  "configRevisions": [
+    {
+      "id": "revision_0001",
+      "mode": "independent",
+      "entries": [
+        {
+          "id": "entry_aysel",
+          "label": "Aysel",
+          "weight": 1
+        },
+        {
+          "id": "entry_murad",
+          "label": "Murad",
+          "weight": 1
+        }
+      ]
+    }
+  ],
+  "rounds": [
+    {
+      "id": "round_demo01",
+      "startedAt": "2026-11-14T09:00:00Z",
+      "reason": "session-start"
+    }
+  ],
+  "results": [
+    {
+      "id": "spin_demo001",
+      "roundId": "round_demo01",
+      "configRevisionId": "revision_0001",
+      "sequence": 1,
+      "committedAt": "2026-11-14T09:00:10Z",
+      "selectedEntryId": "entry_aysel",
+      "selectedLabel": "Aysel",
+      "presentation": "acknowledged"
+    }
+  ]
+}

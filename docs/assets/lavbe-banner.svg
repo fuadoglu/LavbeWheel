@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+<title id="title">Lavbe — Spin. Decide. Play together.</title><desc id="desc">Lavbe specification banner with a stylized purple wheel, warm accents and product promise.</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#10131E"/><stop offset="1" stop-color="#25203F"/></linearGradient><linearGradient id="accent" x2="1" y2="1"><stop stop-color="#C2BAFF"/><stop offset="1" stop-color="#F6BBA6"/></linearGradient></defs>
+<rect width="1200" height="360" rx="28" fill="url(#bg)"/>
+<circle cx="1010" cy="180" r="220" fill="#B6ACFF" opacity=".035"/>
+<text x="72" y="92" fill="#B6ACFF" font-size="14" font-family="Arial,sans-serif" letter-spacing="4">CHOICE, WITH CHARACTER.</text>
+<text x="68" y="190" fill="#F5F3FF" font-size="92" font-weight="700" font-family="Arial,sans-serif" letter-spacing="-4">Lavbe</text>
+<text x="73" y="242" fill="#D7D1EA" font-size="27" font-family="Arial,sans-serif">Spin. Decide. Play together.</text>
+<text x="74" y="303" fill="#AFA7C5" font-size="14" font-family="Arial,sans-serif">MOBILE FIRST  ·  MULTILINGUAL  ·  LOCAL FIRST</text>
+<g transform="translate(972 180)"><circle r="117" fill="none" stroke="#53496F" stroke-width="1"/><circle r="101" fill="#242036" stroke="#C2BAFF" stroke-width="2"/>
+<path d="M0 0V-101a101 101 0 0 1 87.47 50.5Z" fill="#B6ACFF"/><path d="m0 0 87.47-50.5a101 101 0 0 1 0 101Z" fill="#7462D4"/><path d="m0 0 87.47 50.5A101 101 0 0 1 0 101Z" fill="#F2B9A3"/><path d="M0 0v101a101 101 0 0 1-87.47-50.5Z" fill="#6BAE9E"/><path d="m0 0-87.47 50.5a101 101 0 0 1 0-101Z" fill="#6655A8"/><path d="m0 0-87.47-50.5A101 101 0 0 1 0-101Z" fill="#D8D1FA"/>
+<circle r="27" fill="#181322" stroke="#E6DEFF" stroke-width="2"/><path d="m-5-9 14 9-14 9Z" fill="#F5F3FF"/><path d="m-10-118 10 24 10-24Z" fill="url(#accent)"/>
+</g></svg>

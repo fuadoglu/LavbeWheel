@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": "UNAVAILABLE",
+    "message": "This shared wheel is unavailable."
+  },
+  "requestId": "test_request_001"
+}

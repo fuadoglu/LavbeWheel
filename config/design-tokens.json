@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "themes": {
+    "light": {
+      "canvas": "#F7F8FC",
+      "surface": "#FFFFFF",
+      "text": "#182033",
+      "mutedText": "#536079",
+      "primary": "#4938C8",
+      "onPrimary": "#FFFFFF",
+      "border": "#D4D9E5",
+      "focus": "#2459C4"
+    },
+    "dark": {
+      "canvas": "#10131E",
+      "surface": "#1B2132",
+      "text": "#F2F4FC",
+      "mutedText": "#B8C2D8",
+      "primary": "#B6ACFF",
+      "onPrimary": "#18113C",
+      "border": "#46516B",
+      "focus": "#AFCBFF"
+    }
+  },
+  "toolAccents": {
+    "classic": "#6655D8",
+    "bottle": "#277D68",
+    "couples": "#A34267",
+    "friends": "#9B4E0A",
+    "education": "#2C629D"
+  },
+  "radiusPx": {
+    "control": 12,
+    "card": 20,
+    "dialog": 24
+  },
+  "spacingPx": [
+    4,
+    8,
+    12,
+    16,
+    24,
+    32,
+    48,
+    64
+  ],
+  "controlMinPx": 44,
+  "motion": {
+    "feedbackMs": 100,
+    "transitionMs": 160,
+    "reducedRevealMaxMs": 200
+  },
+  "note": "Specification seeds; every rendered token combination needs contrast testing. Accents alone are not approved text/background pairs."
+}

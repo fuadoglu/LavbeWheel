@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "entries": {
+    "min": 1,
+    "max": 1000,
+    "labelMaxGraphemes": 120,
+    "titleMaxGraphemes": 80,
+    "weightMin": 1,
+    "weightMax": 1000
+  },
+  "integerRange": {
+    "min": -1000000,
+    "max": 1000000,
+    "maxOutcomes": 10000
+  },
+  "teams": {
+    "min": 2,
+    "max": 50
+  },
+  "bottle": {
+    "minSeats": 2,
+    "maxSeats": 20
+  },
+  "motion": {
+    "defaultSeconds": 4,
+    "minSeconds": 1,
+    "maxSeconds": 10,
+    "fontMinPx": 10,
+    "fontMaxPx": 24,
+    "maxParticles": 80
+  },
+  "sharing": {
+    "defaultTtlDays": 30,
+    "allowedTtlDays": [
+      1,
+      7,
+      30,
+      90
+    ],
+    "maxBodyBytes": 262144,
+    "viewEntropyBits": 192,
+    "managementEntropyBits": 256,
+    "idempotencyHours": 24,
+    "createsPerMinute": 10,
+    "createsPerDay": 100,
+    "readsPerMinute": 120,
+    "revokesPerMinute": 10
+  },
+  "localHistory": {
+    "maxResultsPerSession": 10000,
+    "maxSessions": 20,
+    "undoDepth": 20
+  },
+  "content": {
+    "families": 6,
+    "minCardsPerFamily": 50,
+    "maxImportBytes": 5242880,
+    "maxImportRecords": 5000
+  },
+  "pwa": {
+    "managedCacheBytes": 31457280
+  },
+  "retention": {
+    "accessLogDays": 7,
+    "securityLogDays": 30,
+    "backupDays": 30,
+    "adminAuditDays": 180,
+    "payloadPurgeWithinHours": 24
+  }
+}

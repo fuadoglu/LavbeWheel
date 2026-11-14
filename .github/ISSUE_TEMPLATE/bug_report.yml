@@ -1,0 +1,21 @@
+name: Bug report
+description: Report reproducible behavior using synthetic data only.
+title: "[Bug] "
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps and synthetic example
+      description: Do not include names, share capabilities or credentials.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Build, browser, OS and device

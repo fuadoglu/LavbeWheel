@@ -1,0 +1,1172 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Lavbe public sharing API",
+    "version": "1.0.0-spec",
+    "description": "Normative design contract, not an implemented service. Same-origin production API; examples use synthetic data. Server must enforce grapheme/reference/mode semantics and 256 KiB byte limits. All responses no-store; private endpoints never cached or tagged."
+  },
+  "servers": [
+    {
+      "url": "https://lavbe.com",
+      "description": "Target production origin; not proof of deployment"
+    }
+  ],
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "operationId": "getHealth",
+        "summary": "Minimal readiness; no version/secret disclosure",
+        "responses": {
+          "200": {
+            "description": "Serving",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "status"
+                  ],
+                  "properties": {
+                    "status": {
+                      "const": "ok"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unavailable",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "description": "Seconds before retry"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/shares": {
+      "post": {
+        "operationId": "createShare",
+        "summary": "Create immutable snapshot",
+        "description": "Requires same-origin Origin for browser writes. Maximum UTF-8 body 262144 bytes. Idempotency key is retained encrypted for 24 h; identical replay returns 201 and same capabilities; different body returns 409. No background retries after window.",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Must equal configured application origin; null/untrusted origins rejected."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateShareRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created or idempotently replayed",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedShare"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid JSON or semantic validation error",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Untrusted origin",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Idempotency key reused with different payload",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body too large",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "description": "Seconds before retry"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Creation temporarily unavailable",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "description": "Seconds before retry"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/shares/{shareId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/ShareId"
+        }
+      ],
+      "get": {
+        "operationId": "getShare",
+        "summary": "Read link-accessible immutable snapshot",
+        "responses": {
+          "200": {
+            "description": "Available snapshot without management token",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SharedWheel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed identifier",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown snapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Expired or revoked snapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "description": "Seconds before retry"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unavailable",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "description": "Seconds before retry"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "revokeShare",
+        "summary": "Revoke future server reads; cannot erase recipient copies",
+        "security": [
+          {
+            "ManagementCapability": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Must match configured origin."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Revoked; repeated valid capability revocation is idempotent during tombstone retention",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed identifier",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid capability",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Untrusted origin",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown snapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "description": "Seconds before retry"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unavailable",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store on every API response"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Safe correlation identifier"
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "description": "Seconds before retry"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ManagementCapability": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Independent 256-bit share-revocation capability, never admin credentials."
+      }
+    },
+    "schemas": {
+      "Wheel": {
+        "title": "Lavbe shared wheel configuration v1",
+        "description": "Label and title maxLength are defensive code-point limits; enforce grapheme limits and semantic constraints separately. This is configuration, not session/report data.",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schemaVersion",
+          "tool",
+          "title",
+          "locale",
+          "mode",
+          "entries",
+          "settings"
+        ],
+        "properties": {
+          "schemaVersion": {
+            "const": 1
+          },
+          "tool": {
+            "enum": [
+              "names",
+              "numbers",
+              "yes-no",
+              "weighted",
+              "teams",
+              "bottle",
+              "game"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 1024
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en",
+              "az",
+              "tr",
+              "ru",
+              "es",
+              "pt",
+              "pt-BR",
+              "de",
+              "fr",
+              "it",
+              "nl",
+              "pl",
+              "uk",
+              "ro",
+              "hu",
+              "cs",
+              "sk",
+              "bg",
+              "sr",
+              "hr",
+              "bs",
+              "sl",
+              "mk",
+              "sq",
+              "en-GB",
+              "el",
+              "sv",
+              "no",
+              "da",
+              "fi",
+              "is",
+              "et",
+              "lv",
+              "lt",
+              "ar",
+              "he",
+              "fa",
+              "ur",
+              "ps",
+              "ku",
+              "ckb",
+              "hi",
+              "bn",
+              "pa",
+              "gu",
+              "mr",
+              "ne",
+              "si",
+              "ta",
+              "te",
+              "kn",
+              "ml",
+              "or",
+              "as",
+              "zh-Hans",
+              "zh-Hant",
+              "ja",
+              "ko",
+              "vi",
+              "th",
+              "id",
+              "ms",
+              "fil",
+              "jv",
+              "su",
+              "km",
+              "lo",
+              "my",
+              "mn",
+              "kk",
+              "ky",
+              "uz",
+              "tk",
+              "tg",
+              "ka",
+              "hy",
+              "sw",
+              "am",
+              "ha",
+              "yo",
+              "ig",
+              "zu",
+              "xh",
+              "af",
+              "so",
+              "om",
+              "rw",
+              "mg",
+              "sn",
+              "st",
+              "tn",
+              "ny",
+              "wo",
+              "ff",
+              "ht",
+              "ca",
+              "eu",
+              "gl",
+              "cy",
+              "ga",
+              "gd",
+              "mt",
+              "lb",
+              "be",
+              "la",
+              "eo",
+              "mi",
+              "sm",
+              "haw",
+              "fy"
+            ]
+          },
+          "mode": {
+            "enum": [
+              "independent",
+              "remove-winner",
+              "shuffled-cycle"
+            ]
+          },
+          "entries": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "label",
+                "weight",
+                "active"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{8,64}$"
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2048
+                },
+                "weight": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000
+                },
+                "active": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "settings": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "theme",
+              "style",
+              "motion",
+              "sound",
+              "spinSeconds"
+            ],
+            "properties": {
+              "theme": {
+                "enum": [
+                  "system",
+                  "light",
+                  "dark"
+                ]
+              },
+              "style": {
+                "enum": [
+                  "classic",
+                  "bottle",
+                  "couples",
+                  "friends",
+                  "education"
+                ]
+              },
+              "motion": {
+                "enum": [
+                  "quiet",
+                  "standard",
+                  "party"
+                ]
+              },
+              "sound": {
+                "type": "boolean"
+              },
+              "spinSeconds": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 10
+              }
+            }
+          },
+          "range": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "min",
+              "max"
+            ],
+            "properties": {
+              "min": {
+                "type": "integer",
+                "minimum": -1000000,
+                "maximum": 1000000
+              },
+              "max": {
+                "type": "integer",
+                "minimum": -1000000,
+                "maximum": 1000000
+              }
+            }
+          },
+          "teamCount": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 50
+          },
+          "seats": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 20,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,64}$"
+            }
+          },
+          "game": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "packId",
+              "packVersion"
+            ],
+            "properties": {
+              "packId": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              "packVersion": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "tool": {
+                  "const": "numbers"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "range"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "tool": {
+                  "const": "teams"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "teamCount"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "tool": {
+                  "const": "bottle"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "seats"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "tool": {
+                  "const": "game"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "game"
+              ]
+            }
+          }
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "error",
+          "requestId"
+        ],
+        "properties": {
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "VALIDATION_ERROR",
+                  "UNSUPPORTED_ORIGIN",
+                  "NOT_FOUND",
+                  "UNAVAILABLE",
+                  "INVALID_CAPABILITY",
+                  "IDEMPOTENCY_CONFLICT",
+                  "BODY_TOO_LARGE",
+                  "RATE_LIMITED",
+                  "SERVICE_UNAVAILABLE",
+                  "INTERNAL_ERROR"
+                ]
+              },
+              "message": {
+                "type": "string",
+                "maxLength": 200
+              }
+            }
+          },
+          "requestId": {
+            "type": "string",
+            "maxLength": 64
+          }
+        }
+      },
+      "CreateShareRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "wheel",
+          "ttlDays"
+        ],
+        "properties": {
+          "wheel": {
+            "$ref": "#/components/schemas/Wheel"
+          },
+          "ttlDays": {
+            "type": "integer",
+            "enum": [
+              1,
+              7,
+              30,
+              90
+            ]
+          }
+        }
+      },
+      "CreatedShare": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "shareId",
+          "viewUrl",
+          "manageToken",
+          "createdAt",
+          "expiresAt"
+        ],
+        "properties": {
+          "shareId": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{32}$"
+          },
+          "viewUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "manageToken": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}$",
+            "writeOnly": false,
+            "description": "Secret returned only on creation or authorized idempotent replay; never in URLs/logs."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SharedWheel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "shareId",
+          "wheel",
+          "createdAt",
+          "expiresAt"
+        ],
+        "properties": {
+          "shareId": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{32}$"
+          },
+          "wheel": {
+            "$ref": "#/components/schemas/Wheel"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "ShareId": {
+        "name": "shareId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{32}$"
+        }
+      }
+    }
+  }
+}

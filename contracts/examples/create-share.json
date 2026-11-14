@@ -1,0 +1,37 @@
+{
+  "wheel": {
+    "schemaVersion": 1,
+    "tool": "names",
+    "title": "Demo friends",
+    "locale": "en",
+    "mode": "independent",
+    "entries": [
+      {
+        "id": "entry_aysel",
+        "label": "Aysel",
+        "weight": 1,
+        "active": true
+      },
+      {
+        "id": "entry_murad",
+        "label": "Murad",
+        "weight": 1,
+        "active": true
+      },
+      {
+        "id": "entry_leyla",
+        "label": "Leyla",
+        "weight": 1,
+        "active": true
+      }
+    ],
+    "settings": {
+      "theme": "system",
+      "style": "classic",
+      "motion": "standard",
+      "sound": false,
+      "spinSeconds": 4
+    }
+  },
+  "ttlDays": 30
+}
