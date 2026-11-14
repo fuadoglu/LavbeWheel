@@ -4,6 +4,7 @@ vendor/
 .env.*
 !.env.example
 dist/
+apps/web/.astro/
 coverage/
 playwright-report/
 test-results/

@@ -21,9 +21,9 @@ This repository currently contains specifications and validators only. Work pack
 | 11 Integrations | CMP, basic consent, reviewed GTM/GA4/ads configuration | Network evidence for every consent state |
 | 12 Release | Hosting package, backup/restore, security/accessibility/load review | All acceptance rows and external inputs closed |
 
-## Required command contract (future implementation)
+## Stable command contract (foundation established in WP01)
 
-Codex MUST implement and document these commands during WP01; they do not run in this docs-only repository yet:
+The command interface is present. Each command must gain real package behavior as its work package is implemented. Current shallow foundation checks are identified explicitly and must not be mistaken for API, PWA, or release acceptance:
 
 - npm ci — locked Node workspace dependencies.
 - composer install --working-dir=apps/api — locked PHP dependencies.
@@ -37,6 +37,8 @@ Codex MUST implement and document these commands during WP01; they do not run in
 - npm run test:content — locale/pack coverage and review metadata.
 - npm run build — static output and deployable PHP artifact, no secrets.
 - npm run verify:release — ordered required suite and evidence manifest validation.
+
+Current limits: `test:api` checks PHP/runtime prerequisites only until WP07–08 add HTTP behavior; `test:pwa` fails explicitly until WP10 adds artifacts and behavior; `test:content` validates registry/catalog key and placeholder structure but not native review; `test:seo` checks only the built root smoke contract, not SEO-01–12. `verify:release` is gated on all work packages having verified evidence.
 
 Runtime-specific tools may be selected at bootstrap, but the command interface must remain stable. CI cannot claim manual/device/legal/account checks passed merely because a command succeeded.
 

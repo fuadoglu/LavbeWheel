@@ -10,14 +10,14 @@ Mobil, planşet və kompüter üçün sürətli, çoxdilli seçim alətləri və
 
 **[English](README.en.md) · [Başlanğıc](docs/00-START-HERE.md) · [Məhsul tələbləri](docs/01-PRODUCT.md) · [Codex icra planı](docs/15-IMPLEMENTATION.md) · [Qəbul meyarları](docs/16-ACCEPTANCE.md)**
 
-![Status: icra sənədləri](docs/assets/badges/status.svg)
+![Status: WP01 foundation verified](docs/assets/badges/status.svg)
 ![Buraxılış: tam funksional əhatə](docs/assets/badges/release.svg)
 ![Dillər: 110 planlaşdırılıb](docs/assets/badges/locales.svg)
 ![Yerləşdirmə: shared hosting](docs/assets/badges/hosting.svg)
 
 </div>
 
-> **Reponun hazırkı vəziyyəti:** məhsulun icra sənədləri, məlumat/API müqavilələri, nümunələr və yoxlama skriptləri hazırlanıb. Tətbiq, tərcümələr, oyun kitabxanası, admin paneli və inteqrasiyalar hələ icra edilməyib. Nişanlar layihə tələblərini göstərir; test, təhlükəsizlik, əlçatanlıq və ya hüquqi uyğunluq sertifikatı deyil. Hədəf domain **lavbe.com**-dur; bu repo saytın yayımlandığını bildirmir.
+> **Reponun hazırkı vəziyyəti:** WP01 foundation qurulub və lokalda işləyən Azərbaycan dilli klassik çarx, build/check alətləri, müqavilə generasiyası və CI mövcuddur. Yeddi alətdən yalnız klassik ad çarxının ilkin dilimi işləkdir; tam saxlama, API, hesabat, oyunlar, 110 tərcümə və inteqrasiyalar hələ qarşıdadır. Nişanlar layihə tələblərini göstərir; təhlükəsizlik və ya hüquqi uyğunluq sertifikatı deyil. Hədəf domain **lavbe.com**-dur; sayt yayımlanmayıb.
 
 ## 🎯 Lavbe nə edəcək?
 
@@ -109,7 +109,30 @@ Codex-ə verilə biləcək tapşırıq:
 
 ### Hazırda işləyən yoxlamalar
 
-Python 3.11+ ilə sənədlərin əsas yoxlanması:
+Lokal işlək klassik çarxı işə salmaq:
+
+```bash
+npm ci
+npm run dev
+```
+
+Veb səhifə `http://127.0.0.1:4321/` ünvanında açılır. PHP foundation üçün `composer install --working-dir=apps/api`; tələb olunan PHP versiyası 8.3+ və `intl`, `mbstring`, `pdo_mysql`, `sodium` genişlənmələridir.
+
+Tətbiq və müqavilə yoxlamaları:
+
+```bash
+npm run check
+npm run test:unit
+npm run test:e2e
+npm run test:a11y
+npm run test:seo
+npm run test:content
+npm audit --audit-level=moderate
+```
+
+`test:api` hazırda PHP runtime ilkin şərtlərini yoxlayır; HTTP paylaşma/admin API-si WP07–08-də qurulacaq. `test:pwa` PWA işi WP10-da tamamlanana qədər açıq şəkildə bloklanır. Bunlar həmin imkanların keçdiyini göstərmir.
+
+Python 3.11+ ilə sənəd və müqavilə yoxlamaları:
 
 ```bash
 python3 scripts/validate_docs.py
@@ -120,9 +143,11 @@ Sxem və nümunələrin ciddi yoxlanması:
 ```bash
 python3 -m pip install -r scripts/requirements-docs.txt
 python3 scripts/validate_contracts.py
+python3 scripts/validate_semantics.py
+python3 scripts/validate_seo_contract.py
 ```
 
-Bu yoxlamalar keçidlər, dil siyahısı, SVG, müqavilə uyğunluğu və nümunələri yoxlayır. **Tətbiqin, real HTTP serverinin və ya hüquqi uyğunluğun yoxlanması deyil.** Tətbiqin gələcək quraşdırma/build/test əmrləri [icra planında](docs/15-IMPLEMENTATION.md) tələb kimi verilib; hazırda mövcud deyillər.
+Bu yoxlamalar keçidlər, dil siyahısı, SVG, müqavilə uyğunluğu və nümunələri yoxlayır. **Bunlar tətbiqin bütün funksiyalarını, real PHP HTTP serverini, cihaz qəbulunu və ya hüquqi uyğunluğu təsdiqləmir.** Tam qəbul statusu [icra planında](docs/15-IMPLEMENTATION.md) və [progress.json](docs/progress.json) faylında sübutlarla izlənir.
 
 ## ✅ Nə vaxt hazır sayılacaq?
 
@@ -147,7 +172,7 @@ Açıq seksual məzmun, çat, açıq istifadəçi şablonları bazarı, ayrı ci
 
 **Lavbe · Seçim anı üçün düşünülmüş təcrübə.**
 
-Sənəd bazası: **14 noyabr 2026** · Tətbiq: **hələ icra edilməyib**
+Sənəd bazası: **14 noyabr 2026** · Tətbiq: **WP01 verified; qalan iş paketləri açıqdır**
 
 </div>
 

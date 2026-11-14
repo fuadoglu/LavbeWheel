@@ -1,0 +1,38 @@
+{
+  "name": "lavbe-wheel",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "packageManager": "npm@11.5.1",
+  "workspaces": [
+    "apps/web",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @lavbe/web",
+    "build": "npm run build --workspace @lavbe/web",
+    "preview": "npm run preview --workspace @lavbe/web",
+    "contracts:generate": "node scripts/generate-contracts.mjs",
+    "contracts:check": "node scripts/generate-contracts.mjs --check",
+    "check": "npm run contracts:check && node scripts/validate-config.mjs && npm run check --workspace @lavbe/contracts && npm run check --workspace @lavbe/selection && npm run check --workspace @lavbe/session && npm run check --workspace @lavbe/web",
+    "test:unit": "node --experimental-strip-types --test",
+    "test:api": "composer test --working-dir=apps/api",
+    "test:e2e": "playwright test",
+    "test:a11y": "playwright test --grep @a11y",
+    "test:seo": "npm run build && node scripts/validate-built-site.mjs",
+    "test:pwa": "node scripts/validate-pwa.mjs",
+    "test:content": "node scripts/validate-content.mjs",
+    "validate:docs": "python3 scripts/validate_docs.py && python3 scripts/validate_contracts.py && python3 scripts/validate_semantics.py && python3 scripts/validate_seo_contract.py",
+    "verify:release": "node scripts/verify-release.mjs",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.65.1",
+    "json-schema-to-typescript": "16.0.0",
+    "prettier": "3.10.1",
+    "typescript": "5.9.3"
+  }
+}

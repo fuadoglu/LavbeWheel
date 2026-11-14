@@ -1,5 +1,12 @@
 # Changelog
 
+## WP01 foundation — 2026-11-14
+
+- Added Astro/TypeScript/npm workspaces and a local-first classic wheel slice with unbiased selection and device-local draft list persistence.
+- Added locked PHP runtime foundation, generated TypeScript types for ten JSON Schemas, locale/config loaders and validators.
+- Added pinned GitHub Actions workflow, unit/e2e/Axe checks, SEO smoke validation and evidence manifest.
+- Kept the full product release blocked: HTTP API, PWA, complete tools/session persistence, reviewed catalogs, games, and external launch inputs remain open.
+
 ## Contract completion — 2026-11-14
 
 - Added full session envelopes and fixtures for all seven tools, including game/cycle recovery.

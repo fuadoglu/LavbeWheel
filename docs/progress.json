@@ -1,14 +1,60 @@
 {
   "version": 1,
-  "note": "Application progress, not documentation completion. All work packages start unimplemented.",
+  "note": "Application progress and evidence, not documentation completion. WP01 is verified; WP02-WP12 remain unimplemented.",
   "workPackages": [
     {
       "id": "WP01",
-      "status": "not-started",
-      "branch": null,
-      "commit": null,
-      "evidence": [],
-      "blockers": []
+      "status": "verified",
+      "branch": "feat/wp01-foundation",
+      "commit": "a9e4b765b8d2930e126e35d0bfc0f54e108160d3",
+      "evidence": [
+        {
+          "command": "npm ci",
+          "result": "PASS; clean lockfile install, 0 npm audit findings",
+          "artifact": "evidence/release-manifest.json#/workPackages/WP01/evidence/0",
+          "scope": "Node workspace reproducibility on local macOS ARM; GitHub Actions not run"
+        },
+        {
+          "command": "composer install --working-dir=apps/api --no-interaction --prefer-dist && composer test --working-dir=apps/api",
+          "result": "PASS; PHP 8.4.10 and required extensions present",
+          "artifact": "evidence/release-manifest.json#/workPackages/WP01/evidence/1",
+          "scope": "Runtime prerequisites only; no HTTP API"
+        },
+        {
+          "command": "npm run contracts:generate && npm run contracts:check",
+          "result": "PASS; deterministic TS modules generated for 10 JSON Schemas",
+          "artifact": "packages/contracts/src/generated/"
+        },
+        {
+          "command": "npm run check",
+          "result": "PASS; 0 TypeScript/Astro diagnostics and config drift checks pass",
+          "artifact": "evidence/release-manifest.json#/workPackages/WP01/evidence/4"
+        },
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 6 selection tests",
+          "artifact": "tests/unit/selection.test.ts"
+        },
+        {
+          "command": "npm run test:e2e && npm run test:a11y && npm run test:seo",
+          "result": "PASS; 2 browser tests, 1 Axe scan, built-root smoke",
+          "artifact": "evidence/release-manifest.json#/workPackages/WP01/evidence/8"
+        },
+        {
+          "command": "Python docs validators using scripts/requirements-docs.txt",
+          "result": "PASS; docs/schema/semantic reference/SEO checks",
+          "artifact": "evidence/release-manifest.json#/workPackages/WP01/evidence/11"
+        },
+        {
+          "method": "Visible browser smoke at http://127.0.0.1:4321/",
+          "result": "PASS; live local classic-wheel slice opened and a selection rendered",
+          "artifact": "http://127.0.0.1:4321/",
+          "scope": "Local only; not deployed"
+        }
+      ],
+      "blockers": [
+        "GitHub Actions has not yet executed against this branch."
+      ]
     },
     {
       "id": "WP02",

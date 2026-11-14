@@ -109,7 +109,7 @@ The check validates relative links, unique locale codes, SVG XML, required contr
 python3 scripts/validate_contracts.py
 ```
 
-Application installation/build/test commands are specified as a **future required command contract** in [the implementation plan](docs/15-IMPLEMENTATION.md); they do not exist yet. Do not mistake a proposed directory tree for implemented source.
+The WP01 foundation now includes a local Azerbaijani classic-wheel slice, locked Node/PHP manifests, generated TypeScript contracts, config checks, and application CI. The other tools and full persistence, API, reporting, games, reviewed locales, and integrations remain unimplemented. See the [implementation plan](docs/15-IMPLEMENTATION.md) and [progress evidence](docs/progress.json); a local build does not mean a public release.
 
 ## 🔬 Readiness review
 
