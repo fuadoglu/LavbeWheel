@@ -32,7 +32,7 @@ final class ContentService
                 }
             }
             unset($record);
-            $payload = ['kind' => $input['kind'], 'locale' => $input['locale'], 'sourceHash' => $input['sourceHash'], 'records' => $records];
+            $payload = ['kind' => $input['kind'], 'locale' => $input['locale'], 'sourceHash' => $input['sourceHash'], 'records' => $records, 'expectedRevision' => $input['expectedRevision']];
             $json = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
             $id = self::id();
             $encrypted = $this->crypto->encrypt($json, 'admin-content:' . $id);
@@ -99,10 +99,20 @@ final class ContentService
     {
         $this->pdo->beginTransaction();
         try {
-            $q = $this->pdo->prepare('SELECT id,kind,locale,state,LOWER(HEX(source_hash)) source_hash,revision FROM content_versions WHERE id=:id FOR UPDATE');
+            $q = $this->pdo->prepare('SELECT id,kind,locale,state,LOWER(HEX(source_hash)) source_hash,payload_cipher,nonce,key_id,revision FROM content_versions WHERE id=:id FOR UPDATE');
             $q->execute(['id' => $id]); $row = $q->fetch();
             if (!$row) throw new ApiException(404, 'NOT_FOUND', 'The content version was not found.');
             if ((int)$row['revision'] !== $expectedRevision || $row['state'] !== 'validated') throw new ApiException(409, 'REVISION_CONFLICT', 'Only the current validated version can be reviewed.');
+            $payload=json_decode($this->crypto->decrypt($row['payload_cipher'],$row['nonce'],$row['key_id'],'admin-content:'.$id),true,flags:JSON_THROW_ON_ERROR);
+            $reviewedAt=gmdate('Y-m-d\TH:i:s\Z');
+            foreach($payload['records'] as &$record){
+                if($row['kind']==='pack')$record['review']=['status'=>'reviewed','sourceHash'=>$row['source_hash'],'reviewer'=>$actor,'reviewedAt'=>$reviewedAt];
+                if($row['kind']==='ui-catalog')$record['status']='reviewed';
+            }
+            unset($record);
+            $encrypted=$this->crypto->encrypt(json_encode($payload,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_THROW_ON_ERROR),'admin-content:'.$id);
+            $save=$this->pdo->prepare('UPDATE content_versions SET payload_cipher=:cipher,nonce=:nonce,key_id=:keyId WHERE id=:id');
+            $save->execute(['cipher'=>$encrypted['cipher'],'nonce'=>$encrypted['nonce'],'keyId'=>$encrypted['keyId'],'id'=>$id]);
             $u = $this->pdo->prepare('UPDATE content_versions SET state=\'reviewed\',reviewer_id=:actor,reviewed_at=UTC_TIMESTAMP(6) WHERE id=:id AND state=\'validated\''); $u->execute(['actor'=>$actor,'id'=>$id]);
             $this->audit($actor, 'content.review', $id . ':' . substr(hash('sha256',$note),0,16), gmdate('Y-m-d H:i:s.u'));
             $this->pdo->commit();
@@ -111,6 +121,24 @@ final class ContentService
     }
 
     public function get(string $id): array { $v=$this->load($id); return ['version'=>$v['summary'],'payload'=>$v['payload']]; }
+
+    /** @return list<array{id:string,revision:int,payload:array}> */
+    public function publicationVersions(array $ids):array
+    {
+        if($ids===[]||count($ids)>10000||count(array_unique($ids))!==count($ids))throw new ApiException(400,'VALIDATION_ERROR','The selected content versions are invalid.');
+        $versions=[];
+        foreach($ids as $id){
+            if(!is_string($id)||!preg_match('/^[A-Za-z0-9_-]{8,64}$/',$id))throw new ApiException(400,'VALIDATION_ERROR','The selected content versions are invalid.');
+            $v=$this->load($id);$summary=$v['summary'];
+            if($summary['state']!=='reviewed')throw new ApiException(409,'REVISION_CONFLICT','Only reviewed content versions may be published.');
+            $latest=$this->pdo->prepare('SELECT MAX(revision) FROM content_versions WHERE kind=:kind AND locale=:locale');$latest->execute(['kind'=>$summary['kind'],'locale'=>$summary['locale']]);
+            if((int)$latest->fetchColumn()!==$summary['revision'])throw new ApiException(409,'REVISION_CONFLICT','A newer version exists; review the latest revision before publishing.');
+            if(!$this->sourceIsCurrent($v['payload']))throw new ApiException(409,'REVISION_CONFLICT','A selected content source is stale.');
+            $versions[]=['id'=>$summary['id'],'revision'=>$summary['revision'],'payload'=>$v['payload']];
+        }
+        usort($versions,static fn(array $a,array $b):int=>strcmp($a['id'],$b['id']));
+        return $versions;
+    }
 
     public function list(?string $cursor): array
     {
@@ -143,14 +171,14 @@ final class ContentService
     { $raw=getenv($env);if($raw===false||$raw==='')return $values===[];$allowed=array_filter(array_map('trim',explode(',',$raw)));foreach($values as $v)if(!in_array($v,$allowed,true))return false;return true; }
     private static function id():string{return bin2hex(random_bytes(16));}
     private static function placeholders(string $message):array{preg_match_all('/\{([A-Za-z][A-Za-z0-9_]*)\}/',$message,$m);$v=$m[1];sort($v,SORT_STRING);return $v;}
-    private static function canonicalHash(array $value):string{return hash('sha256',self::canonical($value));}
-    private static function canonical(mixed $value):string
+    private static function canonicalHash(array $value):string{return CanonicalJson::hash($value);}
+    private function sourceIsCurrent(array $payload):bool
     {
-        if(is_array($value)){
-            if(array_is_list($value))return '['.implode(',',array_map(self::canonical(...),$value)).']';
-            ksort($value,SORT_STRING);$pairs=[];foreach($value as $k=>$v)$pairs[]=json_encode((string)$k,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_THROW_ON_ERROR).':'.self::canonical($v);return '{'.implode(',',$pairs).'}';
-        }
-        return json_encode($value,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_THROW_ON_ERROR);
+        $kind=$payload['kind']??'';$hash=$payload['sourceHash']??'';
+        if(!is_string($hash)||!preg_match('/^[a-f0-9]{64}$/',$hash))return false;
+        if($kind==='ui-catalog'){$english=json_decode((string)file_get_contents(dirname(__DIR__,4).'/content/locales/en.json'),true,flags:JSON_THROW_ON_ERROR);return hash_equals(CanonicalJson::hash($english['messages']),$hash);}
+        if($kind==='pack'){foreach($payload['records']??[] as $record){$source=$record;unset($source['review']);if(!hash_equals(CanonicalJson::hash($source),$hash))return false;}return true;}
+        return true;
     }
     private static function encodeCursor(string $id):string{return rtrim(strtr(base64_encode($id),'+/','-_'),'=');}
     private static function decodeCursor(string $s):string{$v=base64_decode(strtr($s,'-_','+/'),true);if($v===false||!preg_match('/^[a-f0-9]{32}$/',$v))throw new ApiException(400,'VALIDATION_ERROR','The page cursor is invalid.');return $v;}

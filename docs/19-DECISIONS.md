@@ -21,7 +21,14 @@
 - **Problem / requirements:** WP08 and `docs/14-ADMIN-CONTENT.md` require strict imported schemas, server-verified source/review state and protected drafts.
 - **Selected behavior:** Imported records are schema-checked, encrypted at rest, assigned a server revision and saved as `draft`; client-supplied `reviewed` state is discarded. UI source keys, source hashes, placeholders and unsafe markup are checked against the English catalog. Pack source hashes follow the recursive key-sort rule documented in `content/packs/README.md`.
 - **Alternative rejected:** trusting imported `status`, reviewer, or source-hash values would let an editor upload self-approved content and is not acceptable.
-- **Acceptance impact:** draft import/validation/review can be exercised locally. Full RFC 8785 shared manifest canonicalization, full ICU parsing, remaining admin APIs and production publication remain open; this decision does not approve content or enable publishing.
+- **Acceptance impact:** draft import/validation/review can be exercised locally. Full ICU parsing, remaining publication APIs and production publication remain open; this decision does not approve content or enable publishing.
+
+### 2026-11-15 — WP08 publication digest boundary
+
+- **Problem / requirements:** `PublishRequest` accepted `versionIds` and `manifestHash`, but the API creates `buildId` and `createdAt`; a publisher cannot compute a digest over server-generated envelope fields before submitting the request.
+- **Selected behavior:** `manifestHash` is SHA-256 over RFC 8785 canonical UTF-8 bytes of the sorted immutable `versions` array only. `buildId` and `createdAt` are envelope metadata and excluded. The browser and PHP implementation share `contracts/canonical-json-vectors.json`; the trusted runner must recompute the same versions digest before building.
+- **Alternative rejected:** having the client guess server-generated metadata or letting the runner trust the supplied digest would make validation impossible or weaken the integrity boundary.
+- **Acceptance impact:** the request is computable before job creation and deterministic across the clients. This does not authorize deployment or mark any editorial content reviewed.
 
 ## Concrete baseline defaults
 

@@ -1,0 +1,19 @@
+{
+  "vectors": [
+    {
+      "name": "rfc-8785-section-3.2.2",
+      "input": "{\"numbers\":[333333333.33333329,1E30,4.50,2e-3,0.000000000000000000000000001],\"string\":\"\\u20ac$\\u000F\\u000aA'\\u0042\\u0022\\u005c\\\\\\\"\\/\",\"literals\":[null,true,false]}",
+      "canonical": "{\"literals\":[null,true,false],\"numbers\":[333333333.3333333,1e+30,4.5,0.002,1e-27],\"string\":\"€$\\u000f\\nA'B\\\"\\\\\\\\\\\"/\"}"
+    },
+    {
+      "name": "utf16-object-key-order",
+      "input": "{\"\\uE000\":1,\"\\uD800\\uDC00\":2}",
+      "canonical": "{\"𐀀\":2,\"\":1}"
+    },
+    {
+      "name": "ecmascript-number-thresholds",
+      "input": "{\"small\":1e-7,\"lower\":1e-6,\"upper\":1e20,\"high\":1e21,\"negativeZero\":-0.0}",
+      "canonical": "{\"high\":1e+21,\"lower\":0.000001,\"negativeZero\":0,\"small\":1e-7,\"upper\":100000000000000000000}"
+    }
+  ]
+}

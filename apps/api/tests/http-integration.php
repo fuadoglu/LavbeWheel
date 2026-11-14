@@ -165,17 +165,81 @@ try {
     [$staleReviewStatus] = $send('/api/admin/v1/versions/'.$version['id'].'/review','POST',$adminMutationHeaders,json_encode(['expectedRevision'=>1,'note'=>'duplicate review'],JSON_THROW_ON_ERROR));
     if($staleReviewStatus!==409) throw new RuntimeException('Admin review accepted a repeated stale revision.');
     $unsafeRecord = ['key'=>'spin','message'=>'<script>alert(1)</script>','sourceHash'=>hash('sha256',$sourceMessage),'status'=>'draft'];
-    $unsafeImport = [...$import,'records'=>[$unsafeRecord],'expectedRevision'=>1];
+    $unsafeImport = [...$import,'locale'=>'az','records'=>[$unsafeRecord],'expectedRevision'=>0];
     [$unsafeImportStatus, , $unsafeVersion] = $send('/api/admin/v1/imports','POST',$adminMutationHeaders,json_encode($unsafeImport,JSON_THROW_ON_ERROR));
     [$unsafeValidationStatus, , $unsafeValidation] = $send('/api/admin/v1/versions/'.$unsafeVersion['id'].'/validate','POST',$adminMutationHeaders,'{}');
     if($unsafeImportStatus!==201||$unsafeValidationStatus!==200||($unsafeValidation['valid']??true)!==false||!in_array('UNSAFE_MARKUP',array_column($unsafeValidation['errors'],'code'),true)) throw new RuntimeException('Admin validation accepted executable markup.');
     $staleRecord = ['key'=>'spin','message'=>$sourceMessage,'sourceHash'=>str_repeat('0',64),'status'=>'draft'];
-    $staleImport = [...$import,'records'=>[$staleRecord],'expectedRevision'=>2];
+    $staleImport = [...$import,'locale'=>'az','records'=>[$staleRecord],'expectedRevision'=>1];
     [$staleImportStatus, , $staleVersion] = $send('/api/admin/v1/imports','POST',$adminMutationHeaders,json_encode($staleImport,JSON_THROW_ON_ERROR));
     [$staleValidationStatus, , $staleValidation] = $send('/api/admin/v1/versions/'.$staleVersion['id'].'/validate','POST',$adminMutationHeaders,'{}');
     if($staleImportStatus!==201||$staleValidationStatus!==200||($staleValidation['valid']??true)!==false||!in_array('STALE_SOURCE',array_column($staleValidation['errors'],'code'),true)) throw new RuntimeException('Admin validation accepted stale source metadata.');
     [$versionsStatus, , $versions] = $send('/api/admin/v1/versions','GET',$adminCookie);
     if($versionsStatus!==200||count($versions)!==3||!in_array($version['id'],array_column($versions,'id'),true)) throw new RuntimeException('Admin content version listing failed.');
+    $publishRequestFor = static function(string $versionId)use($send,$adminCookie):array{
+        [$status,,$detail]=$send('/api/admin/v1/versions/'.$versionId,'GET',$adminCookie);
+        if($status!==200)throw new RuntimeException('Reviewed content could not be loaded for publish digest calculation.');
+        $versions=[['id'=>$detail['version']['id'],'revision'=>$detail['version']['revision'],'payload'=>$detail['payload']]];
+        return ['versionIds'=>[$versionId],'manifestHash'=>\Lavbe\Api\Admin\CanonicalJson::hash($versions)];
+    };
+    $startPublish = static function(string $versionId)use($publishRequestFor,$send,$adminMutationHeaders,$adminOpenApi):array{
+        $publishRequest=$publishRequestFor($versionId);
+        [$status,$headers,$job]=$send('/api/admin/v1/publish-jobs','POST',$adminMutationHeaders,json_encode($publishRequest,JSON_THROW_ON_ERROR));
+        if($status!==202||!isset($headers['x-runner-credential']))throw new RuntimeException('Publish job did not issue its scoped runner credential (status='.$status.', response='.json_encode($job).').');
+        $assertKeys=$adminOpenApi['components']['schemas']['Job']['required'];$keys=array_keys($job);sort($keys);sort($assertKeys);if($keys!==$assertKeys)throw new RuntimeException('Publish job response differs from OpenAPI.');
+        return [$job,$headers['x-runner-credential'],$publishRequest['manifestHash']];
+    };
+    $runStatus = static function(string $jobId,string $credential,string $state,?string $artifact=null,?string $error=null)use($send):array{
+        return $send('/api/admin/v1/runner/jobs/'.$jobId.'/status','POST',['Authorization'=>'Bearer '.$credential,'Content-Type'=>'application/json'],json_encode(['state'=>$state,'artifactHash'=>$artifact,'errorCode'=>$error],JSON_THROW_ON_ERROR));
+    };
+    $badDigestRequest=$publishRequestFor($version['id']);$badDigestRequest['manifestHash']=str_repeat('0',64);
+    [$badDigestStatus,,$badDigestError]=$send('/api/admin/v1/publish-jobs','POST',$adminMutationHeaders,json_encode($badDigestRequest,JSON_THROW_ON_ERROR));
+    if($badDigestStatus!==409||($badDigestError['error']['code']??null)!=='REVISION_CONFLICT')throw new RuntimeException('Publish job accepted a mismatched manifest digest.');
+    [$firstJob,$firstRunner,$firstHash]=$startPublish($version['id']);
+    [$badRunnerStatus]=$send('/api/admin/v1/runner/jobs/'.$firstJob['id'].'/manifest','GET',['Authorization'=>'Bearer '.str_repeat('x',43)]);
+    if($badRunnerStatus!==401)throw new RuntimeException('Runner accepted a credential outside its job scope.');
+    [$firstManifestStatus,,$firstManifest]=$send('/api/admin/v1/runner/jobs/'.$firstJob['id'].'/manifest','GET',['Authorization'=>'Bearer '.$firstRunner]);
+    $assertOpenApiKeys($firstManifest,$adminOpenApi['components']['schemas']['PublishManifest'],'Publish manifest response');
+    $artifactA=str_repeat('b',64);
+    [$invalidTransitionStatus]=$runStatus($firstJob['id'],$firstRunner,'succeeded',$artifactA);
+    [$firstValidateStatus]= $runStatus($firstJob['id'],$firstRunner,'validating');
+    [$firstBuildStatus]= $runStatus($firstJob['id'],$firstRunner,'building');
+    [$awaitingStatus]= $runStatus($firstJob['id'],$firstRunner,'awaiting-promotion',$artifactA);
+    [$badPromoteStatus]=$send('/api/admin/v1/publish-jobs/'.$firstJob['id'].'/promote','POST',$adminMutationHeaders,json_encode(['artifactHash'=>str_repeat('d',64)],JSON_THROW_ON_ERROR));
+    [$promoteStatus,$promoteHeaders,$promoted]=$send('/api/admin/v1/publish-jobs/'.$firstJob['id'].'/promote','POST',$adminMutationHeaders,json_encode(['artifactHash'=>$artifactA],JSON_THROW_ON_ERROR));
+    [$firstSuccessStatus,,$firstSucceeded]=$runStatus($firstJob['id'],$firstRunner,'succeeded',$artifactA);
+    if($firstManifestStatus!==200||$firstManifest['mode']!=='publish'||$firstManifest['manifestHash']!==$firstHash||$invalidTransitionStatus!==409||$firstValidateStatus!==200||$firstBuildStatus!==200||$awaitingStatus!==200||$badPromoteStatus!==409||$promoteStatus!==202||$firstSuccessStatus!==200||$firstSucceeded['state']!=='succeeded')throw new RuntimeException('Reviewed content publication state machine failed.');
+    $secondImport=[...$import,'expectedRevision'=>1];
+    [$secondImportStatus,,$secondVersion]=$send('/api/admin/v1/imports','POST',$adminMutationHeaders,json_encode($secondImport,JSON_THROW_ON_ERROR));
+    [$secondValidateStatus,,$secondValidation]=$send('/api/admin/v1/versions/'.$secondVersion['id'].'/validate','POST',$adminMutationHeaders,'{}');
+    [$secondReviewStatus,,$secondReviewed]=$send('/api/admin/v1/versions/'.$secondVersion['id'].'/review','POST',$adminMutationHeaders,json_encode(['expectedRevision'=>2,'note'=>'second source revision'],JSON_THROW_ON_ERROR));
+    if($secondImportStatus!==201||$secondValidateStatus!==200||!$secondValidation['valid']||$secondReviewStatus!==200||$secondReviewed['state']!=='reviewed')throw new RuntimeException('Second reviewed content revision failed.');
+    [$failedJob,$failedRunner]=$startPublish($secondVersion['id']);
+    [$failedManifestStatus]=$send('/api/admin/v1/runner/jobs/'.$failedJob['id'].'/manifest','GET',['Authorization'=>'Bearer '.$failedRunner]);
+    [$failedValidateStatus]=$runStatus($failedJob['id'],$failedRunner,'validating');
+    [$failedBuildStatus]=$runStatus($failedJob['id'],$failedRunner,'building');
+    [$failedStatus,,$failedJobResult]=$runStatus($failedJob['id'],$failedRunner,'failed',null,'BUILD_FAILED');
+    $liveAfterFailure=$testPdo->query('SELECT LOWER(HEX(artifact_hash)) FROM active_publications WHERE singleton_id=1')->fetchColumn();
+    if($failedManifestStatus!==200||$failedValidateStatus!==200||$failedBuildStatus!==200||$failedStatus!==200||$failedJobResult['state']!=='failed'||$liveAfterFailure!==$artifactA)throw new RuntimeException('Failed build changed the known-good active publication.');
+    [$secondJob,$secondRunner]=$startPublish($secondVersion['id']);
+    [$secondManifestStatus]=$send('/api/admin/v1/runner/jobs/'.$secondJob['id'].'/manifest','GET',['Authorization'=>'Bearer '.$secondRunner]);
+    [$secondValidateState]=$runStatus($secondJob['id'],$secondRunner,'validating');
+    [$secondBuildState]=$runStatus($secondJob['id'],$secondRunner,'building');
+    $artifactB=str_repeat('c',64);
+    [$secondAwaiting]=$runStatus($secondJob['id'],$secondRunner,'awaiting-promotion',$artifactB);
+    [$secondPromote]=$send('/api/admin/v1/publish-jobs/'.$secondJob['id'].'/promote','POST',$adminMutationHeaders,json_encode(['artifactHash'=>$artifactB],JSON_THROW_ON_ERROR));
+    [$secondSuccess,,$secondSucceeded]=$runStatus($secondJob['id'],$secondRunner,'succeeded',$artifactB);
+    if($secondManifestStatus!==200||$secondValidateState!==200||$secondBuildState!==200||$secondAwaiting!==200||$secondPromote!==202||$secondSuccess!==200||$secondSucceeded['state']!=='succeeded')throw new RuntimeException('Second content publication failed.');
+    [$unknownRollbackStatus]=$send('/api/admin/v1/publish-jobs/'.$secondJob['id'].'/rollback','POST',$adminMutationHeaders,json_encode(['targetArtifactHash'=>str_repeat('d',64)],JSON_THROW_ON_ERROR));
+    if($unknownRollbackStatus!==409)throw new RuntimeException('Rollback accepted an artifact without known-good publication evidence.');
+    [$rollbackStatus,$rollbackHeaders,$rollbackJob]=$send('/api/admin/v1/publish-jobs/'.$secondJob['id'].'/rollback','POST',$adminMutationHeaders,json_encode(['targetArtifactHash'=>$artifactA],JSON_THROW_ON_ERROR));
+    if($rollbackStatus!==202||!isset($rollbackJob['id'],$rollbackHeaders['x-runner-credential']))throw new RuntimeException('Known-good rollback was not accepted (status='.$rollbackStatus.', response='.json_encode($rollbackJob).').');
+    $rollbackRunner=$rollbackHeaders['x-runner-credential']??'';
+    [$rollbackManifestStatus,,$rollbackManifest]=$send('/api/admin/v1/runner/jobs/'.$rollbackJob['id'].'/manifest','GET',['Authorization'=>'Bearer '.$rollbackRunner]);
+    [$rollbackSuccess,,$rolledBack]=$runStatus($rollbackJob['id'],$rollbackRunner,'succeeded',$artifactA);
+    $activeAfterRollback=$testPdo->query('SELECT job_id,LOWER(HEX(artifact_hash)) artifact FROM active_publications WHERE singleton_id=1')->fetch();
+    [$rolledBackJobStatus,,$rolledBackJob]=$send('/api/admin/v1/publish-jobs/'.$secondJob['id'],'GET',$adminCookie);
+    if($rollbackStatus!==202||$rollbackManifestStatus!==200||$rollbackManifest['mode']!=='rollback'||$rollbackManifest['rollbackArtifactHash']!==$artifactA||$rollbackSuccess!==200||$rolledBack['state']!=='succeeded'||$activeAfterRollback['job_id']!==$rollbackJob['id']||$activeAfterRollback['artifact']!==$artifactA||$rolledBackJobStatus!==200||$rolledBackJob['state']!=='rolled-back')throw new RuntimeException('Known-good publication rollback failed.');
     [$auditStatus, , $auditEvents] = $send('/api/admin/v1/audit','GET',$adminCookie);
     if($auditStatus!==200||!is_array($auditEvents)||count($auditEvents)<4) throw new RuntimeException('Owner audit-event list failed.');
     foreach($auditEvents as $event){$keys=array_keys($event);sort($keys);if($keys!==['action','actorId','at','id','objectId'])throw new RuntimeException('Audit event response differs from OpenAPI.');}
@@ -200,7 +264,7 @@ try {
     if ($recoveryStatus !== 200 || $reusedRecoveryStatus !== 401 || ($reusedRecoveryError['error']['code'] ?? '') !== 'AUTHENTICATION_REQUIRED') {
         throw new RuntimeException('One-time admin recovery code did not enforce single use (first=' . $recoveryStatus . ', replay=' . $reusedRecoveryStatus . ', replayCode=' . ($reusedRecoveryError['error']['code'] ?? 'none') . ').');
     }
-    fwrite(STDOUT, "PASS: live HTTP sharing, admin MFA/session/CSRF/content review, role-gated user/audit operations and administrative share revocation.\n");
+    fwrite(STDOUT, "PASS: live HTTP sharing, admin MFA/content review, publication failure/promotion/rollback, role-gated owner operations and share revocation.\n");
 } finally {
     proc_terminate($process);
     proc_close($process);

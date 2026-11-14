@@ -12,7 +12,7 @@ use Lavbe\Api\Infrastructure\Limits;
 
 final class AdminKernel
 {
-    public function __construct(private readonly Config $config, private readonly AdminAuthService $auth, private readonly ContentService $content, private readonly AdminOperationsService $operations) {}
+    public function __construct(private readonly Config $config, private readonly AdminAuthService $auth, private readonly ContentService $content, private readonly AdminOperationsService $operations, private readonly PublishService $publishing) {}
 
     public function handle(Request $request, ?int $now = null): ?Response
     {
@@ -53,6 +53,14 @@ final class AdminKernel
                 $this->auth->assertCsrf($session, $request->header('x-csrf-token'));
                 $this->auth->logout($token);
                 return new Response(204, [...$headers, 'Set-Cookie' => 'lavbe_admin=; Path=/api/admin/v1; Secure; HttpOnly; SameSite=Lax; Max-Age=0']);
+            }
+            if(preg_match('#^/api/admin/v1/runner/jobs/([A-Za-z0-9_-]{8,64})/manifest$#',$request->path,$m)&&$request->method==='GET'){
+                return new Response(200,[...$headers,'Content-Type'=>'application/json; charset=utf-8'],$this->publishing->manifest($m[1],$this->runnerCredential($request),$now));
+            }
+            if(preg_match('#^/api/admin/v1/runner/jobs/([A-Za-z0-9_-]{8,64})/status$#',$request->path,$m)&&$request->method==='POST'){
+                $payload=json_decode($request->body,true,flags:JSON_THROW_ON_ERROR);
+                if(!is_array($payload))throw new ApiException(400,'VALIDATION_ERROR','The runner update is invalid.');
+                return new Response(200,[...$headers,'Content-Type'=>'application/json; charset=utf-8'],$this->publishing->update($m[1],$this->runnerCredential($request),$payload,$now));
             }
             if ($request->path === '/api/admin/v1/session' && $request->method === 'GET') { /* handled above */ }
             if (str_starts_with($request->path, '/api/admin/v1/')) {
@@ -107,6 +115,26 @@ final class AdminKernel
                     $this->operations->revokeShare($m[1],$payload['reasonCode'],$session['userId'],$now);
                     return new Response(204,$headers);
                 }
+                if($path==='/api/admin/v1/publish-jobs'&&$request->method==='POST'){
+                    $this->requireRole($session,['owner','publisher']);
+                    $created=$this->publishing->create($payload,$session['userId'],$now);
+                    return new Response(202,[...$headers,'Content-Type'=>'application/json; charset=utf-8','X-Runner-Credential'=>$created['runnerCredential']],$created['job']);
+                }
+                if(preg_match('#^/api/admin/v1/publish-jobs/([A-Za-z0-9_-]{8,64})$#',$path,$m)&&$request->method==='GET'){
+                    $this->requireRole($session,['owner','editor','reviewer','publisher']);
+                    return new Response(200,[...$headers,'Content-Type'=>'application/json; charset=utf-8'],$this->publishing->get($m[1]));
+                }
+                if(preg_match('#^/api/admin/v1/publish-jobs/([A-Za-z0-9_-]{8,64})/promote$#',$path,$m)&&$request->method==='POST'){
+                    $this->requireRole($session,['owner','publisher']);
+                    if(array_diff(array_keys($payload),['artifactHash'])!==[]||!isset($payload['artifactHash'])||!is_string($payload['artifactHash']))throw new ApiException(400,'VALIDATION_ERROR','The promotion request is invalid.');
+                    return new Response(202,[...$headers,'Content-Type'=>'application/json; charset=utf-8'],$this->publishing->promote($m[1],$payload['artifactHash'],$session['userId'],$now));
+                }
+                if(preg_match('#^/api/admin/v1/publish-jobs/([A-Za-z0-9_-]{8,64})/rollback$#',$path,$m)&&$request->method==='POST'){
+                    $this->requireRole($session,['owner','publisher']);
+                    if(array_diff(array_keys($payload),['targetArtifactHash'])!==[]||!isset($payload['targetArtifactHash'])||!is_string($payload['targetArtifactHash']))throw new ApiException(400,'VALIDATION_ERROR','The rollback request is invalid.');
+                    $created=$this->publishing->rollback($m[1],$payload['targetArtifactHash'],$session['userId'],$now);
+                    return new Response(202,[...$headers,'Content-Type'=>'application/json; charset=utf-8','X-Runner-Credential'=>$created['runnerCredential']],$created['job']);
+                }
             }
             throw new ApiException(404, 'NOT_FOUND', 'The requested resource could not be found.');
         } catch (ApiException $error) {
@@ -129,6 +157,13 @@ final class AdminKernel
     {
         if ($session['role'] === 'owner') return;
         if (!in_array($session['role'], $roles, true)) throw new ApiException(403,'ACCESS_DENIED','This role cannot perform the requested action.');
+    }
+
+    private function runnerCredential(Request $request):string
+    {
+        $authorization=$request->header('authorization')??'';
+        if(!preg_match('/^Bearer ([A-Za-z0-9_-]{43})$/',$authorization,$match))throw new ApiException(401,'AUTHENTICATION_REQUIRED','A scoped runner credential is required.');
+        return $match[1];
     }
 
     private function requireOrigin(Request $request): void

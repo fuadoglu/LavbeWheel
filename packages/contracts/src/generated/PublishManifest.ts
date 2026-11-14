@@ -294,9 +294,13 @@ export type LocalizedGamePackV1 = {
 };
 
 export interface PublishManifest {
+  /**
+   * SHA-256 of RFC 8785 canonical UTF-8 JSON for the sorted versions array only; buildId and createdAt are envelope metadata and are excluded.
+   */
   manifestHash: string;
   buildId: string;
   createdAt: string;
+  state: 'exporting' | 'validating' | 'building' | 'awaiting-promotion' | 'deploying';
   /**
    * @minItems 1
    * @maxItems 10000
@@ -1071,4 +1075,6 @@ export interface PublishManifest {
           expectedRevision: number;
         };
   }[];
+  mode: 'publish' | 'rollback';
+  rollbackArtifactHash: string | null;
 }

@@ -3,7 +3,7 @@
   "info": {
     "title": "Lavbe administration API",
     "version": "1.0.0-spec",
-    "description": "Partially implemented administration API contract. /api/admin/v1 responses are no-store; no wildcard CORS. Cookie-authenticated mutations require Origin and X-CSRF-Token. Runner operations require independent short-lived scoped credentials. Record schemas are strict; arbitrary executable content is forbidden."
+    "description": "Partially implemented administration API contract. /api/admin/v1 responses are no-store; no wildcard CORS. Cookie-authenticated mutations require Origin and X-CSRF-Token. Runner operations require independent short-lived scoped credentials. Record schemas are strict; arbitrary executable content is forbidden. Manifest digest covers sorted immutable versions only; buildId/createdAt are excluded envelope metadata. Job creation returns a scoped runner credential once in X-Runner-Credential."
   },
   "servers": [
     {
@@ -1227,6 +1227,13 @@
                 "schema": {
                   "const": "no-store"
                 }
+              },
+              "X-Runner-Credential": {
+                "description": "Scoped runner bearer token. Returned once at job creation; store in the trusted runner secret store.",
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{43}$"
+                }
               }
             },
             "content": {
@@ -1698,6 +1705,13 @@
               "Cache-Control": {
                 "schema": {
                   "const": "no-store"
+                }
+              },
+              "X-Runner-Credential": {
+                "description": "Scoped runner bearer token. Returned once at job creation; store in the trusted runner secret store.",
+                "schema": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{43}$"
                 }
               }
             },
@@ -4763,7 +4777,8 @@
           },
           "manifestHash": {
             "type": "string",
-            "pattern": "^[a-f0-9]{64}$"
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "SHA-256 of RFC 8785 canonical UTF-8 JSON for the sorted immutable versions array selected by versionIds. Envelope metadata buildId and createdAt are excluded so the publisher can calculate this value before job creation."
           }
         }
       },
@@ -4774,7 +4789,9 @@
           "id",
           "state",
           "artifactHash",
-          "errorCode"
+          "errorCode",
+          "mode",
+          "rollbackTargetHash"
         ],
         "properties": {
           "id": {
@@ -4807,6 +4824,19 @@
               "null"
             ],
             "maxLength": 100
+          },
+          "mode": {
+            "enum": [
+              "publish",
+              "rollback"
+            ]
+          },
+          "rollbackTargetHash": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[a-f0-9]{64}$"
           }
         }
       },
@@ -4898,12 +4928,16 @@
           "manifestHash",
           "buildId",
           "createdAt",
+          "state",
+          "mode",
+          "rollbackArtifactHash",
           "versions"
         ],
         "properties": {
           "manifestHash": {
             "type": "string",
-            "pattern": "^[a-f0-9]{64}$"
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "SHA-256 of RFC 8785 canonical UTF-8 JSON for versions only; buildId and createdAt are envelope metadata and are excluded."
           },
           "buildId": {
             "type": "string",
@@ -4912,6 +4946,9 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "state": {
+            "enum": ["exporting", "validating", "building", "awaiting-promotion", "deploying"]
           },
           "versions": {
             "type": "array",
@@ -6801,6 +6838,19 @@
                 }
               }
             }
+          },
+          "mode": {
+            "enum": [
+              "publish",
+              "rollback"
+            ]
+          },
+          "rollbackArtifactHash": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[a-f0-9]{64}$"
           }
         }
       }

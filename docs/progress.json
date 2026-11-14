@@ -489,13 +489,30 @@
           "result": "PASS; PHP+MariaDB 12.1 live HTTP lifecycle includes strict owner/editor role gates, audit response keys, last-owner protection, session invalidation and public-share unavailability after admin revoke",
           "artifact": "apps/api/tests/http-integration.php",
           "scope": "Local isolated lavbe_api_test; MySQL 8.4 CI for these later working-tree changes is pending"
+        },
+        {
+          "command": "LAVBE_TEST_DATABASE_DSN=... npm run test:api",
+          "result": "PASS; local PHP 8.4 + MariaDB 12.1 live HTTP includes RFC 8785 PHP vectors, manifest digest mismatch rejection, scoped runner credential, publication failure isolation, exact artifact promotion and known-good rollback",
+          "artifact": "apps/api/tests/http-integration.php",
+          "scope": "Isolated lavbe_api_test only; MySQL 8.4 CI for this uncommitted publication slice is pending"
+        },
+        {
+          "command": "npm run contracts:generate && npm run contracts:check && npm run check && npm run test:unit",
+          "result": "PASS; generated schemas synchronized, TypeScript/Astro 0 diagnostics, 57 unit tests",
+          "artifact": "command output"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs && git diff --check",
+          "result": "PASS; docs/contracts/semantic/SEO integrity and no whitespace errors",
+          "artifact": "command output",
+          "scope": "Reference and schema validation; not deployment verification"
         }
       ],
       "blockers": [
         "Admin panel UI and full OpenAPI response/error conformance are not implemented.",
-        "RFC 8785 canonical JSON and shared server/runner manifest verification remain unresolved; no content has been approved or published.",
+        "RFC 8785 canonical JSON and shared server/runner parity vectors are implemented locally; no signed build runner or approved content exists yet.",
         "Preset and CMP allowlists require operator-supplied reviewed IDs; empty defaults fail closed.",
-        "MySQL 8.4 CI, cross-device/admin UI and deployment/hosting remain unverified."
+        "MySQL 8.4 CI for the publication changes, cross-device/admin UI and deployment/hosting remain unverified."
       ]
     },
     {

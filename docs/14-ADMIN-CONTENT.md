@@ -25,3 +25,5 @@ Allowlisted fields only: analytics/GTM/publisher IDs, approved consent provider 
 ## Required admin workflow evidence
 
 Import invalid pack, reject dangerous content, mark stale translation, review 110-locale coverage, publish failed build without touching live, promote known artifact, rollback, restore after data loss, revoke abusive share, disable ads and audit owner/editor access. Implement [admin OpenAPI](../contracts/admin.openapi.json) with integration tests; internal UI must handle errors and job progress without fake completion. User creation/MFA bootstrap remains an owner CLI workflow; user update never returns credential secrets. Admin lists return at most 50 records and X-Next-Cursor when another page exists.
+
+Manifest digest scope: `manifestHash` covers the RFC 8785 canonical UTF-8 bytes of the sorted immutable `versions` array only. `buildId` and `createdAt` are generated transport metadata and are excluded so the publisher can calculate the digest before job creation. Browser, API and runner must pass the shared vectors in `contracts/canonical-json-vectors.json`.

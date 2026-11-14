@@ -3,6 +3,7 @@ import type { LavbeSharedWheelConfigurationV1 } from './generated/Wheel.js';
 export type WheelConfig = LavbeSharedWheelConfigurationV1;
 export type ToolKind = WheelConfig['tool'];
 export type WheelEntry = WheelConfig['entries'][number];
+export { canonicalJson, type CanonicalJsonValue } from './canonical-json.js';
 
 export type { PortableLavbeSessionEnvelopeV1 as SessionEnvelope } from './generated/Session.js';
 export type { LocalizedGamePackV1 as LocalizedPack } from './generated/Pack.js';

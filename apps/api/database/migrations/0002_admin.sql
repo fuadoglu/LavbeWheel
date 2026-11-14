@@ -51,15 +51,36 @@ CREATE TABLE IF NOT EXISTS content_versions (
 
 CREATE TABLE IF NOT EXISTS publish_jobs (
   id CHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL PRIMARY KEY,
+  job_type ENUM('publish','rollback') NOT NULL DEFAULT 'publish',
   state ENUM('queued','exporting','validating','building','awaiting-promotion','deploying','succeeded','failed','rolled-back') NOT NULL,
   manifest_hash BINARY(32) NOT NULL,
   artifact_hash BINARY(32) NULL,
+  rollback_target_hash BINARY(32) NULL,
+  runner_token_hash BINARY(32) NULL,
+  runner_expires_at DATETIME(6) NULL,
   error_code VARCHAR(64) CHARACTER SET ascii COLLATE ascii_bin NULL,
   actor_id CHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
   created_at DATETIME(6) NOT NULL,
   updated_at DATETIME(6) NOT NULL,
   INDEX publish_jobs_state_idx (state, created_at),
   CONSTRAINT publish_jobs_actor_fk FOREIGN KEY (actor_id) REFERENCES admin_users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS publish_job_versions (
+  job_id CHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  version_id CHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  revision INT UNSIGNED NOT NULL,
+  PRIMARY KEY (job_id,version_id),
+  CONSTRAINT publish_job_versions_job_fk FOREIGN KEY (job_id) REFERENCES publish_jobs(id),
+  CONSTRAINT publish_job_versions_version_fk FOREIGN KEY (version_id) REFERENCES content_versions(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS publication_history (
+  artifact_hash BINARY(32) NOT NULL PRIMARY KEY,
+  job_id CHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  released_at DATETIME(6) NOT NULL,
+  INDEX publication_history_job_idx (job_id),
+  CONSTRAINT publication_history_job_fk FOREIGN KEY (job_id) REFERENCES publish_jobs(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE IF NOT EXISTS audit_events (
