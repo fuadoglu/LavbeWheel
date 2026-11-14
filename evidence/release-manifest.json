@@ -261,61 +261,57 @@
       "baseCommit": "54107be353b2a2e58db9f46fdabd720659211e9e",
       "evidence": [
         {
+          "command": "npm run check",
+          "result": "PASS; generated contracts/config, TypeScript packages and Astro diagnostics (0 errors/warnings/hints)"
+        },
+        {
           "command": "npm run test:unit",
-          "result": "PASS; 44 tests include round aggregation, distinct winners, removed winners, 50-row paging and CSV formula injection protection",
+          "result": "PASS; 47 unit tests including classic entry, number, team and game report semantics; immutable events, CSV formula defense and 50-row paging",
           "artifact": "tests/unit/reporting.test.ts"
         },
         {
           "command": "npm run test:e2e",
-          "result": "PASS; 8 Chromium flows include full classic result-to-report-to-CSV journey",
+          "result": "PASS; 8 Chromium flows include the report and CSV flow",
           "artifact": "tests/e2e/wheel.spec.ts"
         },
         {
           "command": "npm run test:a11y",
-          "result": "PASS; root and report panel have no automated WCAG 2.1 A/AA violations",
-          "artifact": "tests/e2e/wheel.spec.ts",
+          "result": "PASS; automated Axe WCAG 2.1 A/AA root scan",
           "scope": "Automated only"
         },
         {
-          "command": "npm run check",
-          "result": "PASS; contracts/config/TypeScript/Astro, no diagnostics",
-          "artifact": "command output"
-        },
-        {
           "command": "npm run test:content",
-          "result": "PASS; 2 draft catalogs have matching keys/placeholders; 108 catalogs pending",
-          "artifact": "content/locales/"
+          "result": "PASS; 110 locale metadata records and two draft catalogs with matching keys/placeholders",
+          "scope": "108 translations and review remain pending"
         },
         {
           "command": "npm run test:seo",
-          "result": "PASS; static build and root HTML smoke",
+          "result": "PASS; static build and root-page smoke",
           "artifact": "apps/web/dist/index.html",
-          "scope": "No route graph or origin audit"
-        },
-        {
-          "command": "npm run screenshots:wp04",
-          "result": "PASS; 11 local Chromium screenshots, including 390px phone and 768px report views",
-          "artifact": "evidence/wp04/screenshots/README.md",
-          "scope": "Synthetic data only; no device/owner review"
+          "scope": "Route graph/production origin not verified"
         },
         {
           "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
-          "result": "PASS; docs, schemas, fixtures, reference semantics and SEO registry checks",
-          "artifact": "docs/ and contracts/",
-          "scope": "Documentation/spec reference only"
+          "result": "PASS; docs, schemas, fixtures, reference semantics and SEO registry integrity",
+          "artifact": "docs/ and contracts/"
         },
         {
-          "command": "GitHub Actions on PR #5",
-          "result": "PASS; Documentation and contracts validate plus Application foundation verify workflows passed on WP05 head",
-          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43599972838 and https://github.com/fuadoglu/LavbeWheel/actions/runs/43599972822",
-          "scope": "CI only; review/merge/device acceptance remain separate"
+          "method": "Visible browser smoke at http://127.0.0.1:4322/",
+          "result": "PASS; opened local classic Lavbe UI",
+          "scope": "Local only; not deployed"
+        },
+        {
+          "command": "npm run test:pwa",
+          "result": "BLOCKED as expected; WP10/PWA-01 remains unimplemented",
+          "artifact": "scripts/validate-pwa.mjs"
         }
       ],
       "limitations": [
-        "Report aggregation currently covers entry results in the classic family only; numbers, teams and game cards remain open.",
-        "Full release acceptance, real-device review, manual accessibility, and retention/clear workflow remain unverified."
+        "WP05 report model and CSV support entry, number, team and game outcomes; current UI integration exposes the classic wheel flow while other tool screens remain future work.",
+        "Explicit clear/export confirmation and safe local history retention/pruning UX remain unimplemented.",
+        "108 locale catalogs, native translation review, manual accessibility, device/browser review and release approval remain pending."
       ],
-      "commit": "5c4fd18f4fe5efd59c4d9ba1920a1419fac43e2d"
+      "commit": "2533550b4b7444b7eb0f7f8eb5bea19aa2a4517d"
     }
   },
   "requirements": {
