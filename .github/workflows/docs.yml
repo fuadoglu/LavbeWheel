@@ -16,3 +16,5 @@ jobs:
       - run: python3 -m pip install -r scripts/requirements-docs.txt
       - run: python3 scripts/validate_contracts.py
       - run: python3 scripts/validate_semantics.py
+
+      - run: python3 scripts/validate_seo_contract.py

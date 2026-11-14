@@ -1,0 +1,172 @@
+{
+  "version": 1,
+  "origin": "https://lavbe.com",
+  "defaultLocale": "en",
+  "localeEncoding": "registry-exact",
+  "routes": [
+    {
+      "id": "home",
+      "slug": "",
+      "querySeeds": [
+        "spin the wheel",
+        "random wheel",
+        "wheel spinner"
+      ],
+      "intent": "Custom random wheel",
+      "tool": "names",
+      "related": [
+        "random-name-picker",
+        "weighted-wheel",
+        "group-games"
+      ],
+      "researchStatus": "hypothesis-not-measured"
+    },
+    {
+      "id": "random-name-picker",
+      "slug": "random-name-picker",
+      "querySeeds": [
+        "random name picker",
+        "name wheel",
+        "student name picker"
+      ],
+      "intent": "Choose a person from a list",
+      "tool": "names",
+      "related": [
+        "team-generator",
+        "weighted-wheel",
+        "home"
+      ],
+      "researchStatus": "hypothesis-not-measured"
+    },
+    {
+      "id": "random-number-picker",
+      "slug": "random-number-picker",
+      "querySeeds": [
+        "random number generator",
+        "pick a number"
+      ],
+      "intent": "Choose an integer from a range",
+      "tool": "numbers",
+      "related": [
+        "yes-or-no-wheel",
+        "home"
+      ],
+      "researchStatus": "hypothesis-not-measured"
+    },
+    {
+      "id": "yes-or-no-wheel",
+      "slug": "yes-or-no-wheel",
+      "querySeeds": [
+        "yes or no wheel",
+        "yes no picker"
+      ],
+      "intent": "Make a binary choice",
+      "tool": "yes-no",
+      "related": [
+        "home",
+        "random-number-picker"
+      ],
+      "researchStatus": "hypothesis-not-measured"
+    },
+    {
+      "id": "weighted-wheel",
+      "slug": "weighted-wheel",
+      "querySeeds": [
+        "weighted random picker",
+        "weighted wheel"
+      ],
+      "intent": "Choose with explicit unequal probabilities",
+      "tool": "weighted",
+      "related": [
+        "random-name-picker",
+        "home"
+      ],
+      "researchStatus": "hypothesis-not-measured"
+    },
+    {
+      "id": "team-generator",
+      "slug": "team-generator",
+      "querySeeds": [
+        "random team generator",
+        "split into groups"
+      ],
+      "intent": "Allocate all members into balanced groups",
+      "tool": "teams",
+      "related": [
+        "random-name-picker",
+        "group-games"
+      ],
+      "researchStatus": "hypothesis-not-measured"
+    },
+    {
+      "id": "spin-the-bottle",
+      "slug": "spin-the-bottle",
+      "querySeeds": [
+        "spin the bottle online",
+        "bottle spinner"
+      ],
+      "intent": "Select a seat in a physical group",
+      "tool": "bottle",
+      "related": [
+        "truth-or-dare",
+        "group-games",
+        "couples-games"
+      ],
+      "researchStatus": "hypothesis-not-measured"
+    },
+    {
+      "id": "truth-or-dare",
+      "slug": "truth-or-dare",
+      "querySeeds": [
+        "truth or dare online",
+        "truth or dare game"
+      ],
+      "intent": "Select a player and non-explicit prompt",
+      "tool": "game",
+      "related": [
+        "spin-the-bottle",
+        "group-games"
+      ],
+      "researchStatus": "hypothesis-not-measured"
+    },
+    {
+      "id": "couples-games",
+      "slug": "couples-games",
+      "querySeeds": [
+        "couples games",
+        "couple question game"
+      ],
+      "intent": "Play non-explicit relationship games",
+      "tool": "game",
+      "related": [
+        "spin-the-bottle",
+        "group-games"
+      ],
+      "researchStatus": "hypothesis-not-measured"
+    },
+    {
+      "id": "group-games",
+      "slug": "group-games",
+      "querySeeds": [
+        "group games online",
+        "party games with friends"
+      ],
+      "intent": "Play social games around a device",
+      "tool": "game",
+      "related": [
+        "truth-or-dare",
+        "team-generator",
+        "couples-games"
+      ],
+      "researchStatus": "hypothesis-not-measured"
+    }
+  ],
+  "legalSlugs": [
+    "privacy",
+    "cookies",
+    "terms",
+    "privacy-rights",
+    "contact",
+    "accessibility"
+  ]
+}

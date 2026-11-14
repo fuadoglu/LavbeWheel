@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "input": "http://www.lavbe.com/en/",
+      "status": 301,
+      "target": "https://lavbe.com/en/"
+    },
+    {
+      "input": "https://lavbe.com/en/random-name-picker",
+      "status": 301,
+      "target": "https://lavbe.com/en/random-name-picker/"
+    },
+    {
+      "input": "https://lavbe.com/EN/",
+      "status": 301,
+      "target": "https://lavbe.com/en/"
+    },
+    {
+      "input": "https://lavbe.com/zh-hans/",
+      "status": 301,
+      "target": "https://lavbe.com/zh-Hans/"
+    },
+    {
+      "input": "https://lavbe.com/zz/",
+      "status": 404,
+      "target": null
+    },
+    {
+      "input": "https://lavbe.com/en/unknown/",
+      "status": 404,
+      "target": null
+    },
+    {
+      "input": "https://lavbe.com/en/?utm_source=demo",
+      "status": 200,
+      "canonical": "https://lavbe.com/en/"
+    },
+    {
+      "input": "https://lavbe.com/en/?q=private-name",
+      "status": 200,
+      "robots": "noindex,follow",
+      "canonical": "https://lavbe.com/en/"
+    },
+    {
+      "input": "https://lavbe.com/en/?page=999",
+      "status": 404,
+      "target": null
+    },
+    {
+      "input": "https://lavbe.com/s/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/",
+      "status": 200,
+      "robots": "noindex,nofollow",
+      "canonical": null
+    }
+  ]
+}

@@ -1,0 +1,776 @@
+{
+  "version": 1,
+  "note": "Research work queue, NOT completed keyword research. No volumes or difficulty values fabricated. All launch locales need native intent/copy review.",
+  "locales": [
+    {
+      "locale": "en",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "az",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "tr",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ru",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "es",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "pt",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "pt-BR",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "de",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "fr",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "it",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "nl",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "pl",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "uk",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ro",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "hu",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "cs",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "sk",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "bg",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "sr",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "hr",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "bs",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "sl",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "mk",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "sq",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "en-GB",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "el",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "sv",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "no",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "da",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "fi",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "is",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "et",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "lv",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "lt",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ar",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "he",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "fa",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ur",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ps",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ku",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ckb",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "hi",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "bn",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "pa",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "gu",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "mr",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ne",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "si",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ta",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "te",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "kn",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ml",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "or",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "as",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "zh-Hans",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "zh-Hant",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ja",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ko",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "vi",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "th",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "id",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ms",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "fil",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "jv",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "su",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "km",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "lo",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "my",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "mn",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "kk",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ky",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "uz",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "tk",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "tg",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ka",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "hy",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "sw",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "am",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ha",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "yo",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ig",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "zu",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "xh",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "af",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "so",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "om",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "rw",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "mg",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "sn",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "st",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "tn",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ny",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "wo",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ff",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ht",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ca",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "eu",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "gl",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "cy",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "ga",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "gd",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "mt",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "lb",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "be",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "la",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "eo",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "mi",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "sm",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "haw",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    },
+    {
+      "locale": "fy",
+      "status": "pending",
+      "reviewer": null,
+      "evidenceUrl": null,
+      "reviewedAt": null
+    }
+  ]
+}

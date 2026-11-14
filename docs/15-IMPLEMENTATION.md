@@ -49,3 +49,7 @@ For every work package review failure modes in docs/18-RED-TEAM.md. Fix discover
 ## Suggested Codex task
 
 Implement the complete Lavbe scope. Establish the command contract, then work through WP01–12 with evidence. Preserve local data and exact selection/report semantics. Create original UI within the design constraints rather than copying competitor assets. Keep 110-language content/reviews and external provider setup honest. Finish with release evidence, deployment package, operator handbook and clearly identified launch blockers; never label a partial build production-ready.
+
+## SEO integration across work packages
+
+WP01 loads config/seo registry and defines build artifact schema; WP04 preserves semantic content/performance; WP08 validates native/publication state; WP09 generates route/metadata/alternate/sitemap graph and runs SEO-01–12; WP12 tests actual origin/CDN responses. Do not defer SEO to a final tag insertion. Research records remain pending until actual review.

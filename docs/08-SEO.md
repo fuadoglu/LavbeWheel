@@ -23,3 +23,7 @@ Submit domain property and sitemaps to Search Console and Bing Webmaster Tools; 
 Start from distinct intents in each market, not a Cartesian keyword-page generator. Related use cases can live within a tool page. Publication requires native title/description/content review. Capture per-route impressions/clicks, index exclusions, crawl errors and performance in webmaster tools. Segment first-party analytics only after consent. Do not store search queries containing user-entered names.
 
 Organic rankings depend on competition, content and reputation, not schema tags alone. Review 404s, duplicate canonicals, stale translations and low-value pages periodically. Ads must not make the initial tool or public content inaccessible. [Sources](20-SOURCES.md) are guidance, not ranking guarantees.
+
+## Normative implementation supplement
+
+[SEO execution contract](25-SEO-EXECUTION.md) and [SEO acceptance matrix](26-SEO-ACCEPTANCE.md) define exact implementation behavior. config/seo is the route/intent/indexing/URL-fixture source. Hreflang x-default uses the corresponding English tool URL except global home. Legal pages are self-canonical indexable but excluded from sitemap by default. No native keyword research or generated website checks are claimed complete by these documents.

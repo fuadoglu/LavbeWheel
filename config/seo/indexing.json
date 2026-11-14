@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "policies": [
+    {
+      "type": "global-home",
+      "status": 200,
+      "robots": "index,follow",
+      "canonical": true,
+      "sitemap": true,
+      "cache": "public-short"
+    },
+    {
+      "type": "localized-tool",
+      "status": 200,
+      "robots": "index,follow",
+      "canonical": true,
+      "sitemap": true,
+      "cache": "public-short"
+    },
+    {
+      "type": "legal",
+      "status": 200,
+      "robots": "index,follow",
+      "canonical": true,
+      "sitemap": false,
+      "cache": "public-short"
+    },
+    {
+      "type": "shared",
+      "status": 200,
+      "robots": "noindex,nofollow",
+      "canonical": false,
+      "sitemap": false,
+      "cache": "no-store"
+    },
+    {
+      "type": "admin",
+      "status": 200,
+      "robots": "noindex,nofollow",
+      "canonical": false,
+      "sitemap": false,
+      "cache": "no-store"
+    },
+    {
+      "type": "preview",
+      "status": 200,
+      "robots": "noindex,nofollow",
+      "canonical": false,
+      "sitemap": false,
+      "cache": "no-store"
+    },
+    {
+      "type": "api",
+      "status": 200,
+      "robots": "noindex",
+      "canonical": false,
+      "sitemap": false,
+      "cache": "no-store"
+    },
+    {
+      "type": "missing",
+      "status": 404,
+      "robots": "noindex",
+      "canonical": false,
+      "sitemap": false,
+      "cache": "error-short"
+    },
+    {
+      "type": "gone",
+      "status": 410,
+      "robots": "noindex",
+      "canonical": false,
+      "sitemap": false,
+      "cache": "no-store"
+    }
+  ]
+}

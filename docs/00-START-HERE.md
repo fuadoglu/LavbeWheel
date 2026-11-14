@@ -35,3 +35,7 @@ No public MVP. No guarantee of permanent zero maintenance, ad approval, legal ce
 - [Ekranların vizual müqaviləsi](23-SCREEN-CONTRACT.md)
 
 - [Hüquqi səhifələr və production qəbulu](24-LEGAL-LAUNCH.md)
+
+## SEO reading order
+
+Read docs/25 and docs/26 via [execution](25-SEO-EXECUTION.md) and [acceptance](26-SEO-ACCEPTANCE.md) before route/content generation. These supplements make SEO a primary release requirement.

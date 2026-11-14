@@ -25,3 +25,10 @@
 - Added original SVG documentation artwork/icon set, fixtures and documentation CI.
 
 Application implementation and all production gates remain pending.
+
+## SEO implementation contract — 2026-11-14
+
+- Added 10 intent owners, exact related-tool graph, nine indexing policies and URL fixtures.
+- Added 110-locale research queue without fabricated demand metrics.
+- Added page/publication/alternate/sitemap/HTTP/schema contracts and SEO-02–12 gates.
+- Added specification-only SEO validator; real application and native research remain execution work.

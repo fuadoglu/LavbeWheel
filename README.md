@@ -157,3 +157,9 @@ Sənəd bazası: **14 noyabr 2026** · Tətbiq: **hələ icra edilməyib**
 - [Ekranların vizual müqaviləsi](docs/23-SCREEN-CONTRACT.md)
 
 - [Hüquqi səhifələr və production qəbulu](docs/24-LEGAL-LAUNCH.md)
+
+## 🔎 SEO — əsas icra istiqaməti
+
+[Texniki SEO müqaviləsi](docs/25-SEO-EXECUTION.md) · [SEO qəbul matrisi](docs/26-SEO-ACCEPTANCE.md)
+
+Sorğu–səhifə xəritəsi, indeks siyasətləri, URL ssenariləri və 110 dil üçün araşdırma növbəsi config/seo daxilindədir. Real bazar araşdırması və hazır sayt testləri ayrıca icra ediləcək; sənədlərdə trafik və sıralama zəmanəti verilmir.

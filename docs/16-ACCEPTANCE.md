@@ -48,3 +48,7 @@ A release may be functionally code-complete while launch remains blocked by exte
 ## Legal production gate
 
 All eight evidence items in [legal launch](24-LEGAL-LAUNCH.md) are mandatory. Require actual operator/legal review, six page types per locale, accurate storage inventory, rights/withdrawal/delete/restore tests and no placeholders. Implementation completion cannot override missing external review.
+
+## Primary SEO release gates
+
+SEO-02 through SEO-12 in [SEO acceptance](26-SEO-ACCEPTANCE.md) are mandatory in addition to SEO-01. Native market/copy review and real generated-site/origin tests are distinct from specification CI. Rankings and field traffic are postlaunch observations, never prelaunch fabricated evidence.
