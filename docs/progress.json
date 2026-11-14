@@ -6,7 +6,7 @@
       "id": "WP01",
       "status": "verified",
       "branch": "feat/wp01-foundation",
-      "commit": null,
+      "commit": "a9e4b765b8d2930e126e35d0bfc0f54e108160d3",
       "evidence": [
         {
           "command": "npm ci",
