@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local bottle/game tools and draft source packs are implemented; WP07-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local bottle/game tools and draft source packs are implemented; WP07 sharing API is implemented with local MariaDB HTTP evidence and MySQL 8.4 CI pending; WP08-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -391,11 +391,48 @@
     },
     {
       "id": "WP07",
-      "status": "not-started",
-      "branch": null,
+      "status": "implemented",
+      "branch": "feat/wp07-sharing-api",
       "commit": null,
-      "evidence": [],
-      "blockers": []
+      "evidence": [
+        {
+          "command": "LAVBE_TEST_DATABASE_* composer test --working-dir=apps/api",
+          "result": "PASS; PHP runtime, 16 shared semantic vectors, strict request validation, body/origin/error headers, migration, encrypted create/read/revoke, idempotent replay/conflict, rate limiting, expiry purge/deletion journal and live HTTP server flow",
+          "artifact": "apps/api/tests/",
+          "scope": "Local PHP 8.4 + MariaDB 12.1 compatibility run; CI MySQL 8.4 not yet observed"
+        },
+        {
+          "command": "npm run check",
+          "result": "PASS; generated contracts, config limits, TypeScript and Astro diagnostics (0 errors/warnings/hints)",
+          "artifact": "command output"
+        },
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 53 existing unit tests",
+          "artifact": "tests/unit/"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; docs, schemas/fixtures, semantic reference vectors and SEO registry",
+          "artifact": "docs/ and contracts/",
+          "scope": "Specification integrity; not a full OpenAPI schema conformance report"
+        },
+        {
+          "command": "composer validate --working-dir=apps/api --no-check-publish",
+          "result": "PASS with Composer metadata warning: no license field",
+          "artifact": "apps/api/composer.json"
+        },
+        {
+          "command": "composer cleanup --working-dir=apps/api",
+          "result": "PASS; cleanup CLI completed against isolated test DB",
+          "artifact": "apps/api/bin/cleanup.php"
+        }
+      ],
+      "blockers": [
+        "MySQL 8.4 CI check on the WP07 branch must pass before WP07 can be marked verified.",
+        "The PHP-rendered /s/{shareId}/ no-store shell and hosting integration remain to be completed in the release route/deployment work.",
+        "Production encryption keys, database, TLS origin and hosting have not been configured; no deployment has occurred."
+      ]
     },
     {
       "id": "WP08",

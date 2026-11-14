@@ -1,8 +1,8 @@
 {
   "version": 1,
   "scope": "Implementation evidence only; not release approval or deployment evidence.",
-  "branch": "feat/wp06-games",
-  "baseCommit": "58cfc5a3fbbadc10bd6794205950196b42976bc3",
+  "branch": "feat/wp07-sharing-api",
+  "baseCommit": "bab5d9c40f1643b43b191bb9239da2d05f0e19b8",
   "workPackages": {
     "WP01": {
       "status": "verified",
@@ -367,6 +367,50 @@
         "All source packs are draft. No content-suitability, cultural or translation approval is inferred.",
         "Cross-browser/device and manual accessibility review remain pending.",
         "WP04 visual acceptance and WP09 110-locale SEO/routes remain open."
+      ]
+    },
+    "WP07": {
+      "status": "implemented",
+      "baseCommit": "bab5d9c40f1643b43b191bb9239da2d05f0e19b8",
+      "commit": null,
+      "evidence": [
+        {
+          "command": "LAVBE_TEST_DATABASE_* composer test --working-dir=apps/api",
+          "result": "PASS; PHP runtime, 16 shared semantic vectors, strict request validation, body/origin/error headers, migration, encrypted create/read/revoke, idempotent replay/conflict, rate limiting, expiry purge/deletion journal and live HTTP server flow",
+          "artifact": "apps/api/tests/",
+          "scope": "Local PHP 8.4 + MariaDB 12.1 compatibility run; CI MySQL 8.4 not yet observed"
+        },
+        {
+          "command": "npm run check",
+          "result": "PASS; generated contracts, config limits, TypeScript and Astro diagnostics (0 errors/warnings/hints)",
+          "artifact": "command output"
+        },
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 53 existing unit tests",
+          "artifact": "tests/unit/"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; docs, schemas/fixtures, semantic reference vectors and SEO registry",
+          "artifact": "docs/ and contracts/",
+          "scope": "Specification integrity; not a full OpenAPI schema conformance report"
+        },
+        {
+          "command": "composer validate --working-dir=apps/api --no-check-publish",
+          "result": "PASS with Composer metadata warning: no license field",
+          "artifact": "apps/api/composer.json"
+        },
+        {
+          "command": "composer cleanup --working-dir=apps/api",
+          "result": "PASS; cleanup CLI completed against isolated test DB",
+          "artifact": "apps/api/bin/cleanup.php"
+        }
+      ],
+      "limitations": [
+        "MySQL 8.4 CI check on the WP07 branch must pass before WP07 can be marked verified.",
+        "The PHP-rendered /s/{shareId}/ no-store shell and hosting integration remain to be completed in the release route/deployment work.",
+        "Production encryption keys, database, TLS origin and hosting have not been configured; no deployment has occurred."
       ]
     }
   },

@@ -38,7 +38,7 @@ The command interface is present. Each command must gain real package behavior a
 - npm run build — static output and deployable PHP artifact, no secrets.
 - npm run verify:release — ordered required suite and evidence manifest validation.
 
-Current limits: `test:api` checks PHP/runtime prerequisites only until WP07–08 add HTTP behavior; `test:pwa` fails explicitly until WP10 adds artifacts and behavior; `test:content` validates registry/catalog key and placeholder structure but not native review; `test:seo` checks only the built root smoke contract, not SEO-01–12. `verify:release` is gated on all work packages having verified evidence.
+Current limits: WP07 now implements the public sharing HTTP API and MySQL-backed lifecycle; its tests require the isolated MySQL 8.4 CI service (local runs must point `LAVBE_TEST_DATABASE_*` only at `lavbe_api_test`). Admin HTTP behavior remains WP08 work. `test:pwa` fails explicitly until WP10 adds artifacts and behavior; `test:content` validates registry/catalog key and placeholder structure but not native review; `test:seo` checks only the built root smoke contract, not SEO-01–12. `verify:release` is gated on all work packages having verified evidence.
 
 Runtime-specific tools may be selected at bootstrap, but the command interface must remain stable. CI cannot claim manual/device/legal/account checks passed merely because a command succeeded.
 
