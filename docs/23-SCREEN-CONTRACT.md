@@ -24,3 +24,7 @@ Title, names disclosure, TTL selector, create button; success view URL/copy/nati
 ## Screen evidence matrix
 
 Generate screenshots at all four sizes, both themes and each tool style, plus RTL Arabic and long German labels. Reference contact sheet: docs/assets/screen-layouts.svg. Implement a real interactive vertical slice before expanding all tools; internal slice is not a public MVP. Review against geometry, readability, keyboard, reduced motion and budgets. Record owner approval separately from engineering acceptance.
+
+## Final visual quality
+
+Apply [art direction](27-ART-DIRECTION.md) and [component/motion rules](28-COMPONENT-MOTION.md). The layout contact sheet is schematic; high-fidelity screens and working motion are separate mandatory deliverables in DES-01–10.

@@ -41,3 +41,7 @@ Legal pages and activation must follow docs/24-LEGAL-LAUNCH.md. Missing operator
 ## SEO is a primary requirement
 
 Read docs/25-SEO-EXECUTION.md and docs/26-SEO-ACCEPTANCE.md. Build route/canonical/alternate/sitemap/link artifacts from config/seo, not duplicate hardcoded lists. Run SEO-01–12 gates. The locale research registry is a pending work queue; do not invent volumes or mark it researched. Protect privacy, native usefulness and actual HTTP behavior before public release.
+
+## Design craft
+
+Read docs/27-ART-DIRECTION.md, docs/28-COMPONENT-MOTION.md and docs/29-DESIGN-ACCEPTANCE.md before final UI. Implement 'quiet interface, expressive wheel' using config/design-craft.json and semantic tokens. Do not mistake SVG wireframes for final design or claim awards/owner approval without evidence. Craft cannot override speed, SEO, accessibility or consent.

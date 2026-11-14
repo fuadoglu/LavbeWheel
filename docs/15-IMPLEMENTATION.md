@@ -53,3 +53,7 @@ Implement the complete Lavbe scope. Establish the command contract, then work th
 ## SEO integration across work packages
 
 WP01 loads config/seo registry and defines build artifact schema; WP04 preserves semantic content/performance; WP08 validates native/publication state; WP09 generates route/metadata/alternate/sitemap graph and runs SEO-01–12; WP12 tests actual origin/CDN responses. Do not defer SEO to a final tag insertion. Research records remain pending until actual review.
+
+## Visual execution order
+
+WP04 includes high-fidelity screen family, component state gallery and working final-selection moment under docs/27–29. Review before repeating the design across tools. Preserve actual-device performance and localization gates. Final visual owner review belongs in release evidence, not fabricated approval metadata.

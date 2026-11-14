@@ -37,3 +37,7 @@ Undo entry changes for the last 20 local edits in a wheel, excluding committed h
 ## Icon system
 
 36 self-contained SVG documentation icons are supplied in [the catalog](assets/ICONS.md). They are original repository assets. Runtime implementation should use a coherent local subset of a vetted icon library, document its license and supply the same action mapping; no external icon CDN. Decorative icons are hidden from assistive technology; icon-only buttons need translated labels and tooltips. The README banner is documentation artwork, not an approved final trademark/logo or a complete PWA app-icon export.
+
+## Visual craft supplements
+
+[Art direction](27-ART-DIRECTION.md), [component/motion contract](28-COMPONENT-MOTION.md) and [design acceptance](29-DESIGN-ACCEPTANCE.md) are mandatory. config/design-craft.json complements semantic tokens. Existing diagrams/documentation icons are not proof of final art direction or owner approval.

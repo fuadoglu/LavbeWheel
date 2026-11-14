@@ -52,3 +52,7 @@ All eight evidence items in [legal launch](24-LEGAL-LAUNCH.md) are mandatory. Re
 ## Primary SEO release gates
 
 SEO-02 through SEO-12 in [SEO acceptance](26-SEO-ACCEPTANCE.md) are mandatory in addition to SEO-01. Native market/copy review and real generated-site/origin tests are distinct from specification CI. Rankings and field traffic are postlaunch observations, never prelaunch fabricated evidence.
+
+## Design craft release gates
+
+DES-01 through DES-10 in [design acceptance](29-DESIGN-ACCEPTANCE.md) are mandatory. Public release requires executed screens, real interaction evidence and owner visual review, not a self-assigned Awwwards-level label.

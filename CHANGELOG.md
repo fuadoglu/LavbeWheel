@@ -32,3 +32,10 @@ Application implementation and all production gates remain pending.
 - Added 110-locale research queue without fabricated demand metrics.
 - Added page/publication/alternate/sitemap/HTTP/schema contracts and SEO-02–12 gates.
 - Added specification-only SEO validator; real application and native research remain execution work.
+
+## Visual craft specification — 2026-11-14
+
+- Added original art-direction concept, typography/depth rules and tool-specific visual grammar.
+- Added component state matrix, motion timeline and design-craft tokens.
+- Added DES-01–10 gates with executed-screen, real-device and owner-review evidence.
+- Clarified that existing schematic boards do not constitute a finished design or award-level result.
