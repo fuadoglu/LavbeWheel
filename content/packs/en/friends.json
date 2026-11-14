@@ -1,0 +1,367 @@
+{
+  "schemaVersion": 1,
+  "id": "pack_friends",
+  "version": 1,
+  "family": "friends",
+  "locale": "en",
+  "minPlayers": 2,
+  "maxPlayers": 20,
+  "audience": "teen",
+  "intensity": "playful",
+  "cards": [
+    {
+      "id": "card_friends_001",
+      "kind": "question",
+      "text": "What makes a hangout feel easy and fun?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_002",
+      "kind": "question",
+      "text": "Which shared memory always makes you smile?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_003",
+      "kind": "question",
+      "text": "What would be a great theme for a group night?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_004",
+      "kind": "question",
+      "text": "Which song would you add to a friends playlist?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_005",
+      "kind": "question",
+      "text": "What snack should always be at a movie night?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_006",
+      "kind": "question",
+      "text": "What low-cost outing should friends try together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_007",
+      "kind": "question",
+      "text": "What is a tiny way friends can show support?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_008",
+      "kind": "question",
+      "text": "Which game brings out your playful side?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_009",
+      "kind": "question",
+      "text": "What would your group name a shared playlist?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_010",
+      "kind": "question",
+      "text": "What is the funniest harmless mix-up you recall?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_011",
+      "kind": "question",
+      "text": "Which local spot is best for catching up?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_012",
+      "kind": "question",
+      "text": "What would you teach your friends in ten minutes?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_013",
+      "kind": "question",
+      "text": "What is a good question for a long car ride?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_014",
+      "kind": "question",
+      "text": "Which fictional team would you join together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_015",
+      "kind": "question",
+      "text": "What makes you feel included in a group?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_016",
+      "kind": "question",
+      "text": "What is your ideal way to plan a spontaneous day?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_017",
+      "kind": "question",
+      "text": "Which food would you share at a potluck?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_018",
+      "kind": "question",
+      "text": "What is a fun skill one of your friends has?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_019",
+      "kind": "question",
+      "text": "What would your group do with a free afternoon?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_020",
+      "kind": "question",
+      "text": "Which board game deserves a comeback?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_021",
+      "kind": "question",
+      "text": "What tiny celebration should become a tradition?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_022",
+      "kind": "question",
+      "text": "What is the best kind of group photo?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_023",
+      "kind": "question",
+      "text": "What outdoor activity would you try as a team?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_024",
+      "kind": "question",
+      "text": "Which friend-made recommendation did you enjoy?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_025",
+      "kind": "question",
+      "text": "What is a kind way to welcome someone new?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_026",
+      "kind": "question",
+      "text": "What would your friends put on a team badge?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_027",
+      "kind": "question",
+      "text": "What makes a shared trip memorable?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_028",
+      "kind": "question",
+      "text": "Which comedy would you watch together again?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_029",
+      "kind": "question",
+      "text": "What is a useful thing friends can do for each other?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_030",
+      "kind": "question",
+      "text": "What would you put in a friendship time capsule?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_031",
+      "kind": "question",
+      "text": "What is a fun challenge everyone can opt into?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_032",
+      "kind": "question",
+      "text": "Which city would be fun to explore as a group?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_033",
+      "kind": "question",
+      "text": "What is the best soundtrack for tidying together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_034",
+      "kind": "question",
+      "text": "What is a question that starts a great conversation?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_035",
+      "kind": "question",
+      "text": "What would your group invent for a weekend?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_036",
+      "kind": "question",
+      "text": "Which simple recipe could you make together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_037",
+      "kind": "question",
+      "text": "What shared project sounds enjoyable?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_038",
+      "kind": "question",
+      "text": "What is a compliment friends should hear more often?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_039",
+      "kind": "question",
+      "text": "Which fictional café would you visit as a group?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_040",
+      "kind": "question",
+      "text": "What is your favorite way to reconnect after a busy week?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_041",
+      "kind": "question",
+      "text": "What would a perfect no-phone hour look like?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_042",
+      "kind": "question",
+      "text": "Which silly award would you give your group?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_043",
+      "kind": "question",
+      "text": "What is a tiny adventure close to home?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_044",
+      "kind": "question",
+      "text": "What makes you trust a friend with a plan?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_045",
+      "kind": "question",
+      "text": "What is a good way to include quieter people?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_046",
+      "kind": "question",
+      "text": "Which song would be your group's walk-on music?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_047",
+      "kind": "question",
+      "text": "What is something you appreciate about group chats?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_048",
+      "kind": "question",
+      "text": "What would you do for a relaxed celebration?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_049",
+      "kind": "question",
+      "text": "What kind of memory should you make next?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_friends_050",
+      "kind": "question",
+      "text": "What is one word for the way your friends make you feel?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    }
+  ],
+  "review": {
+    "status": "draft",
+    "sourceHash": "a232017d78f7c7253f0d176d04a094c506b64e26b163986bf160cc7eef3bc949"
+  }
+}

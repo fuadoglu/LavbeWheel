@@ -1,0 +1,74 @@
+---
+import '../styles/global.css';
+import messages from '../../../../content/locales/az.json';
+import { designTokens, getLocaleDirection } from '../data/config';
+import bottleIcon from '../../../../assets/icons/phosphor/regular/beer-bottle.svg';
+import moonIcon from '../../../../assets/icons/phosphor/regular/moon.svg';
+import sunIcon from '../../../../assets/icons/phosphor/regular/sun.svg';
+const m = messages.messages;
+const light = designTokens.themes.light;
+---
+<!doctype html>
+<html lang={messages.locale} dir={getLocaleDirection(messages.locale)} data-theme-tokens={JSON.stringify(designTokens.themes)}>
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="theme-color" content={light.canvas} />
+    <script is:inline>
+      (() => {
+        const root = document.documentElement, themes = JSON.parse(root.dataset.themeTokens || '{}');
+        const variables = { canvas: '--canvas-token', surface: '--surface-token', text: '--text-token', mutedText: '--muted-token', primary: '--primary-token', onPrimary: '--on-primary', border: '--border-token', focus: '--focus-token' };
+        let theme = 'light'; try { theme = localStorage.getItem('lavbe.theme') === 'dark' ? 'dark' : 'light'; } catch { /* Keep accessible defaults. */ }
+        root.dataset.theme = theme; for (const [key, variable] of Object.entries(variables)) root.style.setProperty(variable, themes[theme][key]);
+      })();
+    </script>
+    <meta name="description" content={m.bottleDescription} /><title>{m.bottleTitle} · Lavbe</title>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">L</span><span>lavbe</span></a>
+        <nav aria-label={m.navMain}><a href="/">{m.navWheel}</a><a class="nav-active" href="/bottle/" aria-current="page">{m.navBottle}</a><a href="/games/">{m.gameNav}</a></nav>
+        <div class="header-actions"><span class="locale" aria-label={m.language}>{m.languageCode}</span><button class="theme-toggle" id="theme-toggle" type="button" data-light-label={m.themeToLight} data-dark-label={m.themeToDark} data-light-icon={sunIcon.src} data-dark-icon={moonIcon.src} aria-label={m.themeToDark}><img width="19" height="19" src={moonIcon.src} alt="" aria-hidden="true" /></button></div>
+      </header>
+      <section class="tool-strip" aria-label={m.navBottle}><img class="tool-icon" src={bottleIcon.src} width="20" height="20" alt="" aria-hidden="true" /><span class="tool-name">{m.navBottle}</span><span class="tool-caption">{m.bottleDescription}</span><span class="tool-presence">{m.localOnly}</span></section>
+      <section class="bottle-layout">
+        <section class="bottle-panel" aria-labelledby="bottle-title">
+          <div class="game-heading"><div><span class="section-kicker">LAVBE / {m.navBottle.toUpperCase()}</span><h1 id="bottle-title">{m.bottleTitle}</h1></div><span class="game-round" aria-hidden="true">◉</span></div>
+          <p class="game-description">{m.bottleDescription}</p>
+          <form id="bottle-setup" class="game-setup">
+            <label for="bottle-names">{m.bottleParticipants}<textarea id="bottle-names" rows="5" required>Aylin&#10;Murad&#10;Leyla&#10;Kamran</textarea></label>
+            <label for="bottle-mode">{m.bottleMode}<select id="bottle-mode" class="motion-select"><option value="independent">{m.bottleModeIndependent}</option><option value="remove-winner">{m.bottleModeRemove}</option><option value="shuffled-cycle">{m.bottleModeCycle}</option></select></label>
+            <button id="bottle-start" class="spin-button" type="submit"><img class="spin-icon" src={bottleIcon.src} width="18" height="18" alt="" aria-hidden="true" />{m.bottleStart}</button>
+          </form>
+          <div id="bottle-play" class="bottle-play" hidden>
+            <label for="bottle-sessions">{m.bottleSavedSessions}<select id="bottle-sessions" class="motion-select"></select></label>
+            <div class="bottle-wheel-wrap"><div class="bottle-pointer" aria-hidden="true"></div><canvas id="bottle-wheel" width="640" height="640" aria-label={m.bottleTitle}></canvas><img class="bottle-spinner" src={bottleIcon.src} width="76" height="76" alt="" aria-hidden="true" /></div>
+            <button id="bottle-spin" class="spin-button" type="button">{m.bottleSpin}</button>
+            <p id="bottle-result" class="wheel-note" aria-live="polite"></p>
+            <p id="bottle-cycle" class="game-status" role="status"></p>
+            <button id="bottle-reset-cycle" class="bottle-reset" type="button">{m.bottleResetCycle}</button>
+            <h2 class="game-history-heading">{m.bottleHistory}</h2><ol id="bottle-history" class="game-history"></ol>
+            <button id="bottle-new" class="bottle-new" type="button">{m.bottleStart}</button>
+          </div>
+          <p id="bottle-error" class="game-error" role="alert" hidden></p>
+        </section>
+      </section>
+      <footer><span>Lavbe <span class="footer-sep">·</span>{m.footerTagline}</span><span>{m.footerPromise}</span></footer>
+    </main>
+    <script is:inline>
+      (() => {
+        const button = document.getElementById('theme-toggle'), root = document.documentElement;
+        const save = (key, value) => { try { localStorage.setItem(key, value); } catch { /* Preference stays temporary. */ } };
+        const setTheme = (theme) => {
+          const themes = JSON.parse(root.dataset.themeTokens || '{}');
+          const variables = { canvas: '--canvas-token', surface: '--surface-token', text: '--text-token', mutedText: '--muted-token', primary: '--primary-token', onPrimary: '--on-primary', border: '--border-token', focus: '--focus-token' };
+          root.dataset.theme = theme; for (const [key, variable] of Object.entries(variables)) root.style.setProperty(variable, themes[theme][key]);
+          button?.setAttribute('aria-label', theme === 'dark' ? button.dataset.lightLabel : button.dataset.darkLabel);
+          const icon = button?.querySelector('img'); if (icon && button) icon.src = theme === 'dark' ? button.dataset.lightIcon : button.dataset.darkIcon;
+        };
+        setTheme(root.dataset.theme === 'dark' ? 'dark' : 'light');
+        button?.addEventListener('click', () => { const next = root.dataset.theme === 'dark' ? 'light' : 'dark'; save('lavbe.theme', next); setTheme(next); });
+      })();
+    </script>
+    <script src="../scripts/bottle.ts"></script>
+  </body>
+</html>

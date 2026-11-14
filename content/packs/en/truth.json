@@ -1,0 +1,367 @@
+{
+  "schemaVersion": 1,
+  "id": "pack_truth",
+  "version": 1,
+  "family": "truth",
+  "locale": "en",
+  "minPlayers": 2,
+  "maxPlayers": 20,
+  "audience": "adult",
+  "intensity": "bold",
+  "cards": [
+    {
+      "id": "card_truth_001",
+      "kind": "question",
+      "text": "What harmless opinion do you defend with enthusiasm?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_002",
+      "kind": "question",
+      "text": "What small thing do you procrastinate for no good reason?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_003",
+      "kind": "question",
+      "text": "Which song do you know more words to than expected?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_004",
+      "kind": "question",
+      "text": "What is a funny misunderstanding you can laugh about now?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_005",
+      "kind": "question",
+      "text": "What everyday task would you happily outsource?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_006",
+      "kind": "question",
+      "text": "Which fictional character would make a good roommate?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_007",
+      "kind": "question",
+      "text": "What food combination do you quietly enjoy?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_008",
+      "kind": "question",
+      "text": "What is a skill you pretend is easier than it is?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_009",
+      "kind": "question",
+      "text": "Which trend did you try and then leave behind?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_010",
+      "kind": "question",
+      "text": "What is a tiny rule you make for yourself?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_011",
+      "kind": "question",
+      "text": "What is the most unusual item in your bag or desk?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_012",
+      "kind": "question",
+      "text": "Which movie do you quote most often?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_013",
+      "kind": "question",
+      "text": "What is something you are surprisingly picky about?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_014",
+      "kind": "question",
+      "text": "What would your childhood self find exciting today?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_015",
+      "kind": "question",
+      "text": "What is a very ordinary thing you are good at?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_016",
+      "kind": "question",
+      "text": "Which harmless fear would you like to outgrow?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_017",
+      "kind": "question",
+      "text": "What is a purchase that brought you unexpected joy?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_018",
+      "kind": "question",
+      "text": "What is a simple fact you love sharing?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_019",
+      "kind": "question",
+      "text": "Which fictional villain do you understand a little?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_020",
+      "kind": "question",
+      "text": "What is your most specific food preference?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_021",
+      "kind": "question",
+      "text": "What is a moment you handled better than you expected?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_022",
+      "kind": "question",
+      "text": "Which hobby would you try if nobody judged the result?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_023",
+      "kind": "question",
+      "text": "What is something you changed your mind about recently?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_024",
+      "kind": "question",
+      "text": "What is a tiny victory from this week?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_025",
+      "kind": "question",
+      "text": "Which common phrase makes you smile?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_026",
+      "kind": "question",
+      "text": "What would you be curious to ask your future self?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_027",
+      "kind": "question",
+      "text": "What is a talent you wish you had for one day?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_028",
+      "kind": "question",
+      "text": "Which task do you make more complicated than necessary?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_029",
+      "kind": "question",
+      "text": "What is a useful shortcut you learned?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_030",
+      "kind": "question",
+      "text": "What would you put on a personal museum exhibit?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_031",
+      "kind": "question",
+      "text": "What is a compliment you still remember?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_032",
+      "kind": "question",
+      "text": "Which fictional world seems too inconvenient to live in?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_033",
+      "kind": "question",
+      "text": "What is something you enjoy that surprises people?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_034",
+      "kind": "question",
+      "text": "What is the silliest name for a pet goldfish?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_035",
+      "kind": "question",
+      "text": "What is one thing you are learning to do imperfectly?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_036",
+      "kind": "question",
+      "text": "Which harmless habit would your friends recognize?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_037",
+      "kind": "question",
+      "text": "What would you choose to be an expert in for a day?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_038",
+      "kind": "question",
+      "text": "What is a kind thing you wish you had said sooner?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_039",
+      "kind": "question",
+      "text": "Which old fashion should return for one day?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_040",
+      "kind": "question",
+      "text": "What small inconvenience makes you laugh afterward?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_041",
+      "kind": "question",
+      "text": "What is a topic you have an oddly strong preference about?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_042",
+      "kind": "question",
+      "text": "What is a helpful lesson you learned the hard way?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_043",
+      "kind": "question",
+      "text": "What is one thing you would like to be braver about?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_044",
+      "kind": "question",
+      "text": "Which ordinary sound is oddly satisfying?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_045",
+      "kind": "question",
+      "text": "What question do you usually answer with a story?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_046",
+      "kind": "question",
+      "text": "What is a tiny thing you are proud of?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_047",
+      "kind": "question",
+      "text": "Which fictional character would give you useful advice?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_048",
+      "kind": "question",
+      "text": "What is something you would like to understand better?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_049",
+      "kind": "question",
+      "text": "What is a personal preference you have learned to explain kindly?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_truth_050",
+      "kind": "question",
+      "text": "What would you like others to know about you?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    }
+  ],
+  "review": {
+    "status": "draft",
+    "sourceHash": "3451118d2b4ae32fdb41d6b025ded26d8e2e1f6d6b7624edb76e9d30e562d4c8"
+  }
+}

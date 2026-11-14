@@ -32,3 +32,5 @@ export function browserRandomSource(): RandomSource {
 export { balanceTeams, chooseInteger, chooseWeighted, shuffle } from './algorithms.ts';
 export { beginShuffledCycle, drawShuffledCycle, removeWinner, resetCycle } from './cycles.ts';
 export { normalizeWheelForStorage, validateWheelSemantics } from './semantics.ts';
+export { chooseBottleSeat, createGameState, drawGameCard, drawGameTurn, endGame, pauseGame, resolveGameCard, resolveGameTurn, restartGame, resumeGame, revealGameCard, revealGameTurn, shuffledBottleCycle } from './game-engine.ts';
+export type { BottleCycle, GameCardResult, GameState } from './game-engine.ts';

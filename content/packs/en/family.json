@@ -1,0 +1,367 @@
+{
+  "schemaVersion": 1,
+  "id": "pack_family",
+  "version": 1,
+  "family": "family",
+  "locale": "en",
+  "minPlayers": 2,
+  "maxPlayers": 20,
+  "audience": "family",
+  "intensity": "gentle",
+  "cards": [
+    {
+      "id": "card_family_001",
+      "kind": "question",
+      "text": "What was a favorite game when you were younger?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_002",
+      "kind": "question",
+      "text": "Which family recipe would you like to keep sharing?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_003",
+      "kind": "question",
+      "text": "What makes a family gathering feel welcoming?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_004",
+      "kind": "question",
+      "text": "What is something you enjoy doing with different generations?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_005",
+      "kind": "question",
+      "text": "Which story from your family would you like to hear again?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_006",
+      "kind": "question",
+      "text": "What kind of outing suits everyone in the group?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_007",
+      "kind": "question",
+      "text": "What is a small way to help at home?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_008",
+      "kind": "question",
+      "text": "Which song could everyone enjoy together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_009",
+      "kind": "question",
+      "text": "What is a family tradition you would like to start?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_010",
+      "kind": "question",
+      "text": "What is something you appreciate about your household?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_011",
+      "kind": "question",
+      "text": "Which board game is good for a mixed-age group?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_012",
+      "kind": "question",
+      "text": "What is a kind thing someone at home did recently?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_013",
+      "kind": "question",
+      "text": "What is your favorite way to spend a rainy afternoon?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_014",
+      "kind": "question",
+      "text": "What is a skill someone in your family could teach?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_015",
+      "kind": "question",
+      "text": "What would you plant in a shared garden?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_016",
+      "kind": "question",
+      "text": "Which meal would be fun to prepare together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_017",
+      "kind": "question",
+      "text": "What is something you would like to build as a team?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_018",
+      "kind": "question",
+      "text": "What makes a room feel comfortable for everyone?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_019",
+      "kind": "question",
+      "text": "Which nearby park or place should you visit?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_020",
+      "kind": "question",
+      "text": "What is a family photo that makes you smile?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_021",
+      "kind": "question",
+      "text": "What is a helpful job you like doing together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_022",
+      "kind": "question",
+      "text": "Which fictional family would be fun to meet?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_023",
+      "kind": "question",
+      "text": "What is a simple way to welcome a guest?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_024",
+      "kind": "question",
+      "text": "What is something you learned from an older relative?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_025",
+      "kind": "question",
+      "text": "What is a good way to make sure everyone gets a turn?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_026",
+      "kind": "question",
+      "text": "Which storybook would you read aloud again?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_027",
+      "kind": "question",
+      "text": "What is one thing you like about your home?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_028",
+      "kind": "question",
+      "text": "What should be included in a family picnic?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_029",
+      "kind": "question",
+      "text": "What is a fun activity that costs nothing?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_030",
+      "kind": "question",
+      "text": "Which animal would make a funny family mascot?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_031",
+      "kind": "question",
+      "text": "What is a polite way to disagree at home?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_032",
+      "kind": "question",
+      "text": "What is something new everyone could learn this month?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_033",
+      "kind": "question",
+      "text": "What is a favorite memory from a holiday or celebration?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_034",
+      "kind": "question",
+      "text": "Which chore is more fun with music?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_035",
+      "kind": "question",
+      "text": "What is a good question to ask at dinner?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_036",
+      "kind": "question",
+      "text": "What would you put in a family time capsule?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_037",
+      "kind": "question",
+      "text": "What is a way to make a new person feel included?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_038",
+      "kind": "question",
+      "text": "Which simple craft would you try together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_039",
+      "kind": "question",
+      "text": "What is something that makes you feel cared for?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_040",
+      "kind": "question",
+      "text": "What is a place you would like to explore together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_041",
+      "kind": "question",
+      "text": "What do you enjoy teaching someone else?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_042",
+      "kind": "question",
+      "text": "Which homemade snack should you make together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_043",
+      "kind": "question",
+      "text": "What is a family rule that helps everyone?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_044",
+      "kind": "question",
+      "text": "What is a kind surprise that does not cost money?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_045",
+      "kind": "question",
+      "text": "What is a good way to spend ten minutes together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_046",
+      "kind": "question",
+      "text": "What is a favorite view from a trip you took?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_047",
+      "kind": "question",
+      "text": "Which word describes a good day at home?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_048",
+      "kind": "question",
+      "text": "What should your family celebrate more often?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_049",
+      "kind": "question",
+      "text": "What is something you hope to do together this year?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_family_050",
+      "kind": "question",
+      "text": "What makes your family or chosen family unique?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    }
+  ],
+  "review": {
+    "status": "draft",
+    "sourceHash": "986fbff3a89f4b3342c1beebf2679b29de413455bab1999118d8bffe0453bb30"
+  }
+}

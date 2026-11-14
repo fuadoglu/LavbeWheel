@@ -1,0 +1,367 @@
+{
+  "schemaVersion": 1,
+  "id": "pack_couples",
+  "version": 1,
+  "family": "couples",
+  "locale": "en",
+  "minPlayers": 2,
+  "maxPlayers": 20,
+  "audience": "adult",
+  "intensity": "playful",
+  "cards": [
+    {
+      "id": "card_couples_001",
+      "kind": "question",
+      "text": "What little moment together felt especially warm?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_002",
+      "kind": "question",
+      "text": "Which shared routine would you like to keep?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_003",
+      "kind": "question",
+      "text": "What kind of date feels relaxing to you?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_004",
+      "kind": "question",
+      "text": "What is something your partner does that you appreciate?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_005",
+      "kind": "question",
+      "text": "Which place would you like to visit together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_006",
+      "kind": "question",
+      "text": "What song brings back a good shared memory?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_007",
+      "kind": "question",
+      "text": "What meal would be fun to cook as a team?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_008",
+      "kind": "question",
+      "text": "What is a new hobby you could try together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_009",
+      "kind": "question",
+      "text": "Which small act of care means a lot to you?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_010",
+      "kind": "question",
+      "text": "What would a calm weekend together include?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_011",
+      "kind": "question",
+      "text": "What is something you have learned from each other?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_012",
+      "kind": "question",
+      "text": "Which film would you enjoy watching together again?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_013",
+      "kind": "question",
+      "text": "What makes a conversation feel safe and open?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_014",
+      "kind": "question",
+      "text": "What is a goal you would like to cheer each other on toward?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_015",
+      "kind": "question",
+      "text": "Which tradition could you create just for the two of you?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_016",
+      "kind": "question",
+      "text": "What is your favorite way to celebrate an ordinary day?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_017",
+      "kind": "question",
+      "text": "What helps you feel listened to?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_018",
+      "kind": "question",
+      "text": "Which nearby place would make a nice walk?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_019",
+      "kind": "question",
+      "text": "What is one thing you would like more time for together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_020",
+      "kind": "question",
+      "text": "What is a memory you would happily revisit?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_021",
+      "kind": "question",
+      "text": "What kind of surprise feels thoughtful to you?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_022",
+      "kind": "question",
+      "text": "What do you admire about how your partner treats others?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_023",
+      "kind": "question",
+      "text": "Which recipe would you like to learn together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_024",
+      "kind": "question",
+      "text": "What is a small thing that makes home feel shared?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_025",
+      "kind": "question",
+      "text": "What kind of trip suits you both?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_026",
+      "kind": "question",
+      "text": "How do you like to unwind after a busy day?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_027",
+      "kind": "question",
+      "text": "What is a book or show you could discuss together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_028",
+      "kind": "question",
+      "text": "Which activity helps you laugh together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_029",
+      "kind": "question",
+      "text": "What makes an apology feel sincere to you?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_030",
+      "kind": "question",
+      "text": "What is one way to make plans feel fair to both?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_031",
+      "kind": "question",
+      "text": "Which season would you choose for a weekend away?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_032",
+      "kind": "question",
+      "text": "What is a skill you could practice side by side?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_033",
+      "kind": "question",
+      "text": "What is something thoughtful you noticed recently?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_034",
+      "kind": "question",
+      "text": "What makes you feel appreciated in daily life?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_035",
+      "kind": "question",
+      "text": "What would you put on a shared wish list?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_036",
+      "kind": "question",
+      "text": "Which local event could be fun to attend together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_037",
+      "kind": "question",
+      "text": "What is one thing you want to learn about your partner?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_038",
+      "kind": "question",
+      "text": "What kind of quiet time do you enjoy together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_039",
+      "kind": "question",
+      "text": "What is a challenge you handled well as a team?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_040",
+      "kind": "question",
+      "text": "How can you make a busy week feel lighter for each other?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_041",
+      "kind": "question",
+      "text": "What is a simple way to mark an anniversary or milestone?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_042",
+      "kind": "question",
+      "text": "Which shared photo makes you smile?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_043",
+      "kind": "question",
+      "text": "What is something new you could try at home?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_044",
+      "kind": "question",
+      "text": "What helps you disagree respectfully?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_045",
+      "kind": "question",
+      "text": "What would your ideal unplanned evening look like?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_046",
+      "kind": "question",
+      "text": "What is a quality you hope to keep building together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_047",
+      "kind": "question",
+      "text": "How do you like to receive encouragement?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_048",
+      "kind": "question",
+      "text": "Which place feels like a special shared spot?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_049",
+      "kind": "question",
+      "text": "What is a kind question to ask each other more often?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_couples_050",
+      "kind": "question",
+      "text": "What are you looking forward to doing together?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    }
+  ],
+  "review": {
+    "status": "draft",
+    "sourceHash": "912cc1ec32bd4c4d05260d1412818fe44447acd1d5c77313e475f84faf78be12"
+  }
+}

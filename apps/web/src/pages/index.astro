@@ -35,7 +35,7 @@ const light = designTokens.themes.light;
     <main class="shell">
       <header class="topbar">
         <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">L</span><span>lavbe</span></a>
-        <nav aria-label={m.navMain}><a class="nav-active" href="#wheel" aria-current="page">{m.navWheel}</a><a href="#participants">{m.participantsHeading}</a></nav>
+        <nav aria-label={m.navMain}><a class="nav-active" href="#wheel" aria-current="page">{m.navWheel}</a><a href="/bottle/">{m.navBottle}</a><a href="/games/">{m.gameNav}</a></nav>
         <div class="header-actions"><span class="locale" aria-label={m.language}>{m.languageCode}</span><button class="theme-toggle" id="theme-toggle" type="button" data-light-label={m.themeToLight} data-dark-label={m.themeToDark} data-light-icon={sunIcon.src} data-dark-icon={moonIcon.src} aria-label={m.themeToDark}><img width="19" height="19" src={moonIcon.src} alt="" aria-hidden="true" /></button></div>
       </header>
       <section class="tool-strip" aria-label={m.wheelLabel}><img class="tool-icon" src={wheelIcon.src} width="20" height="20" alt="" aria-hidden="true" /><span class="tool-name">{m.navWheel}</span><span class="tool-caption">{m.eyebrow}</span><span class="tool-presence">{m.localOnly}</span></section>

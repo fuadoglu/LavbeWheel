@@ -76,6 +76,99 @@ test('@a11y the root screen has no automated WCAG A/AA violations', async ({ pag
   expect(reportResults.violations).toEqual([]);
 });
 
+test('game session saves card, skip, pause and completion state locally', async ({ page }) => {
+  await page.goto('/games/');
+  await page.getByLabel('İştirakçılar, hər sətrə bir ad').fill('Aylin\nMurad\nLeyla');
+  await page.locator('#game-start').click();
+  await expect(page.locator('#game-play')).toBeVisible();
+  await expect(page.locator('#game-draw')).toBeVisible();
+  await page.locator('#game-draw').click();
+  await expect(page.locator('#game-card-text')).toBeVisible();
+  await expect(page.locator('#game-player')).toHaveText('Seçilən iştirakçı: Aylin');
+  await expect(page.locator('#game-done')).toBeVisible();
+  await page.reload();
+  await expect(page.locator('#game-card-text')).toBeVisible();
+  await expect(page.locator('#game-player')).toHaveText('Seçilən iştirakçı: Aylin');
+  await page.locator('#game-skip').click();
+  await expect(page.locator('#game-draw')).toBeVisible();
+  await expect(page.locator('#game-history')).toContainText('skipped');
+  await page.locator('#game-pause').click();
+  await expect(page.locator('#game-resume')).toBeVisible();
+  await page.locator('#game-resume').click();
+  await expect(page.locator('#game-draw')).toBeVisible();
+  const session = await page.evaluate(async () => new Promise<{ phase: string; used: number; status: string }>((resolve, reject) => {
+    const request = indexedDB.open('lavbe-wheel');
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => {
+      const database = request.result;
+      const transaction = database.transaction('sessions', 'readonly');
+      const query = transaction.objectStore('sessions').getAll();
+      query.onerror = () => reject(query.error);
+      query.onsuccess = () => {
+        const saved = query.result.find((record) => record.envelope.game);
+        resolve({ phase: saved.envelope.game.phase, used: saved.envelope.game.usedCardIds.length, status: saved.envelope.results[0].status });
+        database.close();
+      };
+    };
+  }));
+  expect(session).toEqual({ phase: 'ready', used: 1, status: 'skipped' });
+});
+
+test('@a11y game setup and active-card screen have no automated WCAG A/AA violations', async ({ page }) => {
+  await page.goto('/games/');
+  const setupAudit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(setupAudit.violations).toEqual([]);
+  await page.locator('#game-start').click();
+  await page.locator('#game-draw').click();
+  await expect(page.locator('#game-card-text')).toBeVisible();
+  const activeAudit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(activeAudit.violations).toEqual([]);
+});
+
+test('bottle uses fixed ordered seats and persists explicit no-repeat cycle reset', async ({ page }) => {
+  await page.goto('/bottle/');
+  await page.locator('#bottle-names').fill('Aylin\nMurad');
+  await page.locator('#bottle-mode').selectOption('remove-winner');
+  await page.locator('#bottle-start').click();
+  await expect(page.locator('#bottle-spin')).toBeVisible();
+  const canvas = await page.locator('#bottle-wheel').boundingBox();
+  expect(canvas?.width).toBeGreaterThan(300);
+  await page.locator('#bottle-spin').click();
+  await expect(page.locator('#bottle-result')).toHaveText(/^Seçildi: (Aylin|Murad)$/);
+  const firstPick = await page.locator('#bottle-result').textContent();
+  await page.locator('#bottle-spin').click();
+  await expect(page.locator('#bottle-result')).not.toHaveText(firstPick!, { timeout: 5_000 });
+  await expect(page.locator('#bottle-spin')).toBeDisabled();
+  await expect(page.locator('#bottle-cycle')).toContainText('hər iştirakçı seçilib');
+  await page.locator('#bottle-reset-cycle').click();
+  await expect(page.locator('#bottle-spin')).toBeEnabled();
+  await page.reload();
+  await expect(page.locator('#bottle-spin')).toBeEnabled();
+  await expect(page.locator('#bottle-history')).toContainText('Aylin');
+});
+
+test('bottle and games routes fit the mobile viewport without horizontal page overflow', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const route of ['/bottle/', '/games/']) {
+    await page.goto(route);
+    const metrics = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, page: document.documentElement.scrollWidth }));
+    expect(metrics.page).toBeLessThanOrEqual(metrics.viewport);
+    await expect(page.getByRole('link', { name: 'Şüşə' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Oyunlar' })).toBeVisible();
+  }
+});
+
+test('@a11y bottle setup and spinning surface have no automated WCAG A/AA violations', async ({ page }) => {
+  await page.goto('/bottle/');
+  const setupAudit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(setupAudit.violations).toEqual([]);
+  await page.locator('#bottle-start').click();
+  await page.locator('#bottle-spin').click();
+  await expect(page.locator('#bottle-result')).toContainText('Seçildi:');
+  const activeAudit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(activeAudit.violations).toEqual([]);
+});
+
 test('mobile board matches the 390px screen contract and theme preference survives reload', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');

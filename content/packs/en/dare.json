@@ -1,0 +1,367 @@
+{
+  "schemaVersion": 1,
+  "id": "pack_dare",
+  "version": 1,
+  "family": "dare",
+  "locale": "en",
+  "minPlayers": 2,
+  "maxPlayers": 20,
+  "audience": "adult",
+  "intensity": "bold",
+  "cards": [
+    {
+      "id": "card_dare_001",
+      "kind": "dare",
+      "text": "Describe your day as a weather forecast; passing is always okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_002",
+      "kind": "dare",
+      "text": "Draw an imaginary mascot in the air with one finger; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_003",
+      "kind": "dare",
+      "text": "Invent a two-line jingle for a nearby object; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_004",
+      "kind": "dare",
+      "text": "Give a sincere compliment to someone who is comfortable receiving it; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_005",
+      "kind": "dare",
+      "text": "Make up a title for the last book or show you enjoyed; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_006",
+      "kind": "dare",
+      "text": "Tell a short story using three words chosen by the group; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_007",
+      "kind": "dare",
+      "text": "Do a dramatic reading of a sentence from a public sign; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_008",
+      "kind": "dare",
+      "text": "Invent a friendly greeting for the group; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_009",
+      "kind": "dare",
+      "text": "Hum a tune for others to guess, or choose another prompt; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_010",
+      "kind": "dare",
+      "text": "Describe an imaginary holiday in one sentence; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_011",
+      "kind": "dare",
+      "text": "Make a tiny paper sketch of a made-up creature; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_012",
+      "kind": "dare",
+      "text": "Say a tongue twister slowly, or pass without explanation.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_013",
+      "kind": "dare",
+      "text": "Create a sound effect for a cartoon door; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_014",
+      "kind": "dare",
+      "text": "Name three things that are blue without looking around; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_015",
+      "kind": "dare",
+      "text": "Pitch a new flavor of ice cream in twenty seconds; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_016",
+      "kind": "dare",
+      "text": "Tell a joke you enjoy, or simply pass; no explanation needed.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_017",
+      "kind": "dare",
+      "text": "Invent a new name for a familiar room; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_018",
+      "kind": "dare",
+      "text": "Make up a short motto for the group; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_019",
+      "kind": "dare",
+      "text": "Describe an ordinary object as if it were a museum treasure; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_020",
+      "kind": "dare",
+      "text": "Create a two-step seated dance move, or pass; no one needs to perform it.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_021",
+      "kind": "dare",
+      "text": "Speak one sentence like a calm documentary narrator; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_022",
+      "kind": "dare",
+      "text": "Draw a tiny map to an imaginary place; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_023",
+      "kind": "dare",
+      "text": "Invent a helpful robot and describe its one job; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_024",
+      "kind": "dare",
+      "text": "Say one nice thing about a place you have visited; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_025",
+      "kind": "dare",
+      "text": "Create a safe superhero name for yourself or a fictional hero; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_026",
+      "kind": "dare",
+      "text": "Give a weather report for an imaginary planet; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_027",
+      "kind": "dare",
+      "text": "Make up a new word and explain its meaning; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_028",
+      "kind": "dare",
+      "text": "Describe your favorite snack like a food critic; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_029",
+      "kind": "dare",
+      "text": "Create a three-word team cheer, or pass; no shouting is needed.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_030",
+      "kind": "dare",
+      "text": "Tell a story that begins with “Somehow, the teacup knew”; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_031",
+      "kind": "dare",
+      "text": "Invent a tiny award and say who might enjoy receiving it; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_032",
+      "kind": "dare",
+      "text": "Make a gentle sound effect for a scene in a silent film; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_033",
+      "kind": "dare",
+      "text": "Describe a color without naming it; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_034",
+      "kind": "dare",
+      "text": "Create a short advertisement for clean water; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_035",
+      "kind": "dare",
+      "text": "Name a fictional shop and what it would sell; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_036",
+      "kind": "dare",
+      "text": "Say a familiar phrase as if it were a grand announcement; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_037",
+      "kind": "dare",
+      "text": "Invent a polite way for a robot to ask for directions; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_038",
+      "kind": "dare",
+      "text": "Describe a perfect reading nook in fifteen seconds; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_039",
+      "kind": "dare",
+      "text": "Make up a title for a song about doing the dishes; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_040",
+      "kind": "dare",
+      "text": "Share a word you like the sound of, or pass; no reason required.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_041",
+      "kind": "dare",
+      "text": "Create a friendly mascot pose while seated, or pass; no photos needed.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_042",
+      "kind": "dare",
+      "text": "Invent a gentle greeting for someone arriving late; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_043",
+      "kind": "dare",
+      "text": "Summarize a favorite story in exactly five words; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_044",
+      "kind": "dare",
+      "text": "Describe a cloud as if it had a job; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_045",
+      "kind": "dare",
+      "text": "Say one encouraging sentence to the whole group; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_046",
+      "kind": "dare",
+      "text": "Create a name for a tiny imaginary island; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_047",
+      "kind": "dare",
+      "text": "Make up a harmless mystery about a missing spoon; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_048",
+      "kind": "dare",
+      "text": "Describe an everyday sound as a musical instrument; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_049",
+      "kind": "dare",
+      "text": "Invent a new indoor game that needs no equipment; passing is okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    },
+    {
+      "id": "card_dare_050",
+      "kind": "dare",
+      "text": "Offer a choice of another card instead; passing is always okay.",
+      "equipment": [],
+      "estimatedSeconds": 30
+    }
+  ],
+  "review": {
+    "status": "draft",
+    "sourceHash": "f7fecd70a14cfceeaff4f9bc9253467f2623bbd914eac48142a566501ee7c015"
+  }
+}
