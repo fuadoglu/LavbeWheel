@@ -253,7 +253,7 @@
         "Physical device, screen reader, Arabic/RTL, long German label, audio/motion device and owner approval evidence remains pending.",
         "Screenshot automation uses local Chromium, synthetic names and no production consent/ad states."
       ],
-      "commit": "33b7f91"
+      "commit": "33b7f919adf8f93026fb58a08030f878468aa365"
     }
   },
   "requirements": {
