@@ -473,7 +473,7 @@
           "command": "npm run test:api",
           "result": "PASS; isolated MariaDB lifecycle + live HTTP share/admin/publish workflow; Ed25519 signature/tamper checks, publish failure/retry, promotion/rollback, strict job response shape, 50-row cursor pagination and malformed cursor rejection",
           "artifact": "apps/api/tests/http-integration.php",
-          "scope": "Synthetic data in disposable lavbe_api_test; local MariaDB 12.1. Latest pagination assertions are in working tree after CI-verified commit 04195b6; run GitHub CI for the follow-up test commit."
+          "scope": "Synthetic data in disposable lavbe_api_test; local MariaDB 12.1. Pagination changes are in commit b9febe9 and passed GitHub MySQL 8.4 API integration."
         },
         {
           "command": "LAVBE_TEST_DATABASE_* npm run test:api",
@@ -541,7 +541,13 @@
           "command": "GitHub Actions application + documentation checks on PR #8 / push commit 04195b6",
           "result": "PASS; MySQL 8.4 lifecycle HTTP integration, app check/unit/E2E/a11y/SEO/audit and docs/contracts checks",
           "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43650849673 and https://github.com/fuadoglu/LavbeWheel/actions/runs/43650849671",
-          "scope": "Both pull_request and push workflows verify exact SHA 04195b606e0663d78183651c7f2d31d69901f619; review and deployment remain separate"
+          "scope": "This entry verifies exact SHA 04195b606e0663d78183651c7f2d31d69901f619; follow-up pagination test commit b9febe9 is separately verified below."
+        },
+        {
+          "command": "GitHub Actions application + documentation checks on PR #8 / pagination test commit b9febe9",
+          "result": "PASS; MySQL 8.4 API lifecycle/pagination tests, app check/unit/E2E/a11y/SEO/audit and documentation/contracts",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43651226610 and https://github.com/fuadoglu/LavbeWheel/actions/runs/43651226627",
+          "scope": "Both push and pull_request workflows verify exact SHA b9febe9; this follow-up adds 51-row pagination fixtures to previously CI-verified application code."
         }
       ],
       "blockers": [
