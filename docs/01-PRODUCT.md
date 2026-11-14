@@ -28,7 +28,7 @@ Lavbe serves people making a quick choice, educators/organizers and couples/frie
 
 ## Selected capacity defaults
 
-Normative values are in [limits.json](../config/limits.json). A wheel supports 1–1,000 entries, labels up to 120 Unicode grapheme clusters, and title up to 80 graphemes. Names may repeat but receive distinct IDs. One remaining entry is displayed as a deterministic remaining result without pretending a meaningful random contest; zero eligible entries disables spin. Positive integer weights are 1–1,000. Integer ranges are inclusive, within ±1,000,000 with at most 10,000 possible outcomes and generated without rendering 10,000 wedges. Team count is 2–50 and no greater than member count.
+Normative values are in [limits.json](../config/limits.json). An entry-based wheel supports 1–1,000 entries; a number-range wheel has no entry list and derives eligibility from its range. Entry-based wheels support, labels up to 120 Unicode grapheme clusters, and title up to 80 graphemes. Names may repeat but receive distinct IDs. One remaining entry is displayed as a deterministic remaining result without pretending a meaningful random contest; zero eligible entries disables spin. Positive integer weights are 1–1,000. Integer ranges are inclusive, within ±1,000,000 with at most 10,000 possible outcomes and generated without rendering 10,000 wedges. Team count is 2–50 and no greater than member count.
 
 These are safety and usability bounds, not claims that 1,000 labels fit legibly on a phone. Show a clear dense-view notice with an accessible complete list.
 

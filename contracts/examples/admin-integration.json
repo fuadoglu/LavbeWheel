@@ -1,0 +1,9 @@
+{
+  "id": "optional_tags",
+  "enabled": false,
+  "gtmId": null,
+  "ga4Id": null,
+  "publisherId": null,
+  "cmpProvider": null,
+  "placements": []
+}

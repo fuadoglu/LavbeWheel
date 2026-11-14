@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "routeId",
+    "title",
+    "description",
+    "heading",
+    "bodyMarkdown",
+    "sourceHash"
+  ],
+  "properties": {
+    "routeId": {
+      "enum": [
+        "home",
+        "random-name-picker",
+        "random-number-picker",
+        "yes-or-no-wheel",
+        "weighted-wheel",
+        "team-generator",
+        "spin-the-bottle",
+        "truth-or-dare",
+        "couples-games",
+        "group-games"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 400
+    },
+    "heading": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "bodyMarkdown": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 30000
+    },
+    "sourceHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

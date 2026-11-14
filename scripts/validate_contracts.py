@@ -55,8 +55,12 @@ def expand(obj):
 for name,filename in [('CreateShareRequest','create-share'),('CreatedShare','share-created'),('SharedWheel','share-view'),('Error','error')]:
     v=validator(expand(api['components']['schemas'][name]));obj=load('contracts/examples/'+filename+'.json');accept(v,obj)
     obj['unexpected']=True;reject(v,obj)
+for path in sorted((ROOT/'contracts/examples').glob('session-*.json')): accept(sv,json.loads(path.read_text()))
 admin=load('contracts/admin.openapi.json')
 for schema in admin['components']['schemas'].values(): Draft202012Validator.check_schema(schema)
+for kind in ['pack','ui-catalog','seo-copy','legal','preset','integration']:
+    vv=validator(load('contracts/admin-'+kind+'.schema.json')); xx=load('contracts/examples/admin-'+kind+'.json');accept(vv,xx)
+    xx['unexpected']=True;reject(vv,xx)
 admin_schema_checks = len(admin['components']['schemas'])
 print(f'PASS: {checks} fixture acceptance/rejection checks; {admin_schema_checks} admin schema syntax checks.')
 print('Scope: schemas and fixtures; no HTTP server, entropy engine or deployment tested.')

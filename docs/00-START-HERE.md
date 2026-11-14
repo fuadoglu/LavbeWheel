@@ -28,3 +28,10 @@ Documentation, 110 locale metadata records, design tokens, 36 SVG documentation 
 The blueprint fixes architecture and behavior. Codex can implement immediately without domain or advertising credentials. Production publishing additionally requires real operator information, providers, content reviews, language reviews and the evidence checklist. See [launch inputs](19-DECISIONS.md).
 
 No public MVP. No guarantee of permanent zero maintenance, ad approval, legal certification or organic ranking. These limits do not reduce the mandatory functional scope.
+
+## Əlavə icra müqavilələri
+
+- [Semantik yoxlama və bərpa](22-SEMANTIC-CONTRACT.md)
+- [Ekranların vizual müqaviləsi](23-SCREEN-CONTRACT.md)
+
+- [Hüquqi səhifələr və production qəbulu](24-LEGAL-LAUNCH.md)

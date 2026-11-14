@@ -105,7 +105,7 @@ Node build zamanı lazımdır; istehsal serverində daimi Node prosesi tələb e
 
 Codex-ə verilə biləcək tapşırıq:
 
-> Bu repodakı normativ sənədlər əsasında Lavbe-nin tam funksional əhatəsini icra et. Əvvəl sənəd yoxlamalarını işə sal, icraya hazırlıq auditindəki müqavilə boşluqlarını təsirləndirdiyi modula başlamazdan əvvəl bağla və monoreponu qur. AGENTS.md və iş paketlərinin sırasına əməl et. Məlumatı qoruyan lokal saxlamanı və bütün buraxılış meyarlarını saxla. Yarımçıq məhsulu yayımlama, tərcümə rəyləri və hesab məlumatları uydurma. İcra edilmiş yoxlamaları, qalan xarici girişləri və məhdudiyyətləri aydın göstər.
+> Bu repodakı normativ sənədlər əsasında Lavbe-nin tam funksional əhatəsini icra et. Əvvəl sənəd yoxlamalarını işə sal, tamamlanmış sessiya/admin sxemlərini və semantik vektorları əsas götürərək monoreponu qur. AGENTS.md və iş paketlərinin sırasına əməl et. Məlumatı qoruyan lokal saxlamanı və bütün buraxılış meyarlarını saxla. Yarımçıq məhsulu yayımlama, tərcümə rəyləri və hesab məlumatları uydurma. İcra edilmiş yoxlamaları, qalan xarici girişləri və məhdudiyyətləri aydın göstər.
 
 ### Hazırda işləyən yoxlamalar
 
@@ -150,3 +150,10 @@ Açıq seksual məzmun, çat, açıq istifadəçi şablonları bazarı, ayrı ci
 Sənəd bazası: **14 noyabr 2026** · Tətbiq: **hələ icra edilməyib**
 
 </div>
+
+## Əlavə icra müqavilələri
+
+- [Semantik yoxlama və bərpa](docs/22-SEMANTIC-CONTRACT.md)
+- [Ekranların vizual müqaviləsi](docs/23-SCREEN-CONTRACT.md)
+
+- [Hüquqi səhifələr və production qəbulu](docs/24-LEGAL-LAUNCH.md)

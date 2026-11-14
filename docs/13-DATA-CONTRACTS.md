@@ -4,6 +4,10 @@
 
 [Wheel schema](../contracts/wheel.schema.json), [pack schema](../contracts/pack.schema.json), [session export schema](../contracts/session.schema.json), [public OpenAPI](../contracts/openapi.json), [admin OpenAPI](../contracts/admin.openapi.json) and [examples](../contracts/examples/wheel.json) are the initial machine-readable contracts. IDs are opaque; labels are never relational identity. API limits are enforced server-side and supplemented by semantic validation (graphemes, references, unique IDs, locale readiness). JSON Schema maxLength counts code points, not graphemes; semantic validation applies the stricter display rules.
 
+## Supplemental contracts
+
+[Semantic validation and recovery](22-SEMANTIC-CONTRACT.md) defines cross-field invariants. [Screen contract](23-SCREEN-CONTRACT.md) defines concrete layouts. Session export has discriminated entry, number, teams and card results. Administration imports use six strict kind-specific schemas and a typed publication manifest.
+
 ## Local stores
 
 wheels(wheelId, revision), entries(entryId, wheelId), sessions(sessionId, wheelId), rounds(roundId, sessionId), spins(spinId, roundId, sequence), games(sessionId), packs(packId,version,locale), preferences(key), leases(wheelId). Use unique compound (sessionId,sequence) and indexed round/session lookups. Transactions combine append-result and session update. A bounded serialized input snapshot may be deduplicated by immutable config revision rather than copied 10,000 times. Preserve semantics on export.

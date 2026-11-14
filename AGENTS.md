@@ -2,7 +2,7 @@
 
 ## Read first
 
-Read README.md, docs/00-START-HERE.md and docs/21-READINESS-AUDIT.md, then all normative documents linked there before architectural implementation. Resolve RDY-01/02 contract gaps before persistence/admin modules and do not misreport the baseline as gap-free. Local instructions in future subdirectories may refine, never silently weaken, this baseline. User changes take precedence and must be reflected in docs/19-DECISIONS.md.
+Read README.md, docs/00-START-HERE.md and docs/21-READINESS-AUDIT.md, then all normative documents linked there before architectural implementation. Use docs/22-SEMANTIC-CONTRACT.md and docs/23-SCREEN-CONTRACT.md with the completed session/admin schemas. Read the CURRENT closing section of the readiness audit rather than treating its historical findings as open. Verify TS/PHP implementations against the common vectors; reference Python checks are not runtime parity evidence. Local instructions in future subdirectories may refine, never silently weaken, this baseline. User changes take precedence and must be reflected in docs/19-DECISIONS.md.
 
 ## Authority and honesty
 
@@ -35,3 +35,5 @@ Run relevant package checks after each coherent change and the full release suit
 ## Completion report
 
 Summarize behavior changed, evidence, remaining external blockers and deployment state. Link to the exact commit/PR. Do not call the implementation 10/10 or compliant based only on self-assessment.
+
+Legal pages and activation must follow docs/24-LEGAL-LAUNCH.md. Missing operator facts are explicit launch blockers, never fabricated copy. Implement full page/workflow behavior while awaiting real facts.

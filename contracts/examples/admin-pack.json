@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "pack_icebreakers",
+  "version": 1,
+  "family": "icebreakers",
+  "locale": "en",
+  "minPlayers": 2,
+  "maxPlayers": 20,
+  "audience": "family",
+  "intensity": "gentle",
+  "cards": [
+    {
+      "id": "card_small_joy",
+      "kind": "question",
+      "text": "What small thing made you smile today?",
+      "equipment": [],
+      "estimatedSeconds": 30
+    }
+  ],
+  "review": {
+    "status": "draft",
+    "sourceHash": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+}

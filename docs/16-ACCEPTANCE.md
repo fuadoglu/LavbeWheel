@@ -44,3 +44,7 @@ Use budgets in docs/03-MOTION-PERFORMANCE.md with ads on/off and consent permuta
 - [ ] Owner has received handbook, recovery codes and credential setup through secure channels.
 
 A release may be functionally code-complete while launch remains blocked by external inputs. Keep these states separate. Do not publish incomplete functionality to collect evidence from unsuspecting users.
+
+## Legal production gate
+
+All eight evidence items in [legal launch](24-LEGAL-LAUNCH.md) are mandatory. Require actual operator/legal review, six page types per locale, accurate storage inventory, rights/withdrawal/delete/restore tests and no placeholders. Implementation completion cannot override missing external review.

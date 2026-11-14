@@ -1,0 +1,575 @@
+[
+  {
+    "id": "valid-names",
+    "expected": "OK",
+    "wheel": {
+      "schemaVersion": 1,
+      "tool": "names",
+      "title": "Demo friends",
+      "locale": "en",
+      "mode": "independent",
+      "entries": [
+        {
+          "id": "entry_aysel",
+          "label": "Aysel",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_murad",
+          "label": "Murad",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_leyla",
+          "label": "Leyla",
+          "weight": 1,
+          "active": true
+        }
+      ],
+      "settings": {
+        "theme": "system",
+        "style": "classic",
+        "motion": "standard",
+        "sound": false,
+        "spinSeconds": 4
+      }
+    }
+  },
+  {
+    "id": "duplicate-id",
+    "expected": "DUPLICATE_ENTRY_ID",
+    "wheel": {
+      "schemaVersion": 1,
+      "tool": "names",
+      "title": "Demo friends",
+      "locale": "en",
+      "mode": "independent",
+      "entries": [
+        {
+          "id": "entry_aysel",
+          "label": "Aysel",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_aysel",
+          "label": "Murad",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_leyla",
+          "label": "Leyla",
+          "weight": 1,
+          "active": true
+        }
+      ],
+      "settings": {
+        "theme": "system",
+        "style": "classic",
+        "motion": "standard",
+        "sound": false,
+        "spinSeconds": 4
+      }
+    }
+  },
+  {
+    "id": "long-label",
+    "expected": "LABEL_TOO_LONG",
+    "wheel": {
+      "schemaVersion": 1,
+      "tool": "names",
+      "title": "Demo friends",
+      "locale": "en",
+      "mode": "independent",
+      "entries": [
+        {
+          "id": "entry_aysel",
+          "label": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_murad",
+          "label": "Murad",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_leyla",
+          "label": "Leyla",
+          "weight": 1,
+          "active": true
+        }
+      ],
+      "settings": {
+        "theme": "system",
+        "style": "classic",
+        "motion": "standard",
+        "sound": false,
+        "spinSeconds": 4
+      }
+    }
+  },
+  {
+    "id": "long-title",
+    "expected": "TITLE_TOO_LONG",
+    "wheel": {
+      "schemaVersion": 1,
+      "tool": "names",
+      "title": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "locale": "en",
+      "mode": "independent",
+      "entries": [
+        {
+          "id": "entry_aysel",
+          "label": "Aysel",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_murad",
+          "label": "Murad",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_leyla",
+          "label": "Leyla",
+          "weight": 1,
+          "active": true
+        }
+      ],
+      "settings": {
+        "theme": "system",
+        "style": "classic",
+        "motion": "standard",
+        "sound": false,
+        "spinSeconds": 4
+      }
+    }
+  },
+  {
+    "id": "combining-graphemes",
+    "expected": "OK",
+    "wheel": {
+      "schemaVersion": 1,
+      "tool": "names",
+      "title": "Demo friends",
+      "locale": "en",
+      "mode": "independent",
+      "entries": [
+        {
+          "id": "entry_aysel",
+          "label": "áááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááá",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_murad",
+          "label": "Murad",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_leyla",
+          "label": "Leyla",
+          "weight": 1,
+          "active": true
+        }
+      ],
+      "settings": {
+        "theme": "system",
+        "style": "classic",
+        "motion": "standard",
+        "sound": false,
+        "spinSeconds": 4
+      }
+    }
+  },
+  {
+    "id": "emoji-graphemes",
+    "expected": "OK",
+    "wheel": {
+      "schemaVersion": 1,
+      "tool": "names",
+      "title": "Demo friends",
+      "locale": "en",
+      "mode": "independent",
+      "entries": [
+        {
+          "id": "entry_aysel",
+          "label": "👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_murad",
+          "label": "Murad",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_leyla",
+          "label": "Leyla",
+          "weight": 1,
+          "active": true
+        }
+      ],
+      "settings": {
+        "theme": "system",
+        "style": "classic",
+        "motion": "standard",
+        "sound": false,
+        "spinSeconds": 4
+      }
+    }
+  },
+  {
+    "id": "invalid-range-order",
+    "expected": "INVALID_RANGE",
+    "wheel": {
+      "schemaVersion": 1,
+      "tool": "numbers",
+      "title": "Demo friends",
+      "locale": "en",
+      "mode": "independent",
+      "entries": [],
+      "settings": {
+        "theme": "system",
+        "style": "classic",
+        "motion": "standard",
+        "sound": false,
+        "spinSeconds": 4
+      },
+      "range": {
+        "min": 10,
+        "max": 1
+      }
+    }
+  },
+  {
+    "id": "invalid-range-size",
+    "expected": "INVALID_RANGE",
+    "wheel": {
+      "schemaVersion": 1,
+      "tool": "numbers",
+      "title": "Demo friends",
+      "locale": "en",
+      "mode": "independent",
+      "entries": [],
+      "settings": {
+        "theme": "system",
+        "style": "classic",
+        "motion": "standard",
+        "sound": false,
+        "spinSeconds": 4
+      },
+      "range": {
+        "min": 0,
+        "max": 10000
+      }
+    }
+  },
+  {
+    "id": "range-boundary",
+    "expected": "OK",
+    "wheel": {
+      "schemaVersion": 1,
+      "tool": "numbers",
+      "title": "Demo friends",
+      "locale": "en",
+      "mode": "independent",
+      "entries": [],
+      "settings": {
+        "theme": "system",
+        "style": "classic",
+        "motion": "standard",
+        "sound": false,
+        "spinSeconds": 4
+      },
+      "range": {
+        "min": 1,
+        "max": 10000
+      }
+    }
+  },
+  {
+    "id": "teams-too-many",
+    "expected": "INVALID_TEAM_COUNT",
+    "wheel": {
+      "schemaVersion": 1,
+      "tool": "teams",
+      "title": "Demo friends",
+      "locale": "en",
+      "mode": "independent",
+      "entries": [
+        {
+          "id": "entry_aysel",
+          "label": "Aysel",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_murad",
+          "label": "Murad",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_leyla",
+          "label": "Leyla",
+          "weight": 1,
+          "active": true
+        }
+      ],
+      "settings": {
+        "theme": "system",
+        "style": "classic",
+        "motion": "standard",
+        "sound": false,
+        "spinSeconds": 4
+      },
+      "teamCount": 4
+    }
+  },
+  {
+    "id": "valid-teams",
+    "expected": "OK",
+    "wheel": {
+      "schemaVersion": 1,
+      "tool": "teams",
+      "title": "Demo friends",
+      "locale": "en",
+      "mode": "independent",
+      "entries": [
+        {
+          "id": "entry_aysel",
+          "label": "Aysel",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_murad",
+          "label": "Murad",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_leyla",
+          "label": "Leyla",
+          "weight": 1,
+          "active": true
+        }
+      ],
+      "settings": {
+        "theme": "system",
+        "style": "classic",
+        "motion": "standard",
+        "sound": false,
+        "spinSeconds": 4
+      },
+      "teamCount": 2
+    }
+  },
+  {
+    "id": "invalid-seats",
+    "expected": "INVALID_SEATS",
+    "wheel": {
+      "schemaVersion": 1,
+      "tool": "bottle",
+      "title": "Demo friends",
+      "locale": "en",
+      "mode": "independent",
+      "entries": [
+        {
+          "id": "entry_aysel",
+          "label": "Aysel",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_murad",
+          "label": "Murad",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_leyla",
+          "label": "Leyla",
+          "weight": 1,
+          "active": true
+        }
+      ],
+      "settings": {
+        "theme": "system",
+        "style": "classic",
+        "motion": "standard",
+        "sound": false,
+        "spinSeconds": 4
+      },
+      "seats": [
+        "missing_id"
+      ]
+    }
+  },
+  {
+    "id": "valid-seats",
+    "expected": "OK",
+    "wheel": {
+      "schemaVersion": 1,
+      "tool": "bottle",
+      "title": "Demo friends",
+      "locale": "en",
+      "mode": "independent",
+      "entries": [
+        {
+          "id": "entry_aysel",
+          "label": "Aysel",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_murad",
+          "label": "Murad",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_leyla",
+          "label": "Leyla",
+          "weight": 1,
+          "active": true
+        }
+      ],
+      "settings": {
+        "theme": "system",
+        "style": "classic",
+        "motion": "standard",
+        "sound": false,
+        "spinSeconds": 4
+      },
+      "seats": [
+        "entry_aysel",
+        "entry_murad",
+        "entry_leyla"
+      ]
+    }
+  },
+  {
+    "id": "weight-hidden",
+    "expected": "INVALID_WEIGHT_MODE",
+    "wheel": {
+      "schemaVersion": 1,
+      "tool": "names",
+      "title": "Demo friends",
+      "locale": "en",
+      "mode": "independent",
+      "entries": [
+        {
+          "id": "entry_aysel",
+          "label": "Aysel",
+          "weight": 2,
+          "active": true
+        },
+        {
+          "id": "entry_murad",
+          "label": "Murad",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_leyla",
+          "label": "Leyla",
+          "weight": 1,
+          "active": true
+        }
+      ],
+      "settings": {
+        "theme": "system",
+        "style": "classic",
+        "motion": "standard",
+        "sound": false,
+        "spinSeconds": 4
+      }
+    }
+  },
+  {
+    "id": "weighted-cycle",
+    "expected": "INVALID_WEIGHT_MODE",
+    "wheel": {
+      "schemaVersion": 1,
+      "tool": "weighted",
+      "title": "Demo friends",
+      "locale": "en",
+      "mode": "shuffled-cycle",
+      "entries": [
+        {
+          "id": "entry_aysel",
+          "label": "Aysel",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_murad",
+          "label": "Murad",
+          "weight": 1,
+          "active": true
+        },
+        {
+          "id": "entry_leyla",
+          "label": "Leyla",
+          "weight": 1,
+          "active": true
+        }
+      ],
+      "settings": {
+        "theme": "system",
+        "style": "classic",
+        "motion": "standard",
+        "sound": false,
+        "spinSeconds": 4
+      }
+    }
+  },
+  {
+    "id": "none-active",
+    "expected": "NO_ACTIVE_ENTRIES",
+    "wheel": {
+      "schemaVersion": 1,
+      "tool": "names",
+      "title": "Demo friends",
+      "locale": "en",
+      "mode": "independent",
+      "entries": [
+        {
+          "id": "entry_aysel",
+          "label": "Aysel",
+          "weight": 1,
+          "active": false
+        },
+        {
+          "id": "entry_murad",
+          "label": "Murad",
+          "weight": 1,
+          "active": false
+        },
+        {
+          "id": "entry_leyla",
+          "label": "Leyla",
+          "weight": 1,
+          "active": false
+        }
+      ],
+      "settings": {
+        "theme": "system",
+        "style": "classic",
+        "motion": "standard",
+        "sound": false,
+        "spinSeconds": 4
+      }
+    }
+  }
+]

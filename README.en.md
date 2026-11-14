@@ -113,7 +113,7 @@ Application installation/build/test commands are specified as a **future require
 
 ## 🔬 Readiness review
 
-The [readiness audit](docs/21-READINESS-AUDIT.md) identifies remaining session-export, admin-content and visual-contract gaps. Foundation work can begin; do not call the baseline gap-free or implement affected modules without resolving these contracts.
+The [readiness audit](docs/21-READINESS-AUDIT.md) records historical findings and their current closure. Full session/admin schemas, semantic vectors and the screen contract now define implementation behavior. Runtime equivalence, real-device visual acceptance and external launch inputs remain implementation/release gates.
 
 ## ✅ Definition of complete
 

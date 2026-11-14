@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "document",
+    "version",
+    "effectiveAt",
+    "bodyMarkdown",
+    "operatorRevision"
+  ],
+  "properties": {
+    "document": {
+      "enum": [
+        "privacy",
+        "cookies",
+        "terms"
+      ]
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "effectiveAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "bodyMarkdown": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100000
+    },
+    "operatorRevision": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{8,64}$"
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "enabled",
+    "gtmId",
+    "ga4Id",
+    "publisherId",
+    "cmpProvider",
+    "placements"
+  ],
+  "properties": {
+    "id": {
+      "const": "optional_tags"
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "gtmId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^GTM-[A-Z0-9]+$"
+    },
+    "ga4Id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^G-[A-Z0-9]+$"
+    },
+    "publisherId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^ca-pub-[0-9]{16}$"
+    },
+    "cmpProvider": {
+      "enum": [
+        "google-certified-configured",
+        null
+      ]
+    },
+    "placements": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "desktop-rail",
+          "mobile-inline",
+          "lower-content"
+        ]
+      }
+    }
+  }
+}

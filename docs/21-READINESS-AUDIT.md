@@ -2,7 +2,7 @@
 
 Tarix: 14 noyabr 2026. Bu audit sənəd paketinin öz müəllifi tərəfindən aparılıb; müstəqil sertifikatlaşdırma deyil. Tətbiq hələ yoxdur. Qiymətləndirmə sənədlərin tamlığı və müqavilələrin dəqiqliyinə aiddir.
 
-## Qərar
+## İlkin baxışın qərarı (aşağıdakı yeniləmə ilə əvəzlənib)
 
 **Təməl quruluşa və dəqiq spesifikasiyası olan modullara başlamaq olar. Bütün sistemi heç bir əlavə müqavilə işi olmadan tam icra etməyə hazır, 10/10 paket kimi təqdim etmək düzgün deyil.** Əhatə və arxitektura müəyyənləşib, amma aşağıdakı açıq interfeys detalları təsirləndirdikləri modula başlamazdan əvvəl tamamlanmalıdır. Bunlar MVP icazəsi deyil; tam buraxılış meyarları qüvvədədir.
 
@@ -44,3 +44,18 @@ Sənəd keçidlərinin, JSON/SVG-nin və müqavilə nümunələrinin yoxlanması
 5. Sonrakı iş paketlərini qəbul meyarları ilə davam etdir; bütün açıq maddələr bağlanmadan ictimai buraxılış yoxdur.
 
 **Hazırlığın dürüst ifadəsi:** güclü və icraya başlanıla bilən baza; hələ tam boşluqsuz yekun mühəndislik paketi deyil. “10/10” əvəzinə bağlanmış maddələr və real yoxlama sübutları istifadə olunur.
+
+## Tamamlama baxışı — cari vəziyyət
+
+Əvvəlki tapıntılar saxlanılıb ki, dəyişikliklərin səbəbi izlənə bilsin. Cari normativ status bu cədvəldir:
+
+| Maddə | Sənəd/müqavilə üzrə nəticə | Tətbiq zamanı tələb olunan sübut |
+|---|---|---|
+| RDY-01 | Bağlandı: sessiya zərfi, 4 nəticə tipi, dövr və oyun bərpa vəziyyəti; yeddi alət nümunəsi | Crash/reload və hər alət üçün real ixrac-bərpa testi |
+| RDY-02 | Bağlandı: 6 admin məzmun sxemi, oneOf import müqaviləsi və typed manifest | TS/PHP istehlakçıları, rol və import təhlükəsizliyi testləri |
+| RDY-03 | Spesifikasiya bağlandı: sıralanmış semantik qaydalar, Unicode qrafem yoxlaması və 16 ortaq vektor; Python referens yoxlayıcı | TS/PHP eyni vektorları icra etməlidir; hələ işlədilməyib |
+| RDY-04 | İcra bazası müəyyənləşdi: 4 ekran ölçüsü, yerləşimlər, alət stilləri, vəziyyətlər və SVG maket | Real interfeys üzrə screenshot, əlçatanlıq və istifadəçi vizual qəbulu |
+
+Əlaqəli sənədlər: [semantik müqavilə](22-SEMANTIC-CONTRACT.md), [ekran müqaviləsi](23-SCREEN-CONTRACT.md), [maket](assets/screen-layouts.svg).
+
+**Cari qərar:** sənəd paketi təsvir edilən tam əhatənin icrasına başlamaq üçün konkret baza verir. Yuxarıdakı maddələr artıq Codex-in uydurmalı olduğu açıq davranışlar deyil. Tətbiq testləri və real vizual qəbul sənədlərin yazılması ilə yerinə yetirilmiş sayılmır. Kontent/tərcümə rəyləri və xarici hesab məlumatları buraxılış işləri kimi qalır. Müstəqil audit və mütləq mükəmməllik sertifikatı iddiası verilmir.

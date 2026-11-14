@@ -2,7 +2,7 @@
 
 ## Starting conditions
 
-This repository currently contains specifications and validators only. Work packages are internal sequencing, not separately publishable MVPs. All mandatory requirements remain release-blocking. Read AGENTS.md and docs/21-READINESS-AUDIT.md first, then validate docs and inspect available tools/runtime. Complete RDY-01/02 contract variants and fixtures during WP01 before dependent modules; implement RDY-03 semantic validation in WP02 and resolve RDY-04 before final UI work. Do not ask for domain/ad credentials before completing independent code work.
+This repository currently contains specifications and validators only. Work packages are internal sequencing, not separately publishable MVPs. All mandatory requirements remain release-blocking. Read AGENTS.md and docs/21-READINESS-AUDIT.md first, then validate docs and inspect available tools/runtime. Consume the completed session/admin variants in WP01. Implement the shared semantic vectors in TS/PHP during WP02. Apply docs/23-SCREEN-CONTRACT.md in WP04; real visual acceptance is required before release. Do not ask for domain/ad credentials before completing independent code work.
 
 ## Ordered work packages
 

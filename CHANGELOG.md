@@ -1,5 +1,14 @@
 # Changelog
 
+## Contract completion — 2026-11-14
+
+- Added full session envelopes and fixtures for all seven tools, including game/cycle recovery.
+- Added six strict admin record schemas and a typed build manifest.
+- Added ordered semantic rules, 16 cross-language vectors and a reference checker.
+- Added responsive screen geometry, state contracts and an SVG contact sheet.
+- Recorded current audit closure separately from pending application evidence.
+
+
 ## Readiness audit and Azerbaijani primary README — 2026-11-14
 
 - Made README.md the full Azerbaijani project entry point; retained README.en.md.

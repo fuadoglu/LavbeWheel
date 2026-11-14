@@ -1,7 +1,4 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://lavbe.com/contracts/session.schema.json",
-  "title": "Lavbe local session export v1",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -10,9 +7,12 @@
     "wheelId",
     "engineVersion",
     "createdAt",
+    "currentRevisionId",
     "configRevisions",
     "rounds",
-    "results"
+    "cycle",
+    "results",
+    "game"
   ],
   "properties": {
     "schemaVersion": {
@@ -33,6 +33,10 @@
       "type": "string",
       "format": "date-time"
     },
+    "currentRevisionId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{8,64}$"
+    },
     "configRevisions": {
       "type": "array",
       "minItems": 1,
@@ -42,50 +46,534 @@
         "additionalProperties": false,
         "required": [
           "id",
-          "mode",
-          "entries"
+          "wheel"
         ],
         "properties": {
           "id": {
             "type": "string",
             "pattern": "^[A-Za-z0-9_-]{8,64}$"
           },
-          "mode": {
-            "enum": [
-              "independent",
-              "remove-winner",
-              "shuffled-cycle"
-            ]
-          },
-          "entries": {
-            "type": "array",
-            "minItems": 1,
-            "maxItems": 1000,
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "id",
-                "label",
-                "weight"
-              ],
-              "properties": {
-                "id": {
+          "wheel": {
+            "title": "Lavbe shared wheel configuration v1",
+            "description": "Label and title maxLength are defensive code-point limits; enforce grapheme limits and semantic constraints separately. This is configuration, not session/report data.",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "schemaVersion",
+              "tool",
+              "title",
+              "locale",
+              "mode",
+              "entries",
+              "settings"
+            ],
+            "properties": {
+              "schemaVersion": {
+                "const": 1
+              },
+              "tool": {
+                "enum": [
+                  "names",
+                  "numbers",
+                  "yes-no",
+                  "weighted",
+                  "teams",
+                  "bottle",
+                  "game"
+                ]
+              },
+              "title": {
+                "type": "string",
+                "maxLength": 1024
+              },
+              "locale": {
+                "type": "string",
+                "enum": [
+                  "en",
+                  "az",
+                  "tr",
+                  "ru",
+                  "es",
+                  "pt",
+                  "pt-BR",
+                  "de",
+                  "fr",
+                  "it",
+                  "nl",
+                  "pl",
+                  "uk",
+                  "ro",
+                  "hu",
+                  "cs",
+                  "sk",
+                  "bg",
+                  "sr",
+                  "hr",
+                  "bs",
+                  "sl",
+                  "mk",
+                  "sq",
+                  "en-GB",
+                  "el",
+                  "sv",
+                  "no",
+                  "da",
+                  "fi",
+                  "is",
+                  "et",
+                  "lv",
+                  "lt",
+                  "ar",
+                  "he",
+                  "fa",
+                  "ur",
+                  "ps",
+                  "ku",
+                  "ckb",
+                  "hi",
+                  "bn",
+                  "pa",
+                  "gu",
+                  "mr",
+                  "ne",
+                  "si",
+                  "ta",
+                  "te",
+                  "kn",
+                  "ml",
+                  "or",
+                  "as",
+                  "zh-Hans",
+                  "zh-Hant",
+                  "ja",
+                  "ko",
+                  "vi",
+                  "th",
+                  "id",
+                  "ms",
+                  "fil",
+                  "jv",
+                  "su",
+                  "km",
+                  "lo",
+                  "my",
+                  "mn",
+                  "kk",
+                  "ky",
+                  "uz",
+                  "tk",
+                  "tg",
+                  "ka",
+                  "hy",
+                  "sw",
+                  "am",
+                  "ha",
+                  "yo",
+                  "ig",
+                  "zu",
+                  "xh",
+                  "af",
+                  "so",
+                  "om",
+                  "rw",
+                  "mg",
+                  "sn",
+                  "st",
+                  "tn",
+                  "ny",
+                  "wo",
+                  "ff",
+                  "ht",
+                  "ca",
+                  "eu",
+                  "gl",
+                  "cy",
+                  "ga",
+                  "gd",
+                  "mt",
+                  "lb",
+                  "be",
+                  "la",
+                  "eo",
+                  "mi",
+                  "sm",
+                  "haw",
+                  "fy"
+                ]
+              },
+              "mode": {
+                "enum": [
+                  "independent",
+                  "remove-winner",
+                  "shuffled-cycle"
+                ]
+              },
+              "entries": {
+                "type": "array",
+                "minItems": 0,
+                "maxItems": 1000,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "id",
+                    "label",
+                    "weight",
+                    "active"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9_-]{8,64}$"
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2048
+                    },
+                    "weight": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 1000
+                    },
+                    "active": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              },
+              "settings": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "theme",
+                  "style",
+                  "motion",
+                  "sound",
+                  "spinSeconds"
+                ],
+                "properties": {
+                  "theme": {
+                    "enum": [
+                      "system",
+                      "light",
+                      "dark"
+                    ]
+                  },
+                  "style": {
+                    "enum": [
+                      "classic",
+                      "bottle",
+                      "couples",
+                      "friends",
+                      "education"
+                    ]
+                  },
+                  "motion": {
+                    "enum": [
+                      "quiet",
+                      "standard",
+                      "party"
+                    ]
+                  },
+                  "sound": {
+                    "type": "boolean"
+                  },
+                  "spinSeconds": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 10
+                  }
+                }
+              },
+              "range": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "min",
+                  "max"
+                ],
+                "properties": {
+                  "min": {
+                    "type": "integer",
+                    "minimum": -1000000,
+                    "maximum": 1000000
+                  },
+                  "max": {
+                    "type": "integer",
+                    "minimum": -1000000,
+                    "maximum": 1000000
+                  }
+                }
+              },
+              "teamCount": {
+                "type": "integer",
+                "minimum": 2,
+                "maximum": 50
+              },
+              "seats": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 20,
+                "uniqueItems": true,
+                "items": {
                   "type": "string",
                   "pattern": "^[A-Za-z0-9_-]{8,64}$"
-                },
-                "label": {
-                  "type": "string",
-                  "minLength": 1,
-                  "maxLength": 2048
-                },
-                "weight": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 1000
+                }
+              },
+              "game": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "packId",
+                  "packVersion"
+                ],
+                "properties": {
+                  "packId": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_-]{8,64}$"
+                  },
+                  "packVersion": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
                 }
               }
-            }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "tool": {
+                      "const": "numbers"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "range"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "tool": {
+                      "const": "teams"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "teamCount"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "tool": {
+                      "const": "bottle"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "seats"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "tool": {
+                      "const": "game"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "game"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "tool": {
+                      "const": "weighted"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "mode": {
+                      "enum": [
+                        "independent",
+                        "remove-winner"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "tool": {
+                      "const": "teams"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "mode": {
+                      "const": "independent"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "tool": {
+                      "const": "numbers"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "mode": {
+                      "const": "independent"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "tool": {
+                      "const": "yes-no"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "mode": {
+                      "const": "independent"
+                    },
+                    "entries": {
+                      "minItems": 2,
+                      "maxItems": 2,
+                      "items": {
+                        "properties": {
+                          "weight": {
+                            "const": 1
+                          },
+                          "active": {
+                            "const": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "tool": {
+                      "not": {
+                        "const": "numbers"
+                      }
+                    }
+                  }
+                },
+                "then": {
+                  "not": {
+                    "required": [
+                      "range"
+                    ]
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "tool": {
+                      "not": {
+                        "const": "teams"
+                      }
+                    }
+                  }
+                },
+                "then": {
+                  "not": {
+                    "required": [
+                      "teamCount"
+                    ]
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "tool": {
+                      "not": {
+                        "const": "bottle"
+                      }
+                    }
+                  }
+                },
+                "then": {
+                  "not": {
+                    "required": [
+                      "seats"
+                    ]
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "tool": {
+                      "not": {
+                        "const": "game"
+                      }
+                    }
+                  }
+                },
+                "then": {
+                  "not": {
+                    "required": [
+                      "game"
+                    ]
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "tool": {
+                      "const": "numbers"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "entries": {
+                      "maxItems": 0
+                    }
+                  }
+                },
+                "else": {
+                  "properties": {
+                    "entries": {
+                      "minItems": 1
+                    }
+                  }
+                }
+              }
+            ]
           }
         }
       }
@@ -121,72 +609,762 @@
         }
       }
     },
+    "cycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "number",
+        "remainingEntryIds",
+        "excludedEntryIds"
+      ],
+      "properties": {
+        "number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "remainingEntryIds": {
+          "type": "array",
+          "maxItems": 1000,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{8,64}$"
+          }
+        },
+        "excludedEntryIds": {
+          "type": "array",
+          "maxItems": 1000,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{8,64}$"
+          }
+        }
+      }
+    },
     "results": {
       "type": "array",
       "maxItems": 10000,
       "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "roundId",
-          "configRevisionId",
-          "sequence",
-          "committedAt",
-          "selectedEntryId",
-          "selectedLabel",
-          "presentation"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "pattern": "^[A-Za-z0-9_-]{8,64}$"
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "roundId",
+              "configRevisionId",
+              "sequence",
+              "committedAt",
+              "presentation",
+              "kind",
+              "entryId",
+              "label"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              "roundId": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              "configRevisionId": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              "sequence": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "committedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "presentation": {
+                "enum": [
+                  "pending",
+                  "revealed",
+                  "acknowledged"
+                ]
+              },
+              "kind": {
+                "const": "entry"
+              },
+              "entryId": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            }
           },
-          "roundId": {
-            "type": "string",
-            "pattern": "^[A-Za-z0-9_-]{8,64}$"
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "roundId",
+              "configRevisionId",
+              "sequence",
+              "committedAt",
+              "presentation",
+              "kind",
+              "value"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              "roundId": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              "configRevisionId": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              "sequence": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "committedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "presentation": {
+                "enum": [
+                  "pending",
+                  "revealed",
+                  "acknowledged"
+                ]
+              },
+              "kind": {
+                "const": "number"
+              },
+              "value": {
+                "type": "integer",
+                "minimum": -1000000,
+                "maximum": 1000000
+              }
+            }
           },
-          "configRevisionId": {
-            "type": "string",
-            "pattern": "^[A-Za-z0-9_-]{8,64}$"
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "roundId",
+              "configRevisionId",
+              "sequence",
+              "committedAt",
+              "presentation",
+              "kind",
+              "teams"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              "roundId": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              "configRevisionId": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              "sequence": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "committedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "presentation": {
+                "enum": [
+                  "pending",
+                  "revealed",
+                  "acknowledged"
+                ]
+              },
+              "kind": {
+                "const": "teams"
+              },
+              "teams": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 50,
+                "items": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_-]{8,64}$"
+                  }
+                }
+              }
+            }
           },
-          "sequence": {
-            "type": "integer",
-            "minimum": 1
-          },
-          "committedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "selectedEntryId": {
-            "type": "string",
-            "pattern": "^[A-Za-z0-9_-]{8,64}$"
-          },
-          "selectedLabel": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 2048
-          },
-          "presentation": {
-            "enum": [
-              "pending",
-              "revealed",
-              "acknowledged"
-            ]
-          },
-          "cardId": {
-            "type": "string",
-            "pattern": "^[A-Za-z0-9_-]{8,64}$"
-          },
-          "cardStatus": {
-            "enum": [
-              "pending",
-              "completed",
-              "skipped"
-            ]
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "roundId",
+              "configRevisionId",
+              "sequence",
+              "committedAt",
+              "presentation",
+              "kind",
+              "entryId",
+              "label",
+              "cardId",
+              "text",
+              "status"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              "roundId": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              "configRevisionId": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              "sequence": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "committedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "presentation": {
+                "enum": [
+                  "pending",
+                  "revealed",
+                  "acknowledged"
+                ]
+              },
+              "kind": {
+                "const": "card"
+              },
+              "entryId": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "cardId": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              "status": {
+                "enum": [
+                  "pending",
+                  "completed",
+                  "skipped"
+                ]
+              }
+            }
           }
-        }
+        ]
       }
+    },
+    "game": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "packId",
+            "packVersion",
+            "locale",
+            "phase",
+            "usedCardIds",
+            "activeResultId",
+            "nextTurnIndex",
+            "resumePhase",
+            "packSnapshot"
+          ],
+          "properties": {
+            "packId": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,64}$"
+            },
+            "packVersion": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "locale": {
+              "type": "string",
+              "enum": [
+                "en",
+                "az",
+                "tr",
+                "ru",
+                "es",
+                "pt",
+                "pt-BR",
+                "de",
+                "fr",
+                "it",
+                "nl",
+                "pl",
+                "uk",
+                "ro",
+                "hu",
+                "cs",
+                "sk",
+                "bg",
+                "sr",
+                "hr",
+                "bs",
+                "sl",
+                "mk",
+                "sq",
+                "en-GB",
+                "el",
+                "sv",
+                "no",
+                "da",
+                "fi",
+                "is",
+                "et",
+                "lv",
+                "lt",
+                "ar",
+                "he",
+                "fa",
+                "ur",
+                "ps",
+                "ku",
+                "ckb",
+                "hi",
+                "bn",
+                "pa",
+                "gu",
+                "mr",
+                "ne",
+                "si",
+                "ta",
+                "te",
+                "kn",
+                "ml",
+                "or",
+                "as",
+                "zh-Hans",
+                "zh-Hant",
+                "ja",
+                "ko",
+                "vi",
+                "th",
+                "id",
+                "ms",
+                "fil",
+                "jv",
+                "su",
+                "km",
+                "lo",
+                "my",
+                "mn",
+                "kk",
+                "ky",
+                "uz",
+                "tk",
+                "tg",
+                "ka",
+                "hy",
+                "sw",
+                "am",
+                "ha",
+                "yo",
+                "ig",
+                "zu",
+                "xh",
+                "af",
+                "so",
+                "om",
+                "rw",
+                "mg",
+                "sn",
+                "st",
+                "tn",
+                "ny",
+                "wo",
+                "ff",
+                "ht",
+                "ca",
+                "eu",
+                "gl",
+                "cy",
+                "ga",
+                "gd",
+                "mt",
+                "lb",
+                "be",
+                "la",
+                "eo",
+                "mi",
+                "sm",
+                "haw",
+                "fy"
+              ]
+            },
+            "phase": {
+              "enum": [
+                "ready",
+                "selecting-player",
+                "revealing-card",
+                "awaiting-complete-or-skip",
+                "paused",
+                "exhausted",
+                "ended"
+              ]
+            },
+            "usedCardIds": {
+              "type": "array",
+              "maxItems": 1000,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{8,64}$"
+              }
+            },
+            "activeResultId": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{8,64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "nextTurnIndex": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 999
+            },
+            "resumePhase": {
+              "enum": [
+                "ready",
+                "awaiting-complete-or-skip",
+                "exhausted",
+                null
+              ]
+            },
+            "packSnapshot": {
+              "title": "Localized game pack v1",
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "schemaVersion",
+                "id",
+                "version",
+                "family",
+                "locale",
+                "minPlayers",
+                "maxPlayers",
+                "audience",
+                "intensity",
+                "cards",
+                "review"
+              ],
+              "properties": {
+                "schemaVersion": {
+                  "const": 1
+                },
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{8,64}$"
+                },
+                "version": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "family": {
+                  "enum": [
+                    "icebreakers",
+                    "friends",
+                    "couples",
+                    "truth",
+                    "dare",
+                    "family"
+                  ]
+                },
+                "locale": {
+                  "enum": [
+                    "en",
+                    "az",
+                    "tr",
+                    "ru",
+                    "es",
+                    "pt",
+                    "pt-BR",
+                    "de",
+                    "fr",
+                    "it",
+                    "nl",
+                    "pl",
+                    "uk",
+                    "ro",
+                    "hu",
+                    "cs",
+                    "sk",
+                    "bg",
+                    "sr",
+                    "hr",
+                    "bs",
+                    "sl",
+                    "mk",
+                    "sq",
+                    "en-GB",
+                    "el",
+                    "sv",
+                    "no",
+                    "da",
+                    "fi",
+                    "is",
+                    "et",
+                    "lv",
+                    "lt",
+                    "ar",
+                    "he",
+                    "fa",
+                    "ur",
+                    "ps",
+                    "ku",
+                    "ckb",
+                    "hi",
+                    "bn",
+                    "pa",
+                    "gu",
+                    "mr",
+                    "ne",
+                    "si",
+                    "ta",
+                    "te",
+                    "kn",
+                    "ml",
+                    "or",
+                    "as",
+                    "zh-Hans",
+                    "zh-Hant",
+                    "ja",
+                    "ko",
+                    "vi",
+                    "th",
+                    "id",
+                    "ms",
+                    "fil",
+                    "jv",
+                    "su",
+                    "km",
+                    "lo",
+                    "my",
+                    "mn",
+                    "kk",
+                    "ky",
+                    "uz",
+                    "tk",
+                    "tg",
+                    "ka",
+                    "hy",
+                    "sw",
+                    "am",
+                    "ha",
+                    "yo",
+                    "ig",
+                    "zu",
+                    "xh",
+                    "af",
+                    "so",
+                    "om",
+                    "rw",
+                    "mg",
+                    "sn",
+                    "st",
+                    "tn",
+                    "ny",
+                    "wo",
+                    "ff",
+                    "ht",
+                    "ca",
+                    "eu",
+                    "gl",
+                    "cy",
+                    "ga",
+                    "gd",
+                    "mt",
+                    "lb",
+                    "be",
+                    "la",
+                    "eo",
+                    "mi",
+                    "sm",
+                    "haw",
+                    "fy"
+                  ]
+                },
+                "minPlayers": {
+                  "type": "integer",
+                  "minimum": 2,
+                  "maximum": 20
+                },
+                "maxPlayers": {
+                  "type": "integer",
+                  "minimum": 2,
+                  "maximum": 20
+                },
+                "audience": {
+                  "enum": [
+                    "family",
+                    "teen",
+                    "adult"
+                  ]
+                },
+                "intensity": {
+                  "enum": [
+                    "gentle",
+                    "playful",
+                    "bold"
+                  ]
+                },
+                "cards": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 1000,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "id",
+                      "kind",
+                      "text",
+                      "equipment",
+                      "estimatedSeconds"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{8,64}$"
+                      },
+                      "kind": {
+                        "enum": [
+                          "question",
+                          "dare",
+                          "activity"
+                        ]
+                      },
+                      "text": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000
+                      },
+                      "equipment": {
+                        "type": "array",
+                        "maxItems": 10,
+                        "items": {
+                          "type": "string",
+                          "maxLength": 80
+                        }
+                      },
+                      "estimatedSeconds": {
+                        "type": "integer",
+                        "minimum": 5,
+                        "maximum": 600
+                      }
+                    }
+                  }
+                },
+                "review": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "status",
+                    "sourceHash"
+                  ],
+                  "properties": {
+                    "status": {
+                      "enum": [
+                        "draft",
+                        "validated",
+                        "reviewed"
+                      ]
+                    },
+                    "sourceHash": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    },
+                    "reviewer": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "reviewedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "review": {
+                        "properties": {
+                          "status": {
+                            "const": "reviewed"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "review": {
+                        "required": [
+                          "reviewer",
+                          "reviewedAt"
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
     }
-  }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Portable Lavbe session envelope v1"
 }
