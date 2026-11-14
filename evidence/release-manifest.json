@@ -1,8 +1,8 @@
 {
   "version": 1,
   "scope": "Implementation evidence only; not release approval or deployment evidence.",
-  "branch": "feat/wp03-session",
-  "baseCommit": "e6f95280d774adca17d27c3d622df7e85fcfc7a6",
+  "branch": "feat/wp04-visual-system",
+  "baseCommit": "3b87adaa25e6e884eada3ee8dfd74dd92f67d0ba",
   "workPackages": {
     "WP01": {
       "status": "verified",
@@ -205,6 +205,55 @@
         "PR review/merge remains pending; user-facing persistence controls and retention/quota recovery UX remain open."
       ],
       "commit": "1f50c6ecce9910dd70648a730df0d67ae58d7cbd"
+    },
+    "WP04": {
+      "status": "in-progress",
+      "evidence": [
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 40 unit checks, including continuous piecewise spin easing",
+          "artifact": "tests/unit/spin-motion.test.ts"
+        },
+        {
+          "command": "npm run test:e2e",
+          "result": "PASS; 8 Chromium flows cover responsive layouts, theme/motion settings, tabs/history, result restoration and Axe light/dark checks",
+          "artifact": "tests/e2e/wheel.spec.ts"
+        },
+        {
+          "command": "npm run check",
+          "result": "PASS; contracts/config/TypeScript/Astro checks, no diagnostics",
+          "artifact": "command output"
+        },
+        {
+          "command": "npm run test:seo",
+          "result": "PASS; static build and root-page SEO smoke validation",
+          "artifact": "apps/web/dist/index.html",
+          "scope": "No production origin or full route graph"
+        },
+        {
+          "command": "npm run test:content",
+          "result": "PASS; metadata and two draft catalogs match",
+          "artifact": "content/locales/",
+          "scope": "Translation review remains pending"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; 45 contract fixture accept/reject checks, 12 admin schema syntax checks, 16 semantic vectors and SEO registry integrity",
+          "artifact": "docs/ and contracts/"
+        },
+        {
+          "command": "npm run screenshots:wp04",
+          "result": "PASS; generated local Chromium screenshots for 390/768/1024/1440 widths, light/dark and classic result/history/settings states",
+          "artifact": "evidence/wp04/screenshots/README.md",
+          "scope": "Not actual devices or owner visual sign-off"
+        }
+      ],
+      "limitations": [
+        "This package currently implements the classic tool workspace; bottle, game, report, share and library layouts remain open.",
+        "Physical device, screen reader, Arabic/RTL, long German label, audio/motion device and owner approval evidence remains pending.",
+        "Screenshot automation uses local Chromium, synthetic names and no production consent/ad states."
+      ],
+      "commit": "33b7f91"
     }
   },
   "requirements": {

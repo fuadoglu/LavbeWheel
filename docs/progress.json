@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 persistence is implemented and configured CI passed; WP04 is in progress; WP05-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 persistence is implemented and configured CI passed; WP04 classic visual system is in progress; WP05-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -183,7 +183,7 @@
       "id": "WP04",
       "status": "in-progress",
       "branch": "feat/wp04-visual-system",
-      "commit": "a8b9327c780108aec35415b03a4dfe5fdb11d724",
+      "commit": "33b7f91",
       "evidence": [
         {
           "command": "npm run build --workspace @lavbe/web",
@@ -202,10 +202,57 @@
           "result": "PASS for the eight segment pairs; contrast ratios range from 5.41:1 to 7.31:1",
           "artifact": "apps/web/src/scripts/wheel.ts palette",
           "scope": "Canvas segment label colors only; does not cover full interface contrast"
+        },
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 40 unit checks, including monotonic 15/50/35 spin-motion curve and continuous phase velocity",
+          "artifact": "tests/unit/spin-motion.test.ts"
+        },
+        {
+          "command": "npm run test:e2e",
+          "result": "PASS; 8 Chromium flows, including light/dark Axe, mobile/tab/landscape geometry, keyboard tabs, visible mobile edit completion, theme/motion persistence, result/highlight recovery and session integrity",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Chromium automation only; no actual mobile device or assistive-technology acceptance"
+        },
+        {
+          "command": "npm run check",
+          "result": "PASS; generated contracts, config checks, TypeScript packages and Astro diagnostics (0 errors/warnings/hints)",
+          "artifact": "command output"
+        },
+        {
+          "command": "npm run test:seo",
+          "result": "PASS; Astro build and root HTML smoke checks",
+          "artifact": "apps/web/dist/index.html",
+          "scope": "Root page only; route graph, HTTP origin and production domain not verified"
+        },
+        {
+          "command": "npm run test:content",
+          "result": "PASS; locale metadata unique and 2 draft catalogs have matching keys/placeholders",
+          "artifact": "content/locales/",
+          "scope": "No translation catalog is approved or reviewed"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; link/JSON/SVG/schema/fixture/semantic-vector/SEO-registry documentation checks",
+          "artifact": "docs/ and contracts/",
+          "scope": "Specification and fixtures only; application/API/deployment gates are separate"
+        },
+        {
+          "command": "npm run screenshots:wp04",
+          "result": "PASS; repeatable synthetic classic-ready/result/history/settings screenshots generated in Chromium",
+          "artifact": "evidence/wp04/screenshots/",
+          "scope": "Azerbaijani only; viewport screenshots, not real-device evidence or owner approval"
+        },
+        {
+          "command": "git diff --check",
+          "result": "PASS; clean whitespace",
+          "artifact": "working tree"
         }
       ],
       "blockers": [
-        "WP04 requires the remaining tool screen layouts, component state coverage, executed visual evidence, real-device screenshots/traces, keyboard review and owner visual acceptance."
+        "WP04 still needs bottle, social-game, reports, share and library tool-screen designs and remaining visual states; this branch currently implements the classic screen.",
+        "Actual device/browser, screen-reader, keyboard-with-native-mobile-keyboard, Arabic/RTL and long-German acceptance remains pending.",
+        "Final wordmark/app-icon deliverables, motion/audio device review and owner visual approval remain pending; screenshot evidence is not approval."
       ]
     },
     {
