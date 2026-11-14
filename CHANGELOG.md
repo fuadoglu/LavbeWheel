@@ -2,10 +2,11 @@
 
 ## WP04 visual system — in progress — 2026-11-14
 
-- Replaced the marketing hero with a compact tool header and a working-first wheel/editor workspace that reflows for mobile.
-- Added persistent light/dark theme control and translated its accessible labels in both locale drafts.
-- Darkened wheel segment colors to improve white label contrast and aligned the spin control text with each theme's foreground token.
-- First classic screen production build passes; remaining tool layouts, real-device evidence, keyboard review and visual signoff remain open.
+- Replaced the marketing hero with a working-first classic workspace; matched phone, tablet portrait, tablet landscape and desktop geometry.
+- Added accessible editor/results/settings tabs, a keyboard-visible mobile “done editing” action, persisted theme/motion preferences and a recoverable 50-row result view.
+- Applied theme values from the design-token config and added the 4-second 15/50/35 velocity curve with selected-sector reveal and reduced-motion behavior.
+- Added repeatable Chromium screenshots for classic ready/result/history/settings states in light/dark and at 390, 768, 1024 and 1440 px viewports.
+- Current checks pass: 40 unit tests, 8 E2E tests, type/contracts, build/SEO, locale-catalog and strict docs/schema validation. WP04 remains open for other tool screens, real-device acceptance and owner visual review.
 
 ## WP03 session persistence — 2026-11-14
 

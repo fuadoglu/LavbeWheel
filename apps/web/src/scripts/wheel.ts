@@ -6,6 +6,7 @@ import {
 } from '@lavbe/session';
 import type { SessionEnvelope } from '@lavbe/contracts';
 import { limits } from '../data/config';
+import { wheelSpinProgress } from './spin-motion';
 import messages from '../../../../content/locales/az.json';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#wheel-canvas');
@@ -14,7 +15,11 @@ const button = document.querySelector<HTMLButtonElement>('#spin');
 const result = document.querySelector<HTMLParagraphElement>('#result');
 const count = document.querySelector<HTMLElement>('#count');
 const reset = document.querySelector<HTMLButtonElement>('#reset');
+const editorDone = document.querySelector<HTMLButtonElement>('#editor-done');
+const participantPanel = document.querySelector<HTMLElement>('#participants');
 const storageStatus = document.querySelector<HTMLElement>('#storage-status');
+const historyList = document.querySelector<HTMLOListElement>('#history-list');
+const historyEmpty = document.querySelector<HTMLParagraphElement>('#history-empty');
 if (!canvas || !input || !button || !result || !count || !reset || !storageStatus) throw new Error('Wheel interface is incomplete');
 const wheelCanvas: HTMLCanvasElement = canvas;
 const entriesInput: HTMLTextAreaElement = input;
@@ -40,6 +45,7 @@ function getTabWriterId(): string {
 const writerId = 'locks' in navigator ? getTabWriterId() : crypto.randomUUID().replaceAll('-', '');
 let names: string[] = [];
 let angle = 0;
+let selectedIndex: number | null = null;
 let initializationComplete = false;
 let editedBeforeRestore = false;
 let writerLeaseHeld = false;
@@ -49,7 +55,23 @@ let pendingWrite: Promise<void> = Promise.resolve();
 let configTimer: ReturnType<typeof setTimeout> | undefined;
 let persistenceFailed = false;
 let releaseWebLock: (() => void) | null = null;
-const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function shouldReduceMotion(): boolean {
+  let preference = 'system';
+  try { preference = localStorage.getItem('lavbe.motion') ?? 'system'; } catch { /* Follow the OS preference when local settings are unavailable. */ }
+  return preference === 'reduced' || (preference === 'system' && matchMedia('(prefers-reduced-motion: reduce)').matches);
+}
+
+function renderHistory(): void {
+  if (!historyList || !historyEmpty) return;
+  const items = session?.results.filter((entry) => entry.kind === 'entry').slice(-50).reverse() ?? [];
+  historyList.replaceChildren(...items.map((item) => {
+    const row = document.createElement('li');
+    row.textContent = messages.messages.resultWinner.replace('{name}', item.label);
+    return row;
+  }));
+  historyEmpty.hidden = items.length > 0;
+  historyList.hidden = items.length === 0;
+}
 
 function draw(rotation = angle): void {
   const size = wheelCanvas.width, center = size / 2, radius = center - 7;
@@ -57,10 +79,13 @@ function draw(rotation = angle): void {
   names.forEach((name, i) => {
     const arc = Math.PI * 2 / Math.max(1, names.length), start = rotation + i * arc - Math.PI / 2;
     context.beginPath(); context.moveTo(center, center); context.arc(center, center, radius, start, start + arc); context.closePath();
-    context.fillStyle = palette[i % palette.length]!; context.fill(); context.strokeStyle = '#fff'; context.lineWidth = 5; context.stroke();
+    context.fillStyle = palette[i % palette.length]!; context.fill(); context.strokeStyle = selectedIndex === i ? '#fff' : 'rgba(255,255,255,.82)'; context.lineWidth = selectedIndex === i ? 9 : 5; context.stroke();
+    if (selectedIndex === i) {
+      context.save(); context.globalAlpha = .16; context.fillStyle = '#fff'; context.fill(); context.restore();
+    }
     context.save(); context.translate(center, center); context.rotate(start + arc / 2); context.textAlign = 'right'; context.textBaseline = 'middle';
     context.fillStyle = '#fff'; context.font = '700 25px ui-sans-serif, system-ui';
-    const label = name.length > 18 ? `${name.slice(0, 17)}…` : name; context.fillText(label, radius - 27, 0); context.restore();
+    const label = name.length > 18 ? `${name.slice(0, 17)}…` : name; context.fillText(label, radius * .74, 0); context.restore();
   });
   context.beginPath(); context.arc(center, center, radius, 0, Math.PI * 2); context.strokeStyle = 'rgba(48,35,75,.12)'; context.lineWidth = 2; context.stroke();
 }
@@ -154,6 +179,21 @@ function displayResult(label: string): void {
   resultMessage.textContent = messages.messages.resultWinner.replace('{name}', label);
 }
 
+function displayLatestResult(): void {
+  if (!session) return;
+  const latest = session.results.at(-1);
+  if (!latest || latest.kind !== 'entry') return;
+  const entries = currentWheel().entries.filter((entry) => entry.active);
+  const configMatchesCanvas = entries.length === names.length && entries.every((entry, index) => entry.label === names[index]);
+  const winnerIndex = configMatchesCanvas ? entries.findIndex((entry) => entry.id === latest.entryId) : -1;
+  if (winnerIndex >= 0) {
+    selectedIndex = winnerIndex;
+    angle = (Math.PI * 2 - (winnerIndex + .5) * Math.PI * 2 / names.length) % (Math.PI * 2);
+    draw();
+  }
+  displayResult(latest.label);
+}
+
 async function persistPresentation(presentation: 'revealed' | 'acknowledged'): Promise<void> {
   if (!session || !writerLeaseHeld) throw new Error('Session writer lease is unavailable');
   const next = structuredClone(session);
@@ -166,11 +206,12 @@ async function persistPresentation(presentation: 'revealed' | 'acknowledged'): P
 
 async function recoverInterruptedResult(): Promise<void> {
   if (!session) return;
+  renderHistory();
   const pending = recoverUnacknowledgedResult(session);
   const latest = pending ?? session.results.at(-1) ?? null;
   if (!latest || latest.kind !== 'entry') return;
+  displayLatestResult();
   if (pending?.presentation === 'pending') await persistPresentation('revealed');
-  displayResult(latest.label);
   if (pending) await persistPresentation('acknowledged');
 }
 
@@ -231,13 +272,15 @@ function showResultAndAnimate(winnerIndex: number, selectedLabel: string): void 
   resultMessage.textContent = messages.messages.resultSpinning;
   const slice = Math.PI * 2 / names.length;
   const target = (Math.PI * 2 * 6) + (Math.PI * 2 - (winnerIndex + .5) * slice);
-  const start = angle, started = performance.now(), duration = reducedMotion ? 80 : 2600;
+  selectedIndex = null;
+  const start = angle, started = performance.now(), duration = shouldReduceMotion() ? 80 : limits.motion.defaultSeconds * 1000;
   function frame(now: number): void {
-    const progress = Math.min(1, (now - started) / duration), eased = 1 - Math.pow(1 - progress, 4);
+    const progress = Math.min(1, (now - started) / duration);
+    const eased = wheelSpinProgress(progress);
     angle = start + target * eased; draw();
     if (progress < 1) requestAnimationFrame(frame);
     else {
-      angle %= Math.PI * 2; draw();
+      angle %= Math.PI * 2; selectedIndex = winnerIndex; draw();
       void persistPresentation('revealed').then(() => {
         displayResult(selectedLabel);
         return persistPresentation('acknowledged');
@@ -256,6 +299,15 @@ saveStatus.textContent = messages.messages.storageLoading;
 resultMessage.textContent = messages.messages.resultIdle;
 entriesInput.addEventListener('input', () => { editedBeforeRestore = true; sync(); });
 resetButton.addEventListener('click', () => { entriesInput.value = 'Aylin\nMurad\nLeyla\nKamran'; editedBeforeRestore = true; sync(); });
+entriesInput.addEventListener('focus', () => participantPanel?.classList.add('is-editing'));
+entriesInput.addEventListener('blur', () => window.setTimeout(() => {
+  if (document.activeElement !== editorDone) participantPanel?.classList.remove('is-editing');
+}, 0));
+editorDone?.addEventListener('pointerdown', (event) => event.preventDefault());
+editorDone?.addEventListener('click', () => {
+  entriesInput.blur();
+  participantPanel?.classList.remove('is-editing');
+});
 
 void (async () => {
   try {
@@ -263,6 +315,8 @@ void (async () => {
     if (!editedBeforeRestore && saved !== null) entriesInput.value = saved;
     names = entriesInput.value.split(/\r?\n/).map((name) => name.trim()).filter(Boolean).slice(0, limits.entries.max);
     await initializeSession(names);
+    renderHistory();
+    displayLatestResult();
     if (!editedBeforeRestore && saved === null && session) {
       entriesInput.value = currentWheel().entries.map((entry) => entry.label).join('\n');
       names = currentWheel().entries.filter((entry) => entry.active).map((entry) => entry.label);
@@ -332,6 +386,7 @@ spinButton.addEventListener('click', () => {
     });
     sessionRevision = await commitSelectionResult(next, writerId, sessionRevision);
     session = next;
+    renderHistory();
     showResultAndAnimate(eligible.findIndex((entry) => entry.id === winner.id), winner.label);
   })().catch(markPersistenceFailure);
 });

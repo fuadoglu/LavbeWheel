@@ -1,17 +1,32 @@
 ---
 import '../styles/global.css';
 import messages from '../../../../content/locales/az.json';
+import { getLocaleDirection, designTokens } from '../data/config';
 import playIcon from '../../../../assets/icons/phosphor/regular/play.svg';
+import moonIcon from '../../../../assets/icons/phosphor/regular/moon.svg';
+import sunIcon from '../../../../assets/icons/phosphor/regular/sun.svg';
+import wheelIcon from '../../../../assets/icons/phosphor/regular/spinner-gap.svg';
 const m = messages.messages;
 const title = m.siteTitle;
-const tokenStyle = '--canvas-token:#F7F8FC;--surface-token:#FFFFFF;--text-token:#182033;--muted-token:#536079;--primary-token:#4938C8;--border-token:#D4D9E5;--focus-token:#2459C4';
+const light = designTokens.themes.light;
 ---
 <!doctype html>
-<html lang={messages.locale} dir="ltr" style={tokenStyle}>
+<html lang={messages.locale} dir={getLocaleDirection(messages.locale)} data-theme-tokens={JSON.stringify(designTokens.themes)}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f7f8fc" />
+    <meta name="theme-color" content={light.canvas} />
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const themes = JSON.parse(root.dataset.themeTokens || '{}');
+        const variables = { canvas: '--canvas-token', surface: '--surface-token', text: '--text-token', mutedText: '--muted-token', primary: '--primary-token', onPrimary: '--on-primary', border: '--border-token', focus: '--focus-token' };
+        let theme = 'light';
+        try { theme = localStorage.getItem('lavbe.theme') === 'dark' ? 'dark' : 'light'; } catch { /* Keep accessible light defaults if storage is unavailable. */ }
+        root.dataset.theme = theme;
+        for (const [key, variable] of Object.entries(variables)) root.style.setProperty(variable, themes[theme][key]);
+      })();
+    </script>
     <link rel="canonical" href="https://lavbe.com/" />
     <meta name="description" content={m.siteDescription} />
     <title>{title}</title>
@@ -19,11 +34,11 @@ const tokenStyle = '--canvas-token:#F7F8FC;--surface-token:#FFFFFF;--text-token:
   <body>
     <main class="shell">
       <header class="topbar">
-        <a class="brand" href="/" aria-label={m.homeLabel}><span class="brand-mark" aria-hidden="true">L</span><span>lavbe</span></a>
+        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">L</span><span>lavbe</span></a>
         <nav aria-label={m.navMain}><a class="nav-active" href="#wheel" aria-current="page">{m.navWheel}</a><a href="#participants">{m.participantsHeading}</a></nav>
-        <div class="header-actions"><span class="locale" aria-label={m.language}>{m.languageCode}</span><button class="theme-toggle" id="theme-toggle" type="button" data-light-label={m.themeToLight} data-dark-label={m.themeToDark} aria-label={m.themeToDark} aria-pressed="false"><span aria-hidden="true">◐</span></button></div>
+        <div class="header-actions"><span class="locale" aria-label={m.language}>{m.languageCode}</span><button class="theme-toggle" id="theme-toggle" type="button" data-light-label={m.themeToLight} data-dark-label={m.themeToDark} data-light-icon={sunIcon.src} data-dark-icon={moonIcon.src} aria-label={m.themeToDark}><img width="19" height="19" src={moonIcon.src} alt="" aria-hidden="true" /></button></div>
       </header>
-      <section class="tool-strip" aria-label={m.wheelLabel}><span class="tool-icon" aria-hidden="true">✳</span><span class="tool-name">{m.navWheel}</span><span class="tool-caption">{m.eyebrow}</span><span class="tool-presence"><span class="live-dot"></span>{m.savedLocally}</span></section>
+      <section class="tool-strip" aria-label={m.wheelLabel}><img class="tool-icon" src={wheelIcon.src} width="20" height="20" alt="" aria-hidden="true" /><span class="tool-name">{m.navWheel}</span><span class="tool-caption">{m.eyebrow}</span><span class="tool-presence">{m.localOnly}</span></section>
       <section class="workspace-grid" id="wheel" aria-label={m.wheelLabel}>
         <section class="wheel-panel" aria-label={m.wheelLabel}>
           <div class="wheel-heading"><div><span class="section-kicker">LAVBE / {m.navWheel.toUpperCase()}</span><h1 id="page-title">{m.participantsHeading}</h1></div><span class="round-badge">01</span></div>
@@ -32,32 +47,96 @@ const tokenStyle = '--canvas-token:#F7F8FC;--surface-token:#FFFFFF;--text-token:
           <p class="wheel-note" id="result" aria-live="polite">{m.resultIdle}</p>
         </section>
         <section class="participant-panel" id="participants" aria-label={m.participants}>
-          <div class="workspace-heading"><div><span class="section-kicker">{m.listKicker}</span><h2>{m.participantsHeading}</h2></div><span class="count" id="count">{m.participantCount.replace('{count}', '4')}</span></div>
-          <p class="editor-hint">{m.editorHint}</p>
-          <label class="sr-only" for="entries">{m.entriesLabel}</label><textarea id="entries" rows="8" spellcheck="false">Aylin
+          <div class="panel-tabs" role="tablist" aria-label={m.workspaceTabs}>
+            <button class="panel-tab is-selected" id="tab-participants" type="button" role="tab" aria-selected="true" aria-controls="panel-participants" tabindex="0">{m.tabParticipants}</button>
+            <button class="panel-tab" id="tab-results" type="button" role="tab" aria-selected="false" aria-controls="panel-results" tabindex="-1">{m.tabResults}</button>
+            <button class="panel-tab" id="tab-settings" type="button" role="tab" aria-selected="false" aria-controls="panel-settings" tabindex="-1">{m.tabSettings}</button>
+          </div>
+          <div class="tab-panel" id="panel-participants" role="tabpanel" aria-labelledby="tab-participants" tabindex="0">
+            <div class="workspace-heading"><div><span class="section-kicker">{m.listKicker}</span><h2>{m.participantsHeading}</h2></div><span class="count" id="count">{m.participantCount.replace('{count}', '4')}</span></div>
+            <p class="editor-hint">{m.editorHint}</p>
+            <button class="mobile-editor-done" id="editor-done" type="button">{m.doneEditing}</button>
+            <label class="sr-only" for="entries">{m.entriesLabel}</label><textarea id="entries" rows="8" spellcheck="false">Aylin
 Murad
 Leyla
 Kamran</textarea>
-          <div class="list-footer"><span><span class="save-dot"></span> <span id="storage-status" aria-live="polite">{m.storageLoading}</span></span><button id="reset" type="button">{m.resetSamples}</button></div>
-          <div class="editor-divider"></div><div class="participant-tip"><span class="tip-icon" aria-hidden="true">↵</span><span>{m.participantTip}</span></div>
+            <div class="list-footer"><span><span class="save-dot"></span> <span id="storage-status" aria-live="polite">{m.storageLoading}</span></span><button id="reset" type="button">{m.resetSamples}</button></div>
+            <div class="editor-divider"></div><div class="participant-tip"><span class="tip-icon" aria-hidden="true">↵</span><span>{m.participantTip}</span></div>
+          </div>
+          <section class="tab-panel" id="panel-results" role="tabpanel" aria-labelledby="tab-results" tabindex="0" hidden>
+            <div class="workspace-heading"><div><span class="section-kicker">{m.tabResults}</span><h2>{m.historyCaption}</h2></div></div>
+            <p class="empty-history" id="history-empty">{m.historyEmpty}</p>
+            <ol class="history-list" id="history-list" aria-label={m.historyCaption} hidden></ol>
+          </section>
+          <section class="tab-panel settings-panel" id="panel-settings" role="tabpanel" aria-labelledby="tab-settings" tabindex="0" hidden>
+            <div class="workspace-heading"><div><span class="section-kicker">{m.tabSettings}</span><h2>{m.settingsHeading}</h2></div></div>
+            <div class="setting-row"><div><span class="setting-label">{m.themeSetting}</span></div><button class="theme-toggle" id="theme-toggle-settings" type="button" data-light-label={m.themeToLight} data-dark-label={m.themeToDark} data-light-icon={sunIcon.src} data-dark-icon={moonIcon.src} aria-label={m.themeToDark}><img width="19" height="19" src={moonIcon.src} alt="" aria-hidden="true" /></button></div>
+            <div class="editor-divider"></div>
+            <label class="setting-label" for="motion-mode">{m.motionSetting}</label>
+            <select class="motion-select" id="motion-mode"><option value="system">{m.motionSystem}</option><option value="reduced">{m.motionReduced}</option><option value="standard">{m.motionStandard}</option></select>
+            <p class="setting-help settings-note">{m.localDataDescription}</p>
+          </section>
         </section>
       </section>
       <footer><span>Lavbe <span class="footer-sep">·</span> {m.footerTagline}</span><span>{m.footerPromise}</span></footer>
     </main>
     <script>
       const root = document.documentElement;
-      const themeButton = document.querySelector<HTMLButtonElement>('#theme-toggle');
-      const theme = localStorage.getItem('lavbe.theme') ?? 'light';
-      root.dataset.theme = theme;
-      themeButton?.setAttribute('aria-pressed', String(theme === 'dark'));
-      themeButton?.setAttribute('aria-label', theme === 'dark' ? themeButton.dataset.lightLabel! : themeButton.dataset.darkLabel!);
-      themeButton?.addEventListener('click', () => {
-        const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      const themeButtons = [...document.querySelectorAll<HTMLButtonElement>('.theme-toggle')];
+      const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+      const readPreference = (key: string, fallback: string) => {
+        try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; }
+      };
+      const savePreference = (key: string, value: string) => {
+        try { localStorage.setItem(key, value); } catch { /* Current-tab behavior stays available without preference storage. */ }
+      };
+      const theme = root.dataset.theme ?? 'light';
+      const themeTokens = JSON.parse(root.dataset.themeTokens!);
+      const themeVariables: Record<string, string> = { canvas: '--canvas-token', surface: '--surface-token', text: '--text-token', mutedText: '--muted-token', primary: '--primary-token', onPrimary: '--on-primary', border: '--border-token', focus: '--focus-token' };
+      function applyTheme(next: string) {
         root.dataset.theme = next;
-        localStorage.setItem('lavbe.theme', next);
-        themeButton.setAttribute('aria-pressed', String(next === 'dark'));
-        themeButton.setAttribute('aria-label', next === 'dark' ? themeButton.dataset.lightLabel! : themeButton.dataset.darkLabel!);
+        for (const [key, variable] of Object.entries(themeVariables)) root.style.setProperty(variable, themeTokens[next][key]);
+        if (themeColor) themeColor.content = getComputedStyle(root).getPropertyValue('--canvas-token').trim();
+      }
+      function updateThemeButtons(activeTheme: string) {
+        for (const themeButton of themeButtons) {
+          const themeIcon = themeButton.querySelector('img');
+          themeButton.setAttribute('aria-label', activeTheme === 'dark' ? themeButton.dataset.lightLabel! : themeButton.dataset.darkLabel!);
+          if (themeIcon) themeIcon.src = activeTheme === 'dark' ? themeButton.dataset.lightIcon! : themeButton.dataset.darkIcon!;
+        }
+      }
+      updateThemeButtons(theme);
+      for (const themeButton of themeButtons) themeButton.addEventListener('click', () => {
+        const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+        savePreference('lavbe.theme', next);
+        applyTheme(next);
+        updateThemeButtons(next);
       });
+      const motionMode = document.querySelector<HTMLSelectElement>('#motion-mode');
+      if (motionMode) {
+        motionMode.value = readPreference('lavbe.motion', 'system');
+        motionMode.addEventListener('change', () => savePreference('lavbe.motion', motionMode.value));
+      }
+      const tabs = [...document.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+      function selectTab(tab: HTMLButtonElement) {
+        for (const current of tabs) {
+          const selected = current === tab;
+          current.setAttribute('aria-selected', String(selected));
+          current.tabIndex = selected ? 0 : -1;
+          current.classList.toggle('is-selected', selected);
+          document.getElementById(current.getAttribute('aria-controls')!)!.hidden = !selected;
+        }
+      }
+      for (const [index, tab] of tabs.entries()) {
+        tab.addEventListener('click', () => selectTab(tab));
+        tab.addEventListener('keydown', (event) => {
+          if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+          event.preventDefault();
+          const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+          tabs[next]!.focus();
+          selectTab(tabs[next]!);
+        });
+      }
     </script>
     <script src="../scripts/wheel.ts"></script>
   </body>
