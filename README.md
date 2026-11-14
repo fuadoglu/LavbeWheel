@@ -1,139 +1,152 @@
 <div align="center">
 
-<img src="docs/assets/lavbe-banner.svg" alt="Lavbe — Spin. Decide. Play together." width="960" />
+<img src="docs/assets/lavbe-banner.svg" alt="Lavbe — Seç. Fırlat. Birlikdə oyna." width="960" />
 
-# Lavbe Wheel
+# 🎡 Lavbe Wheel
 
-**Spin. Decide. Play together.**
+**Seç. Fırlat. Birlikdə oyna.**
 
-A fast, multilingual wheel and social-game platform designed for phones, tablets and desktops.
+Mobil, planşet və kompüter üçün sürətli, çoxdilli seçim alətləri və sosial oyun platforması.
 
-**[Azərbaycan dilində](README.az.md) · [Start here](docs/00-START-HERE.md) · [Product specification](docs/01-PRODUCT.md) · [Codex execution](docs/15-IMPLEMENTATION.md) · [Release gates](docs/16-ACCEPTANCE.md)**
+**[English](README.en.md) · [Başlanğıc](docs/00-START-HERE.md) · [Məhsul tələbləri](docs/01-PRODUCT.md) · [Codex icra planı](docs/15-IMPLEMENTATION.md) · [Qəbul meyarları](docs/16-ACCEPTANCE.md)**
 
-![Status: specification](docs/assets/badges/status.svg)
-![Release: complete scope](docs/assets/badges/release.svg)
-![Locales: 110 planned](docs/assets/badges/locales.svg)
-![Hosting: shared compatible](docs/assets/badges/hosting.svg)
+![Status: icra sənədləri](docs/assets/badges/status.svg)
+![Buraxılış: tam funksional əhatə](docs/assets/badges/release.svg)
+![Dillər: 110 planlaşdırılıb](docs/assets/badges/locales.svg)
+![Yerləşdirmə: shared hosting](docs/assets/badges/hosting.svg)
 
 </div>
 
-> **Repository status:** documentation and executable contract examples only. The application, translations, game library, administration panel and integrations are **not implemented**. Badges describe the specification; they are not passing test, security, accessibility or legal certifications. Target domain: **lavbe.com**; this repository does not establish a live deployment.
+> **Reponun hazırkı vəziyyəti:** məhsulun icra sənədləri, məlumat/API müqavilələri, nümunələr və yoxlama skriptləri hazırlanıb. Tətbiq, tərcümələr, oyun kitabxanası, admin paneli və inteqrasiyalar hələ icra edilməyib. Nişanlar layihə tələblərini göstərir; test, təhlükəsizlik, əlçatanlıq və ya hüquqi uyğunluq sertifikatı deyil. Hədəf domain **lavbe.com**-dur; bu repo saytın yayımlandığını bildirmir.
 
-## 🎯 Product promise
+## 🎯 Lavbe nə edəcək?
 
-Open an immediately usable wheel, paste names, spin and understand the result. Switch to a bottle or social game without relearning the interface. Keep your session, inspect results and share a working wheel.
+Saytı aç, adları daxil et, çarxı fırlat və nəticəni gör. Butulka və ya sosial oyun rejiminə keç, hazır tapşırıqlarla birlikdə oyna. Siyahını itirmədən sessiyanı davam etdir, nəticələri cədvəldə izlə və işlək çarxı linklə paylaş.
 
-Lavbe is designed for complete-scope delivery. Internal implementation increments are allowed; an incomplete public MVP is not. Routine maintenance remains necessary after release.
+**MVP olmayacaq.** Razılaşdırılmış bütün məcburi imkanlar tamamlanıb yoxlanmadan ictimai buraxılış edilməyəcək. İşin daxildə mərhələlərə bölünməsi yarımçıq məhsulun yayımlanması demək deyil. Buraxılışdan sonra təhlükəsizlik və xarici xidmətlərlə uyğunluq üçün texniki qulluq davam edəcək.
 
-## ✨ The experience
+## ✨ Əsas imkanlar
 
-| | Capability | Required behavior |
+| İkon | İmkan | Tələb olunan davranış |
 |---|---|---|
-| 🎡 | Selection tools | Names, integer ranges, yes/no, visible weights and balanced team allocation |
-| 🍾 | Bottle and social play | Explicit seating, rounds, non-repeating cards and safe skip/pause controls |
-| 💞 | Couples and groups | Non-explicit, culturally reviewed game packs; no pressured or dangerous tasks |
-| ⚡ | Motion and speed | Local selection, precise landing, adaptive effects and measurable frame budgets |
-| 🌗 | Themes | System/light/dark, no initial flash, persisted choice and tool-specific styling |
-| 📱 | Responsive UX | Touch-first controls, tablet orientation layouts and keyboard accessibility |
-| 🌍 | Localization | 110 planned locale records; reviewed translations and RTL layouts before launch |
-| 📊 | Reports | Durable local history, counts, observed share, round boundaries and CSV export |
-| 🔗 | Sharing | Immutable snapshots, unguessable URLs, expiry and a separate revocation secret |
-| 💾 | Local-first storage | Autosave, recovery, versioned imports and explicit exports without an account |
-| 📲 | PWA | Installable experience and cached-tool offline use with non-disruptive updates |
-| 🛡️ | Privacy | Minimal data, consent-controlled integrations and no names in analytics |
+| 🎡 | Seçim alətləri | Ad çarxı, tam ədəd seçimi, bəli/xeyr, açıq göstərilən çəkilər və balanslı komanda bölgüsü |
+| 🍾 | Butulka | İştirakçıların yerləri istifadəçi tərəfindən müəyyən edilir; nəticə istiqamətlə dəqiq uyğunlaşır |
+| 💞 | Birlikdə oyun | Cütlük, dost qrupu, tanışlıq və doğruluq/cəsarət paketləri; keçmək, fasilə və təkrarsız kartlar |
+| ⚡ | Sürət və animasiya | Seçim cihazda hesablanır; axıcı fırlanma, dəqiq dayanma və cihaz gücünə uyğun effektlər |
+| 🌗 | Gecə/gündüz | Sistemə uyğun, açıq və tünd mövzular; yadda saxlanan seçim və ilk açılışda rəng sıçramasının qarşısı |
+| 📱 | Rahat interfeys | Toxunma, klaviatura, planşetin istiqaməti və müxtəlif ekran ölçülərinə uyğun idarəetmə |
+| 🔤 | Adların yerləşməsi | Faktiki mətn eninə görə şrift ölçüsü; minimum oxunaqlılıq həddi və tam adı ayrıca görmək |
+| 🌍 | 110 dil | Tam lokallaşdırma, sağdan sola yazı və dilə uyğun məzmun; buraxılışdan əvvəl hər dilin yoxlanması |
+| 📊 | Hesabat | Tarixçə, seçilmə sayı, nəticələrdə pay, raundlar və CSV ixracı |
+| 🔗 | Paylaşma | Adlar və ayarlarla sabit nüsxə; bitmə müddəti və ayrıca ləğv açarı |
+| 💾 | Saxlama | Qeydiyyatsız avtomatik cihaz yaddaşı, bərpa, geri alma və fayla ixrac/idxal |
+| 📲 | PWA | Ana ekrana əlavə etmə, əvvəl yüklənmiş alətlərin offline istifadəsi və oyunu kəsməyən yenilənmə |
+| 🛡️ | Məxfilik | Minimum məlumat, razılıqla işləyən inteqrasiyalar və analitikaya göndərilməyən adlar |
 
-### Planned differentiation
+### Bizi nə fərqləndirməlidir?
 
-Wheel of Names already provides rich customization, sharing, weighted entries and many languages. Lavbe's intended advantage is a coherent mobile flow, purpose-built social games and durable session reporting. Faster performance and better usability must be demonstrated by comparative tests, not asserted from this specification. See [competitive review and red-team findings](docs/18-RED-TEAM.md).
+Wheel of Names artıq fərdiləşdirmə, paylaşma, çəkili seçim və çoxdillilik təqdim edir. Lavbe-nin nəzərdə tutulan fərqi **rahat mobil istifadə, hər rejimə uyğun vizual xarakter, bütöv sosial oyun məntiqi və davamlı sessiya hesabatıdır**. Daha sürətli və rahat olduğumuz yalnız real müqayisəli testlə sübut edilə bilər. [Rəqib müqayisəsi və red-team təhlili](docs/18-RED-TEAM.md).
 
-## 🧭 Documentation map
+## 🧭 Sənədlərin xəritəsi
 
-| Icon | Document | What Codex must learn |
+Normativ texniki sənədlər icra dəqiqliyi üçün ingiliscədir. Layihənin əsas təqdimatı bu Azərbaycan dilində README-dir.
+
+| İkon | Sənəd | Codex üçün məqsəd |
 |---|---|---|
-| 🧭 | [Start here](docs/00-START-HERE.md) | Reading order, authority and status |
-| 🎯 | [Product](docs/01-PRODUCT.md) | Locked scope, modes and limits |
-| 🎨 | [UX and design](docs/02-UX-DESIGN.md) | Screens, responsive behavior, themes and icon usage |
-| ⚡ | [Motion and performance](docs/03-MOTION-PERFORMANCE.md) | Timing, text fitting and measurement |
-| 🎲 | [Selection and games](docs/04-SELECTION-GAMES.md) | Algorithms, state transitions and game rules |
-| 📊 | [Sessions and reports](docs/05-SESSIONS-REPORTS.md) | Exactly-once records, rounds and exports |
-| 🔗 | [Sharing](docs/06-SHARING.md) | Snapshot lifecycle, capabilities and privacy |
-| 🌍 | [Localization](docs/07-I18N.md) | 110 locales, negotiation and review gates |
-| 🔎 | [Search](docs/08-SEO.md) | Crawlable routes, indexing and content quality |
-| 📲 | [PWA](docs/09-PWA.md) | Offline matrix, cache boundaries and updates |
-| 💰 | [Ads and measurement](docs/10-MONETIZATION.md) | Placement rules, GTM, GA4 and consent |
-| 🛡️ | [Privacy and security](docs/11-PRIVACY-SECURITY.md) | Threat model, data map and operator obligations |
-| 🏗️ | [Architecture](docs/12-ARCHITECTURE.md) | Monorepo, static build and PHP API |
-| 🗃️ | [Data and contracts](docs/13-DATA-CONTRACTS.md) | Storage, database, API and migrations |
-| 🛠️ | [Admin and publishing](docs/14-ADMIN-CONTENT.md) | Packs, translations, publishing and rollback |
-| 🤖 | [Implementation plan](docs/15-IMPLEMENTATION.md) | Ordered work packages and required evidence |
-| ✅ | [Acceptance](docs/16-ACCEPTANCE.md) | Traceable release gates and negative tests |
-| 🚀 | [Operations](docs/17-OPERATIONS.md) | Shared hosting, deployment, backup and recovery |
-| 🧨 | [Red-team](docs/18-RED-TEAM.md) | Failure scenarios and residual risks |
-| 📝 | [Decisions and launch inputs](docs/19-DECISIONS.md) | Resolved defaults and external blockers |
-| 📚 | [Sources](docs/20-SOURCES.md) | Primary references and review dates |
-| 🧩 | [Icon catalog](docs/assets/ICONS.md) | Complete repository documentation icon set |
+| 🧭 | [Başlanğıc](docs/00-START-HERE.md) | Oxuma sırası, sənədlərin statusu və üstünlük qaydası |
+| 🎯 | [Məhsul](docs/01-PRODUCT.md) | Funksional əhatə, rejimlər və limitlər |
+| 🎨 | [UX və dizayn](docs/02-UX-DESIGN.md) | Ekranlar, adaptiv düzülüş, mövzular və ikonlar |
+| ⚡ | [Animasiya və sürət](docs/03-MOTION-PERFORMANCE.md) | Hərəkət, mətnin yerləşməsi və performans ölçmələri |
+| 🎲 | [Seçim və oyunlar](docs/04-SELECTION-GAMES.md) | Alqoritmlər, vəziyyətlər və oyun qaydaları |
+| 📊 | [Sessiyalar və hesabat](docs/05-SESSIONS-REPORTS.md) | Nəticələrin təkrarsız qeydi, raundlar və ixrac |
+| 🔗 | [Paylaşma](docs/06-SHARING.md) | Linkin ömrü, səlahiyyət açarları və məxfilik |
+| 🌍 | [Lokallaşdırma](docs/07-I18N.md) | 110 dil, avtomatik seçim və tərcümə yoxlamaları |
+| 🔎 | [SEO](docs/08-SEO.md) | İndekslənən səhifələr, dil əlaqələri və məzmun keyfiyyəti |
+| 📲 | [PWA](docs/09-PWA.md) | Offline imkanlar, keş sərhədləri və yenilənmə |
+| 💰 | [Reklam və ölçmə](docs/10-MONETIZATION.md) | Yerləşimlər, GTM, GA4 və razılıq |
+| 🛡️ | [Məxfilik və təhlükəsizlik](docs/11-PRIVACY-SECURITY.md) | Risklər, məlumat xəritəsi və operator öhdəlikləri |
+| 🏗️ | [Arxitektura](docs/12-ARCHITECTURE.md) | Monorepo, statik build və PHP API |
+| 🗃️ | [Məlumat və müqavilələr](docs/13-DATA-CONTRACTS.md) | Saxlama, verilənlər bazası, API və miqrasiyalar |
+| 🛠️ | [Admin və məzmun](docs/14-ADMIN-CONTENT.md) | Paketlər, tərcümələr, yayımlama və geri dönüş |
+| 🤖 | [Codex icra planı](docs/15-IMPLEMENTATION.md) | Asılılıqlara görə iş paketləri və tələb olunan sübutlar |
+| ✅ | [Qəbul meyarları](docs/16-ACCEPTANCE.md) | Buraxılış yoxlamaları və xəta ssenariləri |
+| 🚀 | [Yerləşdirmə və istismar](docs/17-OPERATIONS.md) | Shared hosting, ehtiyat nüsxə, bərpa və monitorinq |
+| 🧨 | [Red-team](docs/18-RED-TEAM.md) | Uğursuzluq ssenariləri və qalan risklər |
+| 📝 | [Qərarlar və xarici məlumatlar](docs/19-DECISIONS.md) | Sabitlənmiş seçimlər və buraxılış üçün real girişlər |
+| 📚 | [İstinadlar](docs/20-SOURCES.md) | Əsas mənbələr və yoxlama tarixi |
+| 🔬 | [İcraya hazırlıq auditi](docs/21-READINESS-AUDIT.md) | Hazırlıq qiymətləndirməsi, düzəlişlər və qalan boşluqlar |
+| 🧩 | [İkon kataloqu](docs/assets/ICONS.md) | 36 yerli SVG ikon və istifadə qaydaları |
 
-## 🏗️ Architecture at a glance
+## 🏗️ Texniki quruluş
 
 ```mermaid
 flowchart TD
-    Visitor["Browser / installed PWA"] --> Static["Static HTML and versioned assets"]
-    Visitor --> Local["Local selection and IndexedDB"]
-    Visitor --> API["Same-origin PHP API"]
-    API --> DB["MySQL: snapshots and administration"]
-    Admin["Authenticated administration"] --> Publish["Validated static build and release"]
-    Publish --> Static
+    Istifadeci["Brauzer / PWA"] --> Statik["Hazır HTML və versiyalanmış fayllar"]
+    Istifadeci --> Lokal["Cihazda seçim və IndexedDB"]
+    Istifadeci --> API["Eyni domain üzərində PHP API"]
+    API --> DB["MySQL: paylaşma və admin məlumatları"]
+    Admin["Səlahiyyətli admin"] --> Build["Yoxlanmış build və yayımlama"]
+    Build --> Statik
 ```
 
-**Build:** Astro + TypeScript. **Interaction:** Canvas plus semantic HTML controls. **Persistence:** IndexedDB. **Server:** PHP + PDO/MySQL. **Delivery:** Apache-compatible shared hosting with optional CDN. Node is needed for build tooling, not a persistent production server. Dependency versions must be selected from supported releases during bootstrap and pinned in lockfiles.
+| Qat | Seçilmiş texnologiya |
+|---|---|
+| Səhifələr və build | Astro + TypeScript |
+| Animasiya | Canvas; idarəetmə üçün semantik HTML |
+| Cihaz yaddaşı | IndexedDB |
+| Server | PHP + PDO/MySQL |
+| Yerləşdirmə | Apache uyğun shared hosting; statik fayllar üçün istəyə bağlı CDN |
 
-## 🤖 Start with Codex
+Node build zamanı lazımdır; istehsal serverində daimi Node prosesi tələb edilmir. Asılılıqların dəstəklənən versiyaları ilkin texniki qurulumda seçilib lockfile-larla sabitlənməlidir.
 
-Read [AGENTS.md](AGENTS.md), then [the start guide](docs/00-START-HERE.md) and [the implementation plan](docs/15-IMPLEMENTATION.md). Implement every mandatory requirement and record evidence against [the acceptance matrix](docs/16-ACCEPTANCE.md).
+## 🤖 Codex haradan başlamalıdır?
 
-Suggested instruction:
+Əvvəl [AGENTS.md](AGENTS.md), sonra [başlanğıc sənədi](docs/00-START-HERE.md) və [icra planı](docs/15-IMPLEMENTATION.md) oxunmalıdır. İşin nəticəsi [qəbul matrisi](docs/16-ACCEPTANCE.md) üzrə sübutlarla qeyd edilməlidir.
 
-> Implement Lavbe from this repository's normative specifications. Start by validating the documentation package and creating the prescribed monorepo. Follow AGENTS.md and the ordered work packages. Preserve local-first privacy and all release gates. Do not publish incomplete scope, fabricate translations or credentials, or claim checks that were not run. Record remaining external launch inputs without blocking independent implementation.
+Codex-ə verilə biləcək tapşırıq:
 
-### What runs today
+> Bu repodakı normativ sənədlər əsasında Lavbe-nin tam funksional əhatəsini icra et. Əvvəl sənəd yoxlamalarını işə sal, icraya hazırlıq auditindəki müqavilə boşluqlarını təsirləndirdiyi modula başlamazdan əvvəl bağla və monoreponu qur. AGENTS.md və iş paketlərinin sırasına əməl et. Məlumatı qoruyan lokal saxlamanı və bütün buraxılış meyarlarını saxla. Yarımçıq məhsulu yayımlama, tərcümə rəyləri və hesab məlumatları uydurma. İcra edilmiş yoxlamaları, qalan xarici girişləri və məhdudiyyətləri aydın göstər.
 
-Python 3.11+ is sufficient for the dependency-free documentation checks:
+### Hazırda işləyən yoxlamalar
+
+Python 3.11+ ilə sənədlərin əsas yoxlanması:
 
 ```bash
 python3 scripts/validate_docs.py
 ```
 
-The check validates relative links, unique locale codes, SVG XML, required contract fields and representative fixtures. It does **not** validate a deployed application. A separate strict JSON Schema check can be run when `jsonschema` is installed:
+Sxem və nümunələrin ciddi yoxlanması:
 
 ```bash
+python3 -m pip install -r scripts/requirements-docs.txt
 python3 scripts/validate_contracts.py
 ```
 
-Application installation/build/test commands are specified as a **future required command contract** in [the implementation plan](docs/15-IMPLEMENTATION.md); they do not exist yet. Do not mistake a proposed directory tree for implemented source.
+Bu yoxlamalar keçidlər, dil siyahısı, SVG, müqavilə uyğunluğu və nümunələri yoxlayır. **Tətbiqin, real HTTP serverinin və ya hüquqi uyğunluğun yoxlanması deyil.** Tətbiqin gələcək quraşdırma/build/test əmrləri [icra planında](docs/15-IMPLEMENTATION.md) tələb kimi verilib; hazırda mövcud deyillər.
 
-## ✅ Definition of complete
+## ✅ Nə vaxt hazır sayılacaq?
 
-All tools and games work end to end; all 110 launch locales pass review; storage and sharing survive failures; reports remain correct; motion and accessibility are verified on real devices; ads do not obstruct use; consent is verified at the network level; deployment and restore are rehearsed. External account approval, search ranking and legal compliance are not guaranteed by a green CI run.
+Bütün alətlər və oyunlar başdan sona işlədikdə; 110 dilin rəyləri tamamlandıqda; saxlama, paylaşma və hesabat xəta ssenarilərində düzgün qaldıqda; real cihazlarda sürət və əlçatanlıq yoxlandıqda; reklam/razılıq davranışı şəbəkə səviyyəsində təsdiqləndikdə; yerləşdirmə və bərpa sınaqları keçdikdə.
 
-No feature count, Lighthouse score or decorative badge substitutes for the [release evidence](docs/16-ACCEPTANCE.md).
+Xarici reklam təsdiqi, axtarış sıralaması və hüquqi qiymətləndirmə CI-nin uğurlu nəticəsi ilə zəmanət verilən nəticələr deyil. [Qəbul meyarları](docs/16-ACCEPTANCE.md) və [xarici girişlər](docs/19-DECISIONS.md) birlikdə yoxlanmalıdır.
 
-## 🔒 Scope boundaries
+## 🔒 Əhatə sərhədləri
 
-No explicit sexual content, public user-content marketplace, chat, live multi-device multiplayer, accounts for ordinary use or certified lottery claims. No fake freshness, automatic translation presented as reviewed, simulated revenue or tracking before the required consent.
+Açıq seksual məzmun, çat, açıq istifadəçi şablonları bazarı, ayrı cihazlardan sinxron canlı oyun, adi istifadə üçün hesab məcburiyyəti və sertifikatlaşdırılmış lotereya iddiası yoxdur. Saxta yenilənmə tarixləri, yoxlanmış kimi göstərilən tərcümələr və tələb olunan razılıqdan əvvəl izləmə olmayacaq.
 
-## 🤝 Working on this repository
+## 🤝 Repo ilə iş
 
-- Read [CONTRIBUTING.md](CONTRIBUTING.md) for changes and review evidence.
-- Read [SECURITY.md](SECURITY.md) before reporting a vulnerability; do not disclose secrets in public issues.
-- See [CHANGELOG.md](CHANGELOG.md) for specification changes.
-- No open-source license has been selected by the owner. Public visibility does not constitute a license grant. Record dependency and asset licenses during implementation.
+- [CONTRIBUTING.md](CONTRIBUTING.md) — dəyişiklik və yoxlama qaydaları.
+- [SECURITY.md](SECURITY.md) — təhlükəsizlik bildirişləri; açıq issue-lara məxfi məlumat yazılmır.
+- [CHANGELOG.md](CHANGELOG.md) — sənəd dəyişiklikləri.
+- Açıq mənbə lisenziyası sahibi tərəfindən hələ seçilməyib. Reponun açıq görünməsi lisenziya icazəsi deyil. Tətbiq mərhələsində asılılıqların və aktivlərin lisenziyaları qeydə alınmalıdır.
 
 ---
 
 <div align="center">
 
-**Lavbe · Built around the moment of choice.**
+**Lavbe · Seçim anı üçün düşünülmüş təcrübə.**
 
-Specification baseline: **2026-11-14** · Application status: **not implemented**
+Sənəd bazası: **14 noyabr 2026** · Tətbiq: **hələ icra edilməyib**
 
 </div>

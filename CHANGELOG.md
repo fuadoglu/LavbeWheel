@@ -1,5 +1,12 @@
 # Changelog
 
+## Readiness audit and Azerbaijani primary README — 2026-11-14
+
+- Made README.md the full Azerbaijani project entry point; retained README.en.md.
+- Localized repository banner/badges and retained README.az.md as a compatibility entry.
+- Added explicit readiness audit distinguishing implementable foundations from remaining contract/visual work.
+- Tightened wheel mode/tool-specific constraints and separated fixture checks from admin schema syntax checks.
+
 ## Specification baseline — 2026-11-14
 
 - Defined complete-scope Lavbe product, UX, motion, games, sharing and reports.

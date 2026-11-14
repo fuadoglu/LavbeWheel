@@ -1026,6 +1026,159 @@
                 "game"
               ]
             }
+          },
+          {
+            "if": {
+              "properties": {
+                "tool": {
+                  "const": "weighted"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "mode": {
+                  "enum": [
+                    "independent",
+                    "remove-winner"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "tool": {
+                  "const": "teams"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "mode": {
+                  "const": "independent"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "tool": {
+                  "const": "numbers"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "mode": {
+                  "const": "independent"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "tool": {
+                  "const": "yes-no"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "mode": {
+                  "const": "independent"
+                },
+                "entries": {
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {
+                    "properties": {
+                      "weight": {
+                        "const": 1
+                      },
+                      "active": {
+                        "const": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "tool": {
+                  "not": {
+                    "const": "numbers"
+                  }
+                }
+              }
+            },
+            "then": {
+              "not": {
+                "required": [
+                  "range"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "tool": {
+                  "not": {
+                    "const": "teams"
+                  }
+                }
+              }
+            },
+            "then": {
+              "not": {
+                "required": [
+                  "teamCount"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "tool": {
+                  "not": {
+                    "const": "bottle"
+                  }
+                }
+              }
+            },
+            "then": {
+              "not": {
+                "required": [
+                  "seats"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "tool": {
+                  "not": {
+                    "const": "game"
+                  }
+                }
+              }
+            },
+            "then": {
+              "not": {
+                "required": [
+                  "game"
+                ]
+              }
+            }
           }
         ]
       },

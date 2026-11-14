@@ -2,7 +2,7 @@
 
 ## Read first
 
-Read README.md and docs/00-START-HERE.md, then all normative documents linked there before architectural implementation. Local instructions in future subdirectories may refine, never silently weaken, this baseline. User changes take precedence and must be reflected in docs/19-DECISIONS.md.
+Read README.md, docs/00-START-HERE.md and docs/21-READINESS-AUDIT.md, then all normative documents linked there before architectural implementation. Resolve RDY-01/02 contract gaps before persistence/admin modules and do not misreport the baseline as gap-free. Local instructions in future subdirectories may refine, never silently weaken, this baseline. User changes take precedence and must be reflected in docs/19-DECISIONS.md.
 
 ## Authority and honesty
 

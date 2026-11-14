@@ -4,6 +4,7 @@ Baseline: 2026-11-14. Normative words MUST, MUST NOT and SHOULD express requirem
 
 ## Reading order
 
+0. [Readiness audit](21-READINESS-AUDIT.md): resolve affected contract gaps before those modules.
 1. [Product](01-PRODUCT.md), [UX](02-UX-DESIGN.md), [motion](03-MOTION-PERFORMANCE.md).
 2. [Selection](04-SELECTION-GAMES.md), [reports](05-SESSIONS-REPORTS.md), [sharing](06-SHARING.md).
 3. [Localization](07-I18N.md), [SEO](08-SEO.md), [PWA](09-PWA.md).

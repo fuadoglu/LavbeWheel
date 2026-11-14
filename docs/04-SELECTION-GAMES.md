@@ -8,7 +8,7 @@ For uniform n, take unsigned 32-bit x and accept only x < floor(2^32/n)*n; retur
 
 Random team assignment: Fisher–Yates shuffle with unbiased indices, then partition into team sizes differing by at most one. Include every active participant once. Reject more teams than active members. Excluded members do not participate; historical records remain intact.
 
-Repeated outcomes are normal in independent mode. Do not silently favor underselected entries. Separate modes: independent, remove-winner-until-reset, and shuffled-cycle (each eligible entry exactly once per cycle). Show mode beside spin controls and in the report. Weighted selection is incompatible with shuffled-cycle in this baseline; reject that combination rather than silently ignoring weights.
+Repeated outcomes are normal in independent mode. Do not silently favor underselected entries. Separate modes: independent, remove-winner-until-reset, and shuffled-cycle (each eligible entry exactly once per cycle). Show mode beside spin controls and in the report. Weighted selection is incompatible with shuffled-cycle in this baseline; reject that combination rather than silently ignoring weights. Numbers, yes/no and teams use independent mode only. Yes/no has exactly two active equal-weight options. Number generation and team allocation are not remove-winner wheel sessions. Reject tool-specific fields on unrelated tools.
 
 ## State machine
 
