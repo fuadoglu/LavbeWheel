@@ -7,19 +7,25 @@ import sys
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
+EXCLUDED_DIRS = {'.git', 'node_modules', 'vendor', 'dist', '.astro', 'coverage'}
 errors = []
+
+def repo_files(suffix):
+    return (path for path in ROOT.rglob(f'*{suffix}')
+            if not any(part in EXCLUDED_DIRS for part in path.relative_to(ROOT).parts))
+
 def require(condition, message):
     if not condition:
         errors.append(message)
 def load(path):
     return json.loads((ROOT / path).read_text())
 
-for path in ROOT.rglob('*.json'):
+for path in repo_files('.json'):
     try:
         json.loads(path.read_text())
     except Exception as exc:
         errors.append(f'{path.relative_to(ROOT)}: invalid JSON: {exc}')
-for path in ROOT.rglob('*.md'):
+for path in repo_files('.md'):
     text = path.read_text()
     for raw in re.findall(r'\]\(([^)]+)\)', text):
         target = raw.strip().split(' "')[0].strip('<>')
@@ -30,7 +36,7 @@ for path in ROOT.rglob('*.md'):
             resolved = (path.parent / target).resolve()
             require(resolved.is_relative_to(ROOT) and resolved.exists(),
                     f'{path.relative_to(ROOT)}: broken/escaping link: {target}')
-for path in ROOT.rglob('*.svg'):
+for path in repo_files('.svg'):
     try:
         node = ET.parse(path).getroot()
         require(node.tag.endswith('svg'), f'{path}: not SVG')

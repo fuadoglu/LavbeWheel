@@ -1,0 +1,25 @@
+{
+  "name": "lavbe/api",
+  "description": "Same-origin PHP API for Lavbe Wheel",
+  "type": "project",
+  "require": {
+    "php": ">=8.3",
+    "ext-intl": "*",
+    "ext-mbstring": "*",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*",
+    "ext-sodium": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Lavbe\\Api\\": "src/"
+    }
+  },
+  "scripts": {
+    "test": "php tests/runtime.php"
+  },
+  "config": {
+    "sort-packages": true,
+    "platform-check": true
+  }
+}
