@@ -47,6 +47,24 @@ final class AdminAuthService
         }
     }
 
+    /** Provision additional operators through the protected CLI, never through public registration. */
+    public function provisionUser(string $username,string $password,string $role):array
+    {
+        $username=strtolower(trim($username));
+        if(!preg_match('/^[a-z0-9][a-z0-9._-]{2,79}$/',$username)||strlen($password)<14||strlen($password)>1024||!in_array($role,['owner','editor','reviewer','publisher'],true))throw new \InvalidArgumentException('Administrator credentials or role do not meet the required format.');
+        $this->pdo->beginTransaction();
+        try{
+            $owner=$this->pdo->query("SELECT id FROM admin_users WHERE role='owner' AND disabled_at IS NULL ORDER BY id LIMIT 1 FOR UPDATE")->fetchColumn();
+            if(!is_string($owner))throw new \RuntimeException('Bootstrap the first owner before provisioning users.');
+            $id=self::token(24);$secret=Totp::generateSecret();$mfa=$this->crypto->encrypt($secret,'admin-mfa:'.$id);
+            $recovery=array_map(static fn()=>strtoupper(bin2hex(random_bytes(6))),range(1,10));$hashes=array_map(static fn(string $code)=>password_hash($code,PASSWORD_DEFAULT),$recovery);$now=gmdate('Y-m-d H:i:s.u');
+            $insert=$this->pdo->prepare('INSERT INTO admin_users(id,username,password_hash,mfa_cipher,mfa_nonce,mfa_key_id,recovery_hashes,role,created_at,updated_at) VALUES (:id,:username,:password,:cipher,:nonce,:keyId,:recovery,:role,:created,:updated)');
+            $insert->execute(['id'=>$id,'username'=>$username,'password'=>password_hash($password,PASSWORD_DEFAULT),'cipher'=>$mfa['cipher'],'nonce'=>$mfa['nonce'],'keyId'=>$mfa['keyId'],'recovery'=>json_encode($hashes,JSON_THROW_ON_ERROR),'role'=>$role,'created'=>$now,'updated'=>$now]);
+            $audit=$this->pdo->prepare('INSERT INTO audit_events(id,actor_id,action_code,object_id,created_at) VALUES (:id,:actor,\'admin.user.provision\',:object,:created)');$audit->execute(['id'=>bin2hex(random_bytes(16)),'actor'=>$owner,'object'=>$id,'created'=>$now]);
+            $this->pdo->commit();return ['userId'=>$id,'username'=>$username,'role'=>$role,'mfaSecret'=>$secret,'recoveryCodes'=>$recovery];
+        }catch(\Throwable $e){if($this->pdo->inTransaction())$this->pdo->rollBack();throw $e;}
+    }
+
     public function login(string $username, string $password, string $mfaCode, string $networkKey, int $now): array
     {
         $this->consumeLogin($networkKey, $now);

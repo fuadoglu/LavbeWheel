@@ -18,9 +18,9 @@ Configure the web server so `/api/v1/*` reaches `public/index.php`, denies acces
 
 ## Administrator bootstrap
 
-After applying migrations, run `composer bootstrap-admin --working-dir=apps/api -- <username>` from a protected terminal. Enter a password with at least 14 characters when prompted, then enroll the one-time displayed TOTP secret and store the one-time recovery codes in the approved password manager. Do not redirect this command's output to a log or CI artifact. Bootstrap refuses to create a second initial owner. Additional administrator management will use the authenticated owner API when its WP08 endpoints are implemented.
+After applying migrations, run `composer bootstrap-admin --working-dir=apps/api -- <username>` from a protected terminal. Enter a password with at least 14 characters when prompted, then enroll the one-time displayed TOTP secret and store the one-time recovery codes in the approved password manager. Do not redirect this command's output to a log or CI artifact. Bootstrap refuses to create a second initial owner. The initial owner provisions additional roles with `composer provision-admin --working-dir=apps/api -- <username> <owner|editor|reviewer|publisher>`; the command displays a new one-time MFA secret and recovery codes.
 
-The current WP08 implementation exposes MFA login/session/logout, strict encrypted content draft import, validation, review and version listing/detail. Publication runner, manifest signing, promotion/rollback, user administration, share revocation and the admin panel remain in progress; do not use this partial API to publish content.
+The current WP08 implementation exposes MFA login/session/logout, strict encrypted content draft import, validation, review and version listing/detail, owner user updates, audit listing and admin share revocation. Publication runner, manifest signing, promotion/rollback and the admin panel remain in progress; do not use this partial API to publish content.
 
 The application does not emit request bodies, network keys, authorization headers or capabilities to logs. Host-level access logs and backups still require the retention/redaction controls in `docs/11-PRIVACY-SECURITY.md` and `docs/17-OPERATIONS.md`.
 

@@ -447,7 +447,7 @@
       "evidence": [
         {
           "command": "LAVBE_TEST_DATABASE_* npm run test:api",
-          "result": "PASS; RFC 6238 TOTP vector, strict six-kind admin schemas, MySQL migration/lifecycle, live HTTP password+MFA login, secure session/CSRF/logout, single-use recovery, encrypted draft import, source/placeholder/markup validation, review transition, stale-revision rejection and version list",
+          "result": "PASS; RFC 6238 TOTP, strict six-kind schemas, MySQL migration/lifecycle, live MFA/session/CSRF/recovery, encrypted import, source/placeholder/markup checks, review/stale revision, CLI-provisioned editor role gates, owner audit/user update/session revocation, last-owner protection and real admin share revocation",
           "artifact": "apps/api/tests/http-integration.php",
           "scope": "Local PHP 8.4 + MariaDB 12.1 isolated lavbe_api_test; MySQL 8.4 CI not yet run for WP08"
         },
@@ -477,10 +477,21 @@
           "result": "FAIL; MySQL 8.4 integration exposed a recovery-code single-use issue not reproduced on local MariaDB 12.1; recovery consumption now locks and rechecks the account row transactionally, and the CI rerun is pending",
           "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43645518129",
           "scope": "Failure is addressed by the next commit; do not treat this run as passing evidence"
+        },
+        {
+          "command": "GitHub Actions verify + documentation checks on PR #8 commit 0a392c6 (runs 43645698280 and 43645698282)",
+          "result": "PASS; full configured application job including MySQL 8.4 API integration, E2E, a11y, SEO, audits and docs/contracts",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43645698280",
+          "scope": "These runs verify commit 0a392c6, before subsequent owner-operations working-tree changes"
+        },
+        {
+          "command": "LAVBE_TEST_DATABASE_* npm run test:api after owner operations",
+          "result": "PASS; PHP+MariaDB 12.1 live HTTP lifecycle includes strict owner/editor role gates, audit response keys, last-owner protection, session invalidation and public-share unavailability after admin revoke",
+          "artifact": "apps/api/tests/http-integration.php",
+          "scope": "Local isolated lavbe_api_test; MySQL 8.4 CI for these later working-tree changes is pending"
         }
       ],
       "blockers": [
-        "Admin OpenAPI operations for publish jobs, scoped build runner, manifest export/signature, promote/rollback, user update, audit pagination and admin share revocation are not implemented yet.",
         "Admin panel UI and full OpenAPI response/error conformance are not implemented.",
         "RFC 8785 canonical JSON and shared server/runner manifest verification remain unresolved; no content has been approved or published.",
         "Preset and CMP allowlists require operator-supplied reviewed IDs; empty defaults fail closed.",

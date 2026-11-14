@@ -12,7 +12,7 @@ use Lavbe\Api\Infrastructure\Limits;
 
 final class AdminKernel
 {
-    public function __construct(private readonly Config $config, private readonly AdminAuthService $auth, private readonly ContentService $content) {}
+    public function __construct(private readonly Config $config, private readonly AdminAuthService $auth, private readonly ContentService $content, private readonly AdminOperationsService $operations) {}
 
     public function handle(Request $request, ?int $now = null): ?Response
     {
@@ -88,6 +88,24 @@ final class AdminKernel
                     $this->requireRole($session,['owner','reviewer']);
                     if(!isset($payload['expectedRevision'],$payload['note'])||!is_int($payload['expectedRevision'])||!is_string($payload['note'])||strlen($payload['note'])>500||array_diff(array_keys($payload),['expectedRevision','note'])!==[]) throw new ApiException(400,'VALIDATION_ERROR','The review request is invalid.');
                     return new Response(200,[...$headers,'Content-Type'=>'application/json; charset=utf-8'],$this->content->review($m[1],$payload['expectedRevision'],$session['userId'],$payload['note']));
+                }
+                if ($path === '/api/admin/v1/audit' && $request->method === 'GET') {
+                    $this->requireRole($session,['owner']);
+                    $cursor=$request->query['cursor']??null;
+                    if($cursor!==null&&!is_string($cursor))throw new ApiException(400,'VALIDATION_ERROR','The page cursor is invalid.');
+                    $result=$this->operations->audit($cursor);
+                    if($result['nextCursor']!==null)$headers['X-Next-Cursor']=$result['nextCursor'];
+                    return new Response(200,[...$headers,'Content-Type'=>'application/json; charset=utf-8'],$result['items']);
+                }
+                if(preg_match('#^/api/admin/v1/users/([A-Za-z0-9_-]{8,64})$#',$path,$m)&&$request->method==='PUT'){
+                    $this->requireRole($session,['owner']);
+                    return new Response(200,[...$headers,'Content-Type'=>'application/json; charset=utf-8'],$this->operations->updateUser($m[1],$payload,$session['userId']));
+                }
+                if(preg_match('#^/api/admin/v1/shares/([A-Za-z0-9_-]{20,64})/revoke$#',$path,$m)&&$request->method==='POST'){
+                    $this->requireRole($session,['owner']);
+                    if(array_diff(array_keys($payload),['reasonCode'])!==[]||!isset($payload['reasonCode'])||!is_string($payload['reasonCode']))throw new ApiException(400,'VALIDATION_ERROR','The revocation request is invalid.');
+                    $this->operations->revokeShare($m[1],$payload['reasonCode'],$session['userId'],$now);
+                    return new Response(204,$headers);
                 }
             }
             throw new ApiException(404, 'NOT_FOUND', 'The requested resource could not be found.');

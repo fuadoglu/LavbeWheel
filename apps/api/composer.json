@@ -19,6 +19,7 @@
   "scripts": {
     "test": "php tests/run.php",
     "bootstrap-admin": "php bin/bootstrap-admin.php",
+    "provision-admin": "php bin/provision-admin.php",
     "migrate": "php bin/migrate.php",
     "cleanup": "php bin/cleanup.php"
   },

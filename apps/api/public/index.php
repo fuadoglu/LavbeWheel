@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Lavbe\Api\Application\ShareService;
 use Lavbe\Api\Admin\AdminAuthService;
 use Lavbe\Api\Admin\AdminKernel;
+use Lavbe\Api\Admin\AdminOperationsService;
 use Lavbe\Api\Admin\ContentService;
 use Lavbe\Api\Admin\JsonSchemaValidator;
 use Lavbe\Api\Domain\WheelRequestValidator;
@@ -26,7 +27,7 @@ try {
     $request = Request::fromGlobals();
     $crypto = new Crypto($config);
     $schemaRoot = dirname(__DIR__, 3) . '/contracts';
-    $admin = new AdminKernel($config, new AdminAuthService($pdo, $config, $crypto), new ContentService($pdo, $crypto, new JsonSchemaValidator($schemaRoot)));
+    $admin = new AdminKernel($config, new AdminAuthService($pdo, $config, $crypto), new ContentService($pdo, $crypto, new JsonSchemaValidator($schemaRoot)), new AdminOperationsService($pdo));
     $adminResponse = $admin->handle($request);
     if ($adminResponse !== null) $adminResponse->emit();
     $shares = new ShareService($pdo, $config, $crypto, new WheelRequestValidator(new WheelSemanticValidator()));

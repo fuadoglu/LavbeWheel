@@ -28,6 +28,7 @@ $totp = static function (string $secret, int $timestamp): string {
     $value = ((ord($hash[$index]) & 0x7f) << 24) | ((ord($hash[$index + 1]) & 0xff) << 16) | ((ord($hash[$index + 2]) & 0xff) << 8) | (ord($hash[$index + 3]) & 0xff);
     return str_pad((string) ($value % 1000000), 6, '0', STR_PAD_LEFT);
 };
+$editor = $adminAuth->provisionUser('editor_test','TestEditorPassword!Secure123','editor');
 
 $socket = stream_socket_server('tcp://127.0.0.1:0', $errorCode, $errorMessage);
 if ($socket === false) throw new RuntimeException('Could not reserve a local API test port.');
@@ -175,11 +176,31 @@ try {
     if($staleImportStatus!==201||$staleValidationStatus!==200||($staleValidation['valid']??true)!==false||!in_array('STALE_SOURCE',array_column($staleValidation['errors'],'code'),true)) throw new RuntimeException('Admin validation accepted stale source metadata.');
     [$versionsStatus, , $versions] = $send('/api/admin/v1/versions','GET',$adminCookie);
     if($versionsStatus!==200||count($versions)!==3||!in_array($version['id'],array_column($versions,'id'),true)) throw new RuntimeException('Admin content version listing failed.');
+    [$auditStatus, , $auditEvents] = $send('/api/admin/v1/audit','GET',$adminCookie);
+    if($auditStatus!==200||!is_array($auditEvents)||count($auditEvents)<4) throw new RuntimeException('Owner audit-event list failed.');
+    foreach($auditEvents as $event){$keys=array_keys($event);sort($keys);if($keys!==['action','actorId','at','id','objectId'])throw new RuntimeException('Audit event response differs from OpenAPI.');}
+    [$lastOwnerStatus] = $send('/api/admin/v1/users/'.$admin['userId'],'PUT',$adminMutationHeaders,json_encode(['username'=>'owner_test','role'=>'editor','disabled'=>false],JSON_THROW_ON_ERROR));
+    if($lastOwnerStatus!==409) throw new RuntimeException('The last active owner could be demoted.');
+    $adminShareHeaders=['Origin'=>$origin,'Content-Type'=>'application/json','Idempotency-Key'=>'c7f54375-6d33-4f41-a70d-9611c1b1b9c5'];
+    [$adminShareCreateStatus, , $adminShare] = $send('/api/v1/shares','POST',$adminShareHeaders,$payload);
+    [$shareAdminStatus] = $send('/api/admin/v1/shares/'.$adminShare['shareId'].'/revoke','POST',$adminMutationHeaders,json_encode(['reasonCode'=>'abuse'],JSON_THROW_ON_ERROR));
+    [$adminShareGoneStatus] = $send('/api/v1/shares/'.$adminShare['shareId']);
+    if($adminShareCreateStatus!==201||$shareAdminStatus!==204||$adminShareGoneStatus!==410) throw new RuntimeException('Owner administrative revocation did not disable the public share.');
+    [$userUpdateStatus, , $userUpdate] = $send('/api/admin/v1/users/'.$admin['userId'],'PUT',$adminMutationHeaders,json_encode(['username'=>'owner_test','role'=>'owner','disabled'=>false],JSON_THROW_ON_ERROR));
+    $assertOpenApiKeys($userUpdate,$adminOpenApi['components']['schemas']['OwnerUser'],'Owner user response');
+    [$updatedUserSessionStatus] = $send('/api/admin/v1/session','GET',$adminCookie);
+    if($userUpdateStatus!==200||($userUpdate['role']??null)!=='owner'||$updatedUserSessionStatus!==401) throw new RuntimeException('Owner update did not revoke sessions safely.');
+    [$editorLoginStatus,$editorHeaders,$editorSession] = $send('/api/admin/v1/session','POST',$adminOrigin,json_encode(['username'=>'editor_test','password'=>'TestEditorPassword!Secure123','mfaCode'=>$totp($editor['mfaSecret'],time())],JSON_THROW_ON_ERROR));
+    preg_match('/lavbe_admin=([A-Za-z0-9_-]{43})/',$editorHeaders['set-cookie']??'',$editorCookieMatch);
+    if($editorLoginStatus!==200||($editorSession['role']??null)!=='editor'||!isset($editorCookieMatch[1])) throw new RuntimeException('Provisioned editor MFA login failed.');
+    $editorCookie=['Cookie'=>'lavbe_admin='.$editorCookieMatch[1]];
+    [$ownerOnlyStatus]= $send('/api/admin/v1/audit','GET',$editorCookie);
+    if($ownerOnlyStatus!==403) throw new RuntimeException('Editor accessed the owner-only audit endpoint.');
     [$reusedRecoveryStatus, , $reusedRecoveryError] = $send('/api/admin/v1/session', 'POST', $adminOrigin, $recoveryBody);
     if ($recoveryStatus !== 200 || $reusedRecoveryStatus !== 401 || ($reusedRecoveryError['error']['code'] ?? '') !== 'AUTHENTICATION_REQUIRED') {
         throw new RuntimeException('One-time admin recovery code did not enforce single use (first=' . $recoveryStatus . ', replay=' . $reusedRecoveryStatus . ', replayCode=' . ($reusedRecoveryError['error']['code'] ?? 'none') . ').');
     }
-    fwrite(STDOUT, "PASS: live HTTP public share and admin MFA/session/CSRF/content import/validation/review lifecycle.\n");
+    fwrite(STDOUT, "PASS: live HTTP sharing, admin MFA/session/CSRF/content review, role-gated user/audit operations and administrative share revocation.\n");
 } finally {
     proc_terminate($process);
     proc_close($process);
