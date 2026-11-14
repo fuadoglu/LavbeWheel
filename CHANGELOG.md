@@ -1,5 +1,11 @@
 # Changelog
 
+## WP02 selection semantics — 2026-11-14
+
+- Added unbiased integer and weighted selection, balanced teams, shuffle and recoverable no-repeat cycles with injected entropy sources.
+- Added ordered TypeScript/PHP wheel semantic validation and shared golden vectors covering Unicode normalization and contract boundaries.
+- Added 28 TypeScript selection/semantic tests and 16 PHP cross-language semantic checks.
+
 ## WP01 foundation — 2026-11-14
 
 - Added Astro/TypeScript/npm workspaces and a local-first classic wheel slice with unbiased selection and device-local draft list persistence.

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not documentation completion. WP01 is verified; WP02-WP12 remain unimplemented.",
+  "note": "Application progress and evidence, not documentation completion. WP01 is verified; WP02 implementation is in progress; WP03-WP12 remain unimplemented.",
   "workPackages": [
     {
       "id": "WP01",
@@ -50,18 +50,53 @@
           "result": "PASS; live local classic-wheel slice opened and a selection rendered",
           "artifact": "http://127.0.0.1:4321/",
           "scope": "Local only; not deployed"
+        },
+        {
+          "command": "GitHub Actions verify job on PR #1",
+          "result": "PASS; all configured application checks completed",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43592988040",
+          "scope": "CI only; review/merge/deployment remain separate"
         }
       ],
-      "blockers": [
-        "GitHub Actions has not yet executed against this branch."
-      ]
+      "blockers": []
     },
     {
       "id": "WP02",
-      "status": "not-started",
-      "branch": null,
+      "status": "in-progress",
+      "branch": "feat/wp02-selection",
       "commit": null,
-      "evidence": [],
+      "evidence": [
+        {
+          "command": "npm run check",
+          "result": "PASS; generated contracts/config and all TS/Astro checks, 0 diagnostics",
+          "artifact": "packages/selection/src/"
+        },
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 28 tests covering unbiased range selection, weighted choice, teams, shuffled cycles and semantic rules",
+          "artifact": "tests/unit/selection.test.ts"
+        },
+        {
+          "command": "composer test --working-dir=apps/api",
+          "result": "PASS; 16 PHP semantic golden vectors and NFC behavior",
+          "artifact": "apps/api/tests/semantic.php"
+        },
+        {
+          "command": "npm run validate:docs",
+          "result": "PASS; documentation/schema/fixtures/reference semantic/SEO integrity",
+          "artifact": "scripts/validate_semantics.py"
+        },
+        {
+          "command": "npm run test:e2e && npm run test:a11y && npm run test:seo && npm run build",
+          "result": "PASS; 2 browser tests, 1 Axe scan, built-root smoke and static build",
+          "artifact": "apps/web/dist/index.html"
+        },
+        {
+          "command": "npm audit --audit-level=moderate && git diff --check",
+          "result": "PASS; 0 vulnerabilities and clean diff whitespace",
+          "artifact": "package-lock.json"
+        }
+      ],
       "blockers": []
     },
     {

@@ -1,31 +1,130 @@
 {
   "version": 1,
   "scope": "Implementation evidence only; not release approval or deployment evidence.",
-  "branch": "feat/wp01-foundation",
+  "branch": "feat/wp02-selection",
   "baseCommit": "e6f95280d774adca17d27c3d622df7e85fcfc7a6",
   "workPackages": {
     "WP01": {
       "status": "verified",
       "evidence": [
-        { "command": "npm ci", "result": "PASS; 0 npm audit findings", "artifact": "this manifest / WP01 evidence" },
-        { "command": "composer install --working-dir=apps/api --no-interaction --prefer-dist", "result": "PASS; lockfile install, no runtime packages", "artifact": "this manifest / WP01 evidence" },
-        { "command": "composer validate --working-dir=apps/api --no-check-publish", "result": "PASS", "artifact": "this manifest / WP01 evidence" },
-        { "command": "npm run contracts:generate && npm run contracts:check", "result": "PASS; 10 schema type modules generated deterministically", "artifact": "packages/contracts/src/generated/" },
-        { "command": "npm run check", "result": "PASS; generated contracts/config and all TS/Astro checks, 0 diagnostics", "artifact": "this manifest / WP01 evidence" },
-        { "command": "npm run test:unit", "result": "PASS; 6 unbiased-selection and bounds tests", "artifact": "tests/unit/selection.test.ts" },
-        { "command": "npm run test:api", "result": "PASS; PHP 8.4.10 plus required extensions", "artifact": "apps/api/tests/runtime.php", "scope": "Runtime prerequisites only; HTTP API remains unimplemented" },
-        { "command": "npm run test:content", "result": "PASS; registry plus 2 draft catalogs have matching keys/placeholders", "artifact": "content/locales/", "scope": "108 catalogs and all native review remain pending" },
-        { "command": "npm run test:e2e", "result": "PASS; selection outcome and local persistence smoke; 2 browser tests", "artifact": "tests/e2e/wheel.spec.ts" },
-        { "command": "npm run test:a11y", "result": "PASS; Axe WCAG 2.1 A/AA automated root-screen scan", "artifact": "tests/e2e/wheel.spec.ts", "scope": "Automated screen only; manual/device acceptance pending" },
-        { "command": "npm run test:seo", "result": "PASS; static root HTML smoke contract", "artifact": "scripts/validate-built-site.mjs", "scope": "Route graph, all locale pages, HTTP origin and SEO-01–12 pending" },
-        { "command": "npm run validate:docs (Python 3.14 venv with scripts/requirements-docs.txt)", "result": "PASS; docs, 45 schema fixture cases, 16 semantic reference vectors and SEO registry", "artifact": "this manifest / WP01 evidence", "scope": "Reference/specification validation; no TS/PHP parity" },
-        { "command": "npm audit --audit-level=moderate", "result": "PASS; 0 findings", "artifact": "this manifest / WP01 evidence" },
-        { "method": "Visible browser smoke at http://127.0.0.1:4321/", "result": "PASS; app opened and a wheel spin rendered a selected result", "artifact": "local dev server; not a production deployment" }
+        {
+          "command": "npm ci",
+          "result": "PASS; 0 npm audit findings",
+          "artifact": "this manifest / WP01 evidence"
+        },
+        {
+          "command": "composer install --working-dir=apps/api --no-interaction --prefer-dist",
+          "result": "PASS; lockfile install, no runtime packages",
+          "artifact": "this manifest / WP01 evidence"
+        },
+        {
+          "command": "composer validate --working-dir=apps/api --no-check-publish",
+          "result": "PASS",
+          "artifact": "this manifest / WP01 evidence"
+        },
+        {
+          "command": "npm run contracts:generate && npm run contracts:check",
+          "result": "PASS; 10 schema type modules generated deterministically",
+          "artifact": "packages/contracts/src/generated/"
+        },
+        {
+          "command": "npm run check",
+          "result": "PASS; generated contracts/config and all TS/Astro checks, 0 diagnostics",
+          "artifact": "this manifest / WP01 evidence"
+        },
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 6 unbiased-selection and bounds tests",
+          "artifact": "tests/unit/selection.test.ts"
+        },
+        {
+          "command": "npm run test:api",
+          "result": "PASS; PHP 8.4.10 plus required extensions",
+          "artifact": "apps/api/tests/runtime.php",
+          "scope": "Runtime prerequisites only; HTTP API remains unimplemented"
+        },
+        {
+          "command": "npm run test:content",
+          "result": "PASS; registry plus 2 draft catalogs have matching keys/placeholders",
+          "artifact": "content/locales/",
+          "scope": "108 catalogs and all native review remain pending"
+        },
+        {
+          "command": "npm run test:e2e",
+          "result": "PASS; selection outcome and local persistence smoke; 2 browser tests",
+          "artifact": "tests/e2e/wheel.spec.ts"
+        },
+        {
+          "command": "npm run test:a11y",
+          "result": "PASS; Axe WCAG 2.1 A/AA automated root-screen scan",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Automated screen only; manual/device acceptance pending"
+        },
+        {
+          "command": "npm run test:seo",
+          "result": "PASS; static root HTML smoke contract",
+          "artifact": "scripts/validate-built-site.mjs",
+          "scope": "Route graph, all locale pages, HTTP origin and SEO-01–12 pending"
+        },
+        {
+          "command": "npm run validate:docs (Python 3.14 venv with scripts/requirements-docs.txt)",
+          "result": "PASS; docs, 45 schema fixture cases, 16 semantic reference vectors and SEO registry",
+          "artifact": "this manifest / WP01 evidence",
+          "scope": "Reference/specification validation; no TS/PHP parity"
+        },
+        {
+          "command": "npm audit --audit-level=moderate",
+          "result": "PASS; 0 findings",
+          "artifact": "this manifest / WP01 evidence"
+        },
+        {
+          "method": "Visible browser smoke at http://127.0.0.1:4321/",
+          "result": "PASS; app opened and a wheel spin rendered a selected result",
+          "artifact": "local dev server; not a production deployment"
+        },
+        {
+          "command": "GitHub Actions verify job on PR #1",
+          "result": "PASS; all configured application checks completed",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43592988040",
+          "scope": "Automated CI; review and deployment are not implied"
+        }
       ],
       "limitations": [
-        "GitHub Actions has not run for this branch.",
         "PHP HTTP API, PWA, session persistence beyond the temporary example list, complete i18n and release acceptance are not implemented.",
         "The two catalogs are drafts, not reviewed translations."
+      ]
+    },
+    "WP02": {
+      "status": "in-progress",
+      "evidence": [
+        {
+          "command": "npm run check",
+          "result": "PASS; all TypeScript/Astro checks, 0 diagnostics"
+        },
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 28 selection and semantic tests"
+        },
+        {
+          "command": "composer test --working-dir=apps/api",
+          "result": "PASS; 16 PHP semantic golden vectors and NFC behavior"
+        },
+        {
+          "command": "npm run validate:docs",
+          "result": "PASS; docs/schema/fixtures/reference semantics/SEO integrity"
+        },
+        {
+          "command": "npm run test:e2e && npm run test:a11y && npm run test:seo && npm run build",
+          "result": "PASS; 2 browser tests, 1 Axe scan, built-root smoke and static build"
+        },
+        {
+          "command": "npm audit --audit-level=moderate && git diff --check",
+          "result": "PASS; 0 vulnerabilities and clean diff whitespace"
+        }
+      ],
+      "limitations": [
+        "This work package is not yet committed or reviewed.",
+        "Uniform selection primitives and semantic rules do not establish complete tool behavior or release acceptance."
       ]
     }
   },
