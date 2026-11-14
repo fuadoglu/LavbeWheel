@@ -443,7 +443,7 @@
       "id": "WP08",
       "status": "in-progress",
       "branch": "feat/wp08-admin",
-      "commit": "see branch commits",
+      "commit": "c54910c",
       "evidence": [
         {
           "command": "LAVBE_TEST_DATABASE_* npm run test:api",
