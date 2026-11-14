@@ -3,7 +3,7 @@
   "info": {
     "title": "Lavbe administration API",
     "version": "1.0.0-spec",
-    "description": "Design contract, not an implemented service. All /admin API responses no-store; no wildcard CORS. Cookie-authenticated mutations require Origin, X-CSRF-Token. Runner endpoints use independent short-lived scoped bearer credential. Record schemas depend on kind and must be validated, never accepted as arbitrary executable code."
+    "description": "Partially implemented administration API contract. /api/admin/v1 responses are no-store; no wildcard CORS. Cookie-authenticated mutations require Origin and X-CSRF-Token. Runner operations require independent short-lived scoped credentials. Record schemas are strict; arbitrary executable content is forbidden."
   },
   "servers": [
     {
@@ -2715,6 +2715,9 @@
                 "enum": [
                   "VALIDATION_ERROR",
                   "UNSUPPORTED_ORIGIN",
+                  "AUTHENTICATION_REQUIRED",
+                  "ACCESS_DENIED",
+                  "REVISION_CONFLICT",
                   "NOT_FOUND",
                   "UNAVAILABLE",
                   "INVALID_CAPABILITY",
@@ -2758,7 +2761,8 @@
           },
           "mfaCode": {
             "type": "string",
-            "pattern": "^[0-9]{6}$"
+            "pattern": "^(?:[0-9]{6}|[A-F0-9]{12})$",
+            "description": "6-digit TOTP code or a one-time 12-character recovery code."
           }
         }
       },

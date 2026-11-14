@@ -3,6 +3,10 @@
 declare(strict_types=1);
 
 use Lavbe\Api\Application\ShareService;
+use Lavbe\Api\Admin\AdminAuthService;
+use Lavbe\Api\Admin\AdminKernel;
+use Lavbe\Api\Admin\ContentService;
+use Lavbe\Api\Admin\JsonSchemaValidator;
 use Lavbe\Api\Domain\WheelRequestValidator;
 use Lavbe\Api\Domain\WheelSemanticValidator;
 use Lavbe\Api\Http\ApiKernel;
@@ -19,8 +23,14 @@ try {
     if (getenv('LAVBE_AUTO_MIGRATE') === '1') {
         (new MigrationRunner($pdo))->migrate();
     }
-    $shares = new ShareService($pdo, $config, new Crypto($config), new WheelRequestValidator(new WheelSemanticValidator()));
-    (new ApiKernel($config, $shares))->handle(Request::fromGlobals())->emit();
+    $request = Request::fromGlobals();
+    $crypto = new Crypto($config);
+    $schemaRoot = dirname(__DIR__, 3) . '/contracts';
+    $admin = new AdminKernel($config, new AdminAuthService($pdo, $config, $crypto), new ContentService($pdo, $crypto, new JsonSchemaValidator($schemaRoot)));
+    $adminResponse = $admin->handle($request);
+    if ($adminResponse !== null) $adminResponse->emit();
+    $shares = new ShareService($pdo, $config, $crypto, new WheelRequestValidator(new WheelSemanticValidator()));
+    (new ApiKernel($config, $shares))->handle($request)->emit();
 } catch (Throwable) {
     http_response_code(503);
     header('Cache-Control: no-store, private');

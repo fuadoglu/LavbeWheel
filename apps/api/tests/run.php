@@ -6,6 +6,7 @@ require __DIR__ . '/runtime.php';
 require __DIR__ . '/semantic.php';
 require __DIR__ . '/request-validator.php';
 require __DIR__ . '/http-kernel.php';
+require __DIR__ . '/admin-schema.php';
 if (getenv('LAVBE_TEST_DATABASE_DSN')) {
     require __DIR__ . '/database-lifecycle.php';
 } else {

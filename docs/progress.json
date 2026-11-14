@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01, WP02 and WP07 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local bottle/game tools and draft source packs are implemented; WP08-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01, WP02 and WP07 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local bottle/game tools and draft source packs are implemented; WP08 is in progress; WP09-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -441,11 +441,45 @@
     },
     {
       "id": "WP08",
-      "status": "not-started",
-      "branch": null,
-      "commit": null,
-      "evidence": [],
-      "blockers": []
+      "status": "in-progress",
+      "branch": "feat/wp08-admin",
+      "commit": "working-tree",
+      "evidence": [
+        {
+          "command": "LAVBE_TEST_DATABASE_* npm run test:api",
+          "result": "PASS; RFC 6238 TOTP vector, strict six-kind admin schemas, MySQL migration/lifecycle, live HTTP password+MFA login, secure session/CSRF/logout, single-use recovery, encrypted draft import, source/placeholder/markup validation, review transition, stale-revision rejection and version list",
+          "artifact": "apps/api/tests/http-integration.php",
+          "scope": "Local PHP 8.4 + MariaDB 12.1 isolated lavbe_api_test; MySQL 8.4 CI not yet run for WP08"
+        },
+        {
+          "command": "npm run check && npm run test:unit",
+          "result": "PASS; TypeScript/Astro checks (0 diagnostics), 53 unit tests",
+          "artifact": "command output"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; docs, schema fixtures, semantic reference vectors and SEO registry",
+          "artifact": "command output",
+          "scope": "Reference/schema validation; not admin publication HTTP conformance"
+        },
+        {
+          "command": "composer validate --working-dir=apps/api --no-check-publish",
+          "result": "PASS with advisory missing-license metadata warning",
+          "artifact": "apps/api/composer.json"
+        },
+        {
+          "command": "git diff --check",
+          "result": "PASS; no whitespace errors",
+          "artifact": "working tree"
+        }
+      ],
+      "blockers": [
+        "Admin OpenAPI operations for publish jobs, scoped build runner, manifest export/signature, promote/rollback, user update, audit pagination and admin share revocation are not implemented yet.",
+        "Admin panel UI and full OpenAPI response/error conformance are not implemented.",
+        "RFC 8785 canonical JSON and shared server/runner manifest verification remain unresolved; no content has been approved or published.",
+        "Preset and CMP allowlists require operator-supplied reviewed IDs; empty defaults fail closed.",
+        "MySQL 8.4 CI, cross-device/admin UI and deployment/hosting remain unverified."
+      ]
     },
     {
       "id": "WP09",

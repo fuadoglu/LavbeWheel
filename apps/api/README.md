@@ -16,6 +16,12 @@ Create a dedicated MySQL database with `utf8mb4`, grant the API account only the
 
 Configure the web server so `/api/v1/*` reaches `public/index.php`, denies access to non-public source/configuration/vendor paths, and sets body limits at least as strict as 256 KiB. Do not cache API responses. Snapshot share shells need the separate `/s/{shareId}/` no-store/noindex/no-referrer routing contract; that shell and static-host integration are not implemented in this WP07 API slice.
 
+## Administrator bootstrap
+
+After applying migrations, run `composer bootstrap-admin --working-dir=apps/api -- <username>` from a protected terminal. Enter a password with at least 14 characters when prompted, then enroll the one-time displayed TOTP secret and store the one-time recovery codes in the approved password manager. Do not redirect this command's output to a log or CI artifact. Bootstrap refuses to create a second initial owner. Additional administrator management will use the authenticated owner API when its WP08 endpoints are implemented.
+
+The current WP08 implementation exposes MFA login/session/logout, strict encrypted content draft import, validation, review and version listing/detail. Publication runner, manifest signing, promotion/rollback, user administration, share revocation and the admin panel remain in progress; do not use this partial API to publish content.
+
 The application does not emit request bodies, network keys, authorization headers or capabilities to logs. Host-level access logs and backups still require the retention/redaction controls in `docs/11-PRIVACY-SECURITY.md` and `docs/17-OPERATIONS.md`.
 
 ## Tests

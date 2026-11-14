@@ -14,6 +14,14 @@
 | ADR-08 | Basic opt-in optional tags | Predictable privacy boundary, graceful provider failure |
 | ADR-09 | Static content publication through trusted builder | Admin panel works without Node on hosting |
 | ADR-10 | Reports grouped by explicit rounds | Prevents mixed rules from misleading statistics |
+| ADR-11 | Admin imports are stored as encrypted immutable content versions; the server resets imported review claims and derives reviewer identity/state itself | Prevents client-controlled approval state and protects unpublished editorial content |
+
+### 2026-11-15 — WP08 content import trust boundary
+
+- **Problem / requirements:** WP08 and `docs/14-ADMIN-CONTENT.md` require strict imported schemas, server-verified source/review state and protected drafts.
+- **Selected behavior:** Imported records are schema-checked, encrypted at rest, assigned a server revision and saved as `draft`; client-supplied `reviewed` state is discarded. UI source keys, source hashes, placeholders and unsafe markup are checked against the English catalog. Pack source hashes follow the recursive key-sort rule documented in `content/packs/README.md`.
+- **Alternative rejected:** trusting imported `status`, reviewer, or source-hash values would let an editor upload self-approved content and is not acceptable.
+- **Acceptance impact:** draft import/validation/review can be exercised locally. Full RFC 8785 shared manifest canonicalization, full ICU parsing, remaining admin APIs and production publication remain open; this decision does not approve content or enable publishing.
 
 ## Concrete baseline defaults
 

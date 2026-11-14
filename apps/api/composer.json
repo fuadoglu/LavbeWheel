@@ -8,7 +8,8 @@
     "ext-mbstring": "*",
     "ext-pdo": "*",
     "ext-pdo_mysql": "*",
-    "ext-sodium": "*"
+    "ext-sodium": "*",
+    "opis/json-schema": "^2.6"
   },
   "autoload": {
     "psr-4": {
@@ -17,6 +18,7 @@
   },
   "scripts": {
     "test": "php tests/run.php",
+    "bootstrap-admin": "php bin/bootstrap-admin.php",
     "migrate": "php bin/migrate.php",
     "cleanup": "php bin/cleanup.php"
   },

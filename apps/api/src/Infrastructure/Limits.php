@@ -32,4 +32,9 @@ final class Limits
     {
         return self::all()['retention'];
     }
+
+    public static function content(): array
+    {
+        return self::all()['content'];
+    }
 }
