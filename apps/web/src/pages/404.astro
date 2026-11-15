@@ -1,0 +1,47 @@
+---
+import '../styles/global.css';
+import messages from '../../../../content/locales/az.json';
+import { designTokens, getLocaleDirection } from '../data/config';
+const m = messages.messages;
+const light = designTokens.themes.light;
+---
+<!doctype html>
+<html lang={messages.locale} dir={getLocaleDirection(messages.locale)} data-theme-tokens={JSON.stringify(designTokens.themes)}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content={light.canvas} />
+    <meta name="robots" content="noindex,follow,noarchive" />
+    <meta name="referrer" content="same-origin" />
+    <title>{m.notFoundTitle} · Lavbe</title>
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const themes = JSON.parse(root.dataset.themeTokens || '{}');
+        const variables = { canvas: '--canvas-token', surface: '--surface-token', text: '--text-token', mutedText: '--muted-token', primary: '--primary-token', onPrimary: '--on-primary', border: '--border-token', focus: '--focus-token' };
+        let theme = 'light';
+        try { theme = localStorage.getItem('lavbe.theme') === 'dark' ? 'dark' : 'light'; } catch { /* Keep the accessible light defaults when storage is unavailable. */ }
+        root.dataset.theme = theme;
+        for (const [key, variable] of Object.entries(variables)) root.style.setProperty(variable, themes[theme][key]);
+      })();
+    </script>
+    <style>
+      .not-found{max-width:760px;min-height:calc(100vh - 170px);margin:0 auto;display:grid;align-content:center;gap:20px}.not-found-panel{padding:clamp(24px,6vw,56px);border:1px solid var(--line);border-radius:20px;background:var(--surface);box-shadow:var(--shadow)}.not-found h1{margin:8px 0;font-size:clamp(30px,6vw,48px);letter-spacing:-.04em}.not-found p{max-width:54ch;color:var(--muted);line-height:1.7}.not-found-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.not-found-links a{display:inline-flex;align-items:center;min-height:44px;padding:0 15px;border:1px solid var(--line);border-radius:11px;color:var(--primary);font-weight:650;text-decoration:none}.not-found-links a:focus-visible{outline:3px solid var(--focus-token,#2459C4);outline-offset:3px}
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">L</span><span>lavbe</span></a></header>
+      <section class="not-found not-found-panel" aria-labelledby="not-found-title">
+        <span class="section-kicker">404</span>
+        <h1 id="not-found-title">{m.notFoundTitle}</h1>
+        <p>{m.notFoundBody}</p>
+        <nav class="not-found-links" aria-label={m.navMain}>
+          <a href="/">{m.notFoundHome}</a>
+          <a href="/bottle/">{m.notFoundBottle}</a>
+          <a href="/games/">{m.notFoundGames}</a>
+        </nav>
+      </section>
+    </main>
+  </body>
+</html>

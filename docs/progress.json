@@ -592,8 +592,8 @@
         },
         {
           "command": "npm run test:seo",
-          "result": "PASS; static build emits route-manifest.json, redirect-manifest.json, seo-audit.json and robots.txt. Three existing templates are noindex; zero sitemap URLs; 1,107 public routes planned. SEO-02 intent ownership and empty-set SEO-06 sitemap equality pass within stated scope.",
-          "artifact": "apps/web/dist/ and scripts/validate-built-site.mjs"
+          "result": "PASS; build emits route-manifest.json, redirect-manifest.json, seo-audit.json, robots.txt and a noindex 404.html. Three implemented tool/home templates are noindex; no sitemap is emitted with zero approved URLs; 1,107 public routes planned. SEO-02 and empty-set SEO-06 pass only within stated scope.",
+          "artifact": "apps/web/dist/route-manifest.json, apps/web/dist/redirect-manifest.json, apps/web/dist/seo-audit.json, apps/web/dist/robots.txt, apps/web/dist/404.html"
         },
         {
           "command": "npm run seo:release-check",
@@ -614,8 +614,8 @@
         },
         {
           "command": "npm run test:seo",
-          "result": "PASS; static build emits route-manifest.json, redirect-manifest.json, seo-audit.json and robots.txt. Three existing templates are noindex; zero sitemap URLs; 1,107 public routes planned. SEO-02 intent ownership and empty-set SEO-06 sitemap equality pass within stated scope.",
-          "artifact": "apps/web/dist/route-manifest.json, apps/web/dist/redirect-manifest.json, apps/web/dist/seo-audit.json, apps/web/dist/robots.txt"
+          "result": "PASS; build emits route-manifest.json, redirect-manifest.json, seo-audit.json, robots.txt and a noindex 404.html. Three implemented tool/home templates are noindex; no sitemap is emitted with zero approved URLs; 1,107 public routes planned. SEO-02 and empty-set SEO-06 pass only within stated scope.",
+          "artifact": "apps/web/dist/route-manifest.json, apps/web/dist/redirect-manifest.json, apps/web/dist/seo-audit.json, apps/web/dist/robots.txt, apps/web/dist/404.html"
         },
         {
           "command": "npm run seo:release-check",
@@ -633,11 +633,28 @@
           "result": "PASS after sitemap helper changes; 70 unit tests include empty sitemap behavior, locale submaps, 5,000 URL chunking, duplicate/query/unsafe path rejection; SEO built-site audit passes; config and TS/Astro checks have 0 diagnostics.",
           "artifact": "tests/unit/seo-artifacts.test.ts and apps/web/dist/seo-audit.json",
           "scope": "No approved pages exist, so populated sitemap behavior is covered by synthetic unit fixtures, not live indexed content."
+        },
+        {
+          "command": "npm run test:e2e -- --config=playwright.wp09.config.ts --workers=1",
+          "result": "PASS; 15/15 Chromium flows on isolated server, including true 404 response, recovery links, 404 Axe scan, bottle hydration/writer lease and mobile dark-mode contrast.",
+          "artifact": "tests/e2e/wheel.spec.ts and apps/web/src/pages/404.astro",
+          "scope": "Temporary Playwright config removed after run; static host 404 mapping still requires origin verification."
+        },
+        {
+          "command": "npm run test:a11y",
+          "result": "PASS; 3 automated Axe page/state scans; 404 route also has a passing dedicated Axe assertion in its E2E flow.",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Automated checks only; manual screen-reader and real-device acceptance remains open."
+        },
+        {
+          "command": "npm run check && npm run test:unit",
+          "result": "PASS; 0 TypeScript/Astro diagnostics, 70 unit tests including sitemap size/chunking and malformed route rejection.",
+          "artifact": "command output"
         }
       ],
       "blockers": [
         "110 locale research records, UI catalogs and route intent remain unreviewed; no publication approvals are present.",
-        "Only three public pages are implemented; 1,100 localized route pairs and six legal pages are absent; sitemap/crawler/URL normalization and SEO-01–12 production-origin checks remain open.",
+        "Only three tool/home pages are implemented; 1,100 localized route pairs and six legal pages are absent. Custom static 404 works in Astro dev, but configured host redirects/statuses, sitemap crawler fetch, URL normalization and SEO-01–12 production-origin checks remain open.",
         "No page can be safely indexed until native copy and SEO review gates pass."
       ]
     },

@@ -47,8 +47,12 @@ const admin = await readFile(new URL('admin/index.html', root), 'utf8');
 if (getMeta(admin, 'robots') !== 'noindex,nofollow,noarchive') failures.push('Admin page is not protected from indexing.');
 if (canonical(admin) || alternates(admin).length) failures.push('Admin page must not publish canonical or hreflang metadata.');
 if (!iconLicense.includes('Copyright (c) 2023 Phosphor Icons') || !iconLicense.includes('MIT License')) failures.push('Distributed Phosphor SVG asset license is missing from static output.');
+const notFound = await readFile(new URL('404.html', root), 'utf8');
+if (getMeta(notFound, 'robots') !== 'noindex,follow,noarchive') failures.push('Static 404 page is missing its noindex directive.');
+if (canonical(notFound) || alternates(notFound).length) failures.push('Static 404 page must not publish canonical or alternate metadata.');
+if (!/<h1\b[^>]*>Səhifə tapılmadı<\/h1>/i.test(notFound) || !notFound.includes('href="/"') || !notFound.includes('href="/bottle/"') || !notFound.includes('href="/games/"')) failures.push('Static 404 page needs a useful heading and working recovery links.');
 
-const expectedPages = ['admin/index.html', ...pages.map((page) => page.file)];
+const expectedPages = ['404.html', 'admin/index.html', ...pages.map((page) => page.file)];
 for (const file of expectedPages) await access(new URL(file, root));
 async function collectHtml(directory, prefix = '') {
   const files = [];

@@ -1,6 +1,17 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+test('unknown paths return a useful noindex 404 instead of the home page', async ({ page }) => {
+  const response = await page.goto('/zz/unknown/');
+  expect(response?.status()).toBe(404);
+  await expect(page.getByRole('heading', { name: 'Səhifə tapılmadı' })).toBeVisible();
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex,follow,noarchive');
+  await expect(page.getByRole('link', { name: 'Əsas səhifəyə keç' })).toHaveAttribute('href', '/');
+  await expect(page.getByRole('link', { name: 'Şüşə seçimini aç' })).toHaveAttribute('href', '/bottle/');
+  const audit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(audit.violations).toEqual([]);
+});
+
 test('classic wheel can select an entry and save the local list', async ({ page }, testInfo) => {
   await page.goto('/');
   await expect(page.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır');
