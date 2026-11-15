@@ -16,8 +16,17 @@ const routeManifest = JSON.parse(await readFile(new URL('route-manifest.json', r
 const seoAudit = JSON.parse(await readFile(new URL('seo-audit.json', root), 'utf8'));
 const redirectManifest = JSON.parse(await readFile(new URL('redirect-manifest.json', root), 'utf8'));
 const robotsTxt = await readFile(new URL('robots.txt', root), 'utf8');
+const apacheRules = await readFile(new URL('.htaccess', root), 'utf8');
 const pages = implementedPublicPages;
 const failures = [];
+for (const [label, rule] of [
+  ['directory listing protection', /Options\s+-Indexes/],
+  ['custom not-found document', /ErrorDocument\s+404\s+\/404\.html/],
+  ['safe content type header', /X-Content-Type-Options\s+"?nosniff"?/i],
+  ['frame embedding protection', /X-Frame-Options\s+"?DENY"?/i],
+  ['service worker revalidation', /<Files\s+"sw\.js">[\s\S]*?Cache-Control\s+"no-cache, must-revalidate"[\s\S]*?Service-Worker-Allowed\s+"\/"[\s\S]*?<\/Files>/i],
+  ['HTML revalidation', /<FilesMatch\s+"[^"]*html[^"]*">[\s\S]*?Cache-Control\s+"no-cache, must-revalidate"[\s\S]*?<\/FilesMatch>/i],
+]) if (!rule.test(apacheRules)) failures.push(`Apache deploy rules are missing ${label}.`);
 const getMeta = (html, name) => html.match(new RegExp(`<meta\\s+name=["']${name}["']\\s+content=["']([^"']*)["']`, 'i'))?.[1] ?? null;
 const canonical = (html) => html.match(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["']/i)?.[1] ?? null;
 const alternates = (html) => [...html.matchAll(/<link\s+rel=["']alternate["']\s+hreflang=["']([^"']+)["']\s+href=["']([^"']+)["']/gi)].map((match) => [match[1], match[2]]);
