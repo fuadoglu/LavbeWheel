@@ -17,7 +17,7 @@ A fast, multilingual wheel and social-game platform designed for phones, tablets
 
 </div>
 
-> **Repository status:** The configured CI checks for WP01, WP02 and WP07 pass. WP03 local sessions, result recovery and cross-tab writer leases, plus the core wheel, reports, bottle and social-game flows in WP04–WP06, are implemented; visual acceptance and some tool behaviors remain open. WP08 adds the MFA admin panel, content review and signed publication runner; draft PR #8 CI passes, while WP09 public-route integration is open. WP09 is adding publication-gated indexing metadata and an SEO audit for the three current public templates. All 110 locale research records are pending; the `en` and `az` UI catalogs are drafts, and game cards are English-only drafts. PWA, consent integrations and release checks remain open. Target domain: **lavbe.com**; the site is not deployed.
+> **Repository status:** The configured CI checks for WP01, WP02 and WP07 pass. WP03 local sessions, result recovery and cross-tab writer leases, plus the core wheel, reports, bottle and social-game flows in WP04–WP06, are implemented; visual acceptance and some tool behaviors remain open. WP08 adds the MFA admin panel, content review and signed publication runner. Draft PR #9 covers WP09’s publication-gated indexing, route/redirect/audit artifacts and strict SEO release gate for the three current templates. All 110 locale research records are pending; the `en` and `az` UI catalogs are drafts, and game cards are English-only drafts. Localized routes, legal pages, PWA, consent integrations and release checks remain open. Target domain: **lavbe.com**; the site is not deployed.
 
 ## 🎯 Product promise
 

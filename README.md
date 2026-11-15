@@ -17,7 +17,7 @@ Mobil, planşet və kompüter üçün sürətli, çoxdilli seçim alətləri və
 
 </div>
 
-> **Reponun hazırkı vəziyyəti:** WP01, WP02 və WP07 üçün əsas avtomatlaşdırılmış yoxlamalar CI-dən keçib. WP03-də local sessiya yaddaşı, nəticə bərpası və tablararası writer lease; WP04–WP06-da əsas çarx, hesabatlar, butulka və sosial oyun axınları tətbiq olunub, amma vizual qəbulu və bəzi alət davranışları açıqdır. WP08-də MFA admin paneli, məzmun baxışı və imzalı publish runner tətbiq olunub; draft PR #8-də CI keçir, WP09 route inteqrasiyası hələ açıqdır. İndi WP09-da mövcud üç public template üçün noindex/canonical/hreflang yayınlama qapısı və SEO audit qurulur. 110 locale research qeydi pending, `en` və `az` UI kataloqları draft, oyun kartları isə yalnız ingiliscə draftdır. PWA, consent inteqrasiyaları və buraxılış yoxlamaları da açıqdır. Hədəf domain **lavbe.com**-dur; sayt yayımlanmayıb.
+> **Reponun hazırkı vəziyyəti:** WP01, WP02 və WP07 üçün əsas avtomatlaşdırılmış yoxlamalar CI-dən keçib. WP03-də local sessiya yaddaşı, nəticə bərpası və tablararası writer lease; WP04–WP06-da əsas çarx, hesabatlar, butulka və sosial oyun axınları tətbiq olunub, amma vizual qəbulu və bəzi alət davranışları açıqdır. WP08-də MFA admin paneli, məzmun baxışı və imzalı publish runner tətbiq olunub. WP09 üçün draft PR #9 açıqdır; üç mövcud template üçün indeksləmə qapısı, route/redirect/audit artefaktları və SEO release gate qurulub. 110 locale research qeydi pending, `en` və `az` UI kataloqları draft, oyun kartları isə yalnız ingiliscə draftdır. Lokallaşdırılmış marşrutlar, hüquqi səhifələr, PWA, consent inteqrasiyaları və buraxılış yoxlamaları açıqdır. Hədəf domain **lavbe.com**-dur; sayt yayımlanmayıb.
 
 ## 🎯 Lavbe nə edəcək?
 

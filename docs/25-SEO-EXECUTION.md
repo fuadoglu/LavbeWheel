@@ -52,7 +52,7 @@ Apply motion/performance budgets with ads on/off and real fonts. Default content
 
 ## 9. Required build artifacts
 
-Generate: route-manifest.json (URL, routeId, locale, contentHash, canonical, robots, HTTP expectation, alternatives, sitemap file, source review IDs), sitemap index/submaps, robots.txt, redirect manifest and seo-audit.json. Private routes are represented by route templates only, never real IDs. Build report identifies mismatches and blocks deployment. Missing native/content review is not bypassed for a green build.
+The static build now generates `route-manifest.json`, `seo-audit.json`, `redirect-manifest.json` and `robots.txt` from the route registry, publication allowlist, URL fixtures and the explicit implemented-template inventory. Sitemap index and locale submaps are emitted only for approved pages that exist in the build. At present the redirect manifest identifies URL cases as fixtures only; host redirect behavior is not installed. The manifest reports only built templates and summarizes missing planned inventory; it does not synthesize the locale-route matrix or content. Private routes are represented by route templates only, never real IDs. Build report identifies mismatches and the signed publishing runner blocks incomplete inventory. Missing native/content review is not bypassed for a green build.
 
 ## 10. Search acquisition and operating cadence
 

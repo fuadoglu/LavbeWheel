@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "note": "Inventory of implemented Astro templates, not the planned localized URL matrix.",
+  "pages": [
+    { "file": "index.html", "path": "/", "routeId": "home" },
+    { "file": "bottle/index.html", "path": "/bottle/", "routeId": "spin-the-bottle" },
+    { "file": "games/index.html", "path": "/games/", "routeId": "group-games" }
+  ]
+}

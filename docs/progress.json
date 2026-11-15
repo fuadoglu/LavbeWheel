@@ -605,6 +605,28 @@
           "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs && git diff --check",
           "result": "PASS; docs, schema fixtures, semantic reference and SEO registry checks; no whitespace errors.",
           "artifact": "docs/ and contracts/"
+        },
+        {
+          "command": "GitHub Actions verify and validate on PR #9 / push commit c16d9f2e08d882a62e744c5ff5e35a0c63dedf91",
+          "result": "PASS; MySQL 8.4 API lifecycle, app checks/unit/E2E/a11y/SEO/audit, docs/contracts and dependency audit all completed successfully.",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43679873157 and https://github.com/fuadoglu/LavbeWheel/actions/runs/43679876917",
+          "scope": "Exact commit c16d9f2; current route-manifest follow-up changes are not part of these runs."
+        },
+        {
+          "command": "npm run test:seo",
+          "result": "PASS; static build emits route-manifest.json, redirect-manifest.json, seo-audit.json and robots.txt. Three existing templates are noindex; zero sitemap URLs; 1,107 public routes planned. SEO-02 intent ownership and empty-set SEO-06 sitemap equality pass within stated scope.",
+          "artifact": "apps/web/dist/route-manifest.json, apps/web/dist/redirect-manifest.json, apps/web/dist/seo-audit.json, apps/web/dist/robots.txt"
+        },
+        {
+          "command": "npm run seo:release-check",
+          "result": "BLOCKED as designed; 0/1,107 published public routes, 110/110 locale research records pending.",
+          "artifact": "scripts/validate-built-site.mjs",
+          "scope": "Requires full reviewed route/content coverage, legal pages, sitemap and crawler acceptance before release."
+        },
+        {
+          "command": "npm run check && npm run test:unit && npm run test:content && PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; config/inventory checks, 0 TS/Astro diagnostics, 66 unit tests, content structure checks and documentation/contracts/reference checks.",
+          "artifact": "command output"
         }
       ],
       "blockers": [

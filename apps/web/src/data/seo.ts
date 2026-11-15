@@ -2,6 +2,7 @@ import localeRegistry from '../../../../config/locales.json' with { type: 'json'
 import routeRegistry from '../../../../config/seo/routes.json' with { type: 'json' };
 import localeResearch from '../../../../config/seo/locale-research.json' with { type: 'json' };
 import pagePublications from '../../../../config/seo/publications.json' with { type: 'json' };
+import templateInventory from '../../../../config/seo/template-inventory.json' with { type: 'json' };
 import azCatalog from '../../../../content/locales/az.json' with { type: 'json' };
 import enCatalog from '../../../../content/locales/en.json' with { type: 'json' };
 
@@ -108,3 +109,5 @@ export function getXDefaultHref(routeId: string): string | null {
   const state = getSeoPageState(routeId, routeRegistry.defaultLocale, path);
   return state.robots === 'index,follow' ? state.canonical : null;
 }
+
+export const implementedPublicPages = templateInventory.pages;
