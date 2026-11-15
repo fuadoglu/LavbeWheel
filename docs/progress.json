@@ -779,7 +779,7 @@
       "id": "WP12",
       "status": "in-progress",
       "branch": "feat/wp12-release",
-      "commit": "cc1c2bf",
+      "commit": "c9aa153",
       "evidence": [
         {
           "command": "npm run test:seo && git diff --check",
@@ -804,6 +804,18 @@
           "result": "PASS; 73/73 unit tests including package integrity/tampering and secret-file/pattern rejection, 0 TS/Astro diagnostics, and all docs/contracts/semantics/SEO-registry validators pass.",
           "artifact": "tests/unit/release-package.test.ts and validation command output",
           "scope": "Local checks; CI for package commit is pending until push."
+        },
+        {
+          "command": "npm run release:package -- --output /tmp/lavbewheel-release-wp12-c9aa153 && node scripts/package-release.mjs --verify /private/tmp/lavbewheel-release-wp12-c9aa153",
+          "result": "PASS; packaged committed tree c9aa153 into 374 files; complete file inventory and tree digest verified after manifest secret-pattern scan. Tree SHA-256 d79f34cfbe8af9e71d53cc17e71bad73717941f7c95cdf0f5c75394f2f981383; candidate remains blocked with 36 recorded blockers.",
+          "artifact": "/private/tmp/lavbewheel-release-wp12-c9aa153/release-manifest.json",
+          "scope": "Internal local candidate only; the signature/pattern scan is not comprehensive. No real host acceptance or deployment."
+        },
+        {
+          "command": "npm run test:unit && npm run check",
+          "result": "PASS; 74/74 unit tests, including package file-tree tamper detection, secret file/content rejection and manifest secret rejection; all contract/config checks pass with 0 TS/Astro diagnostics.",
+          "artifact": "tests/unit/release-package.test.ts and command output",
+          "scope": "Local committed implementation c9aa153; CI run for this head is pending."
         }
       ],
       "blockers": [
