@@ -5,8 +5,12 @@ import { designTokens, getLocaleDirection } from '../data/config';
 import bottleIcon from '../../../../assets/icons/phosphor/regular/beer-bottle.svg';
 import moonIcon from '../../../../assets/icons/phosphor/regular/moon.svg';
 import sunIcon from '../../../../assets/icons/phosphor/regular/sun.svg';
+import { getPublishedAlternates, getSeoPageState, getXDefaultHref } from '../data/seo';
 const m = messages.messages;
 const light = designTokens.themes.light;
+const seo = getSeoPageState('spin-the-bottle', messages.locale, '/bottle/');
+const alternates = getPublishedAlternates('spin-the-bottle');
+const xDefaultHref = getXDefaultHref('spin-the-bottle');
 ---
 <!doctype html>
 <html lang={messages.locale} dir={getLocaleDirection(messages.locale)} data-theme-tokens={JSON.stringify(designTokens.themes)}>
@@ -20,7 +24,7 @@ const light = designTokens.themes.light;
         root.dataset.theme = theme; for (const [key, variable] of Object.entries(variables)) root.style.setProperty(variable, themes[theme][key]);
       })();
     </script>
-    <meta name="description" content={m.bottleDescription} /><title>{m.bottleTitle} · Lavbe</title>
+    <meta name="description" content={seo.approvedCopy?.description ?? m.bottleDescription} /><meta name="robots" content={seo.robots} />{seo.canonical && <link rel="canonical" href={seo.canonical} />}{alternates.map((alternate) => <link rel="alternate" hreflang={alternate.locale} href={alternate.href} />)}{seo.robots === 'index,follow' && xDefaultHref && <link rel="alternate" hreflang="x-default" href={xDefaultHref} />}<title>{seo.approvedCopy?.title ?? `${m.bottleTitle} · Lavbe`}</title>
   </head>
   <body>
     <main class="shell">
@@ -32,7 +36,7 @@ const light = designTokens.themes.light;
       <section class="tool-strip" aria-label={m.navBottle}><img class="tool-icon" src={bottleIcon.src} width="20" height="20" alt="" aria-hidden="true" /><span class="tool-name">{m.navBottle}</span><span class="tool-caption">{m.bottleDescription}</span><span class="tool-presence">{m.localOnly}</span></section>
       <section class="bottle-layout">
         <section class="bottle-panel" aria-labelledby="bottle-title">
-          <div class="game-heading"><div><span class="section-kicker">LAVBE / {m.navBottle.toUpperCase()}</span><h1 id="bottle-title">{m.bottleTitle}</h1></div><span class="game-round" aria-hidden="true">◉</span></div>
+          <div class="game-heading"><div><span class="section-kicker">LAVBE / {m.navBottle.toUpperCase()}</span><h1 id="bottle-title">{seo.approvedCopy?.h1 ?? m.bottleTitle}</h1></div><span class="game-round" aria-hidden="true">◉</span></div>
           <p class="game-description">{m.bottleDescription}</p>
           <form id="bottle-setup" class="game-setup">
             <label for="bottle-names">{m.bottleParticipants}<textarea id="bottle-names" rows="5" required>Aylin&#10;Murad&#10;Leyla&#10;Kamran</textarea></label>

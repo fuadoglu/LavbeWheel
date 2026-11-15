@@ -67,6 +67,8 @@ let pendingWrite: Promise<void> = Promise.resolve();
 let configTimer: ReturnType<typeof setTimeout> | undefined;
 let persistenceFailed = false;
 let releaseWebLock: (() => void) | null = null;
+let writerAcquirePending = false;
+let leaseChannel: BroadcastChannel | null = null;
 function shouldReduceMotion(): boolean {
   let preference = 'system';
   try { preference = localStorage.getItem('lavbe.motion') ?? 'system'; } catch { /* Follow the OS preference when local settings are unavailable. */ }
@@ -383,6 +385,32 @@ async function acquireTabWriter(wheelId: string): Promise<boolean> {
   return lease;
 }
 
+async function reacquireTabWriter(): Promise<void> {
+  if (!session || writerLeaseHeld || persistenceFailed || writerAcquirePending) return;
+  writerAcquirePending = true;
+  try {
+    const acquired = await acquireTabWriter(session.wheelId);
+    if (!acquired) return;
+    writerLeaseHeld = true;
+    if (session && (currentWheel().entries.map((entry) => entry.label).join('\n') !== names.join('\n'))) await persistCurrentConfig();
+    await recoverInterruptedResult();
+    saveStatus.textContent = messages.messages.savedLocally;
+    refreshControls();
+  } catch {
+    markPersistenceFailure();
+  } finally {
+    writerAcquirePending = false;
+  }
+}
+
+function watchWriterRelease(wheelId: string): void {
+  if (typeof BroadcastChannel === 'undefined') return;
+  leaseChannel = new BroadcastChannel(`lavbe-wheel-writer:${wheelId}`);
+  leaseChannel.addEventListener('message', (event: MessageEvent<unknown>) => {
+    if (event.data === 'writer-released') void reacquireTabWriter();
+  });
+}
+
 function showResultAndAnimate(winnerIndex: number, selectedLabel: string): void {
   spinButton.disabled = true;
   entriesInput.disabled = true;
@@ -442,6 +470,7 @@ void (async () => {
     }
     sync(false);
     if (!writerLeaseHeld) saveStatus.textContent = messages.messages.storageFailed;
+    watchWriterRelease(session!.wheelId);
     window.setInterval(() => {
       if (!session || persistenceFailed) return;
       if (writerLeaseHeld) {
@@ -450,16 +479,12 @@ void (async () => {
         }).catch(markPersistenceFailure);
         return;
       }
-      void acquireTabWriter(session.wheelId).then(async (acquired) => {
-        if (!acquired) return;
-        writerLeaseHeld = true;
-        if (session && (currentWheel().entries.map((entry) => entry.label).join('\n') !== names.join('\n'))) await persistCurrentConfig();
-        await recoverInterruptedResult();
-        saveStatus.textContent = messages.messages.savedLocally;
-        refreshControls();
-      }).catch(markPersistenceFailure);
+      void reacquireTabWriter();
     }, 3_000);
     window.addEventListener('pagehide', () => {
+      leaseChannel?.postMessage('writer-released');
+      leaseChannel?.close();
+      leaseChannel = null;
       if (session) void releaseWriterLease(session.wheelId, writerId);
       releaseWebLock?.();
       releaseWebLock = null;

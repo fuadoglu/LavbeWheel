@@ -5,8 +5,12 @@ import { designTokens, getLocaleDirection } from '../data/config';
 import playIcon from '../../../../assets/icons/phosphor/regular/dice-five.svg';
 import moonIcon from '../../../../assets/icons/phosphor/regular/moon.svg';
 import sunIcon from '../../../../assets/icons/phosphor/regular/sun.svg';
+import { getPublishedAlternates, getSeoPageState, getXDefaultHref } from '../data/seo';
 const m = messages.messages;
 const light = designTokens.themes.light;
+const seo = getSeoPageState('group-games', messages.locale, '/games/');
+const alternates = getPublishedAlternates('group-games');
+const xDefaultHref = getXDefaultHref('group-games');
 ---
 <!doctype html>
 <html lang={messages.locale} dir={getLocaleDirection(messages.locale)} data-theme-tokens={JSON.stringify(designTokens.themes)}>
@@ -25,8 +29,12 @@ const light = designTokens.themes.light;
         for (const [key, variable] of Object.entries(variables)) root.style.setProperty(variable, themes[theme][key]);
       })();
     </script>
-    <meta name="description" content={m.gameDescription} />
-    <title>{m.gameTitle} · Lavbe</title>
+    <meta name="description" content={seo.approvedCopy?.description ?? m.gameDescription} />
+    <meta name="robots" content={seo.robots} />
+    {seo.canonical && <link rel="canonical" href={seo.canonical} />}
+    {alternates.map((alternate) => <link rel="alternate" hreflang={alternate.locale} href={alternate.href} />)}
+    {seo.robots === 'index,follow' && xDefaultHref && <link rel="alternate" hreflang="x-default" href={xDefaultHref} />}
+    <title>{seo.approvedCopy?.title ?? `${m.gameTitle} · Lavbe`}</title>
   </head>
   <body>
     <main class="shell">
@@ -38,8 +46,9 @@ const light = designTokens.themes.light;
       <section class="tool-strip" aria-label={m.gameNav}><img class="tool-icon" src={playIcon.src} width="20" height="20" alt="" aria-hidden="true" /><span class="tool-name">{m.gameNav}</span><span class="tool-caption">{m.gameDescription}</span><span class="tool-presence">{m.localOnly}</span></section>
       <section class="game-layout">
         <section class="game-panel" aria-labelledby="game-title">
-          <div class="game-heading"><div><span class="section-kicker">LAVBE / {m.gameNav.toUpperCase()}</span><h1 id="game-title">{m.gameTitle}</h1></div><span class="game-round" aria-hidden="true">✦</span></div>
+          <div class="game-heading"><div><span class="section-kicker">LAVBE / {m.gameNav.toUpperCase()}</span><h1 id="game-title">{seo.approvedCopy?.h1 ?? m.gameTitle}</h1></div><span class="game-round" aria-hidden="true">✦</span></div>
           <p class="game-description">{m.gameDescription}</p>
+          <p class="game-status" id="game-pack-language">{m.gamePackLanguageNotice}</p>
           <form id="game-setup" class="game-setup">
             <label for="game-pack">{m.gamePackLabel}<select class="motion-select" id="game-pack"><option value="icebreakers">{m.gameFamilyIcebreakers}</option><option value="friends">{m.gameFamilyFriends}</option><option value="couples">{m.gameFamilyCouples}</option><option value="truth">{m.gameFamilyTruth}</option><option value="dare">{m.gameFamilyDare}</option><option value="family">{m.gameFamilyFamily}</option></select></label>
             <label for="game-players">{m.gamePlayersLabel}<textarea id="game-players" rows="5" autocomplete="off" required>Aylin&#10;Murad&#10;Leyla</textarea></label>

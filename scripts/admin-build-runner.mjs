@@ -212,7 +212,7 @@ async function buildArtifact(config, manifest) {
     await run('npm', ['run', 'test:content'], root, env);
     await run('npm', ['run', 'test:e2e'], root, env);
     await run('npm', ['run', 'test:a11y'], root, env);
-    await run('npm', ['run', 'test:seo'], root, env);
+    await run('npm', ['run', 'seo:release-check'], root, env);
     const dist = path.join(root, 'apps/web/dist');
     await cp(dist, path.join(temporary, 'site'), { recursive: true, errorOnExist: true, force: false });
     const publication = {

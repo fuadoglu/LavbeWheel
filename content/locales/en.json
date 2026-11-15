@@ -89,6 +89,7 @@
     "gameNav": "Games",
     "gameTitle": "Play together",
     "gameDescription": "Choose a pack, add players, then take turns. Skip any card without explaining.",
+    "gamePackLanguageNotice": "Prompt cards are currently in English.",
     "gameSetup": "Game setup",
     "gamePackLabel": "Card pack",
     "gamePlayersLabel": "Players, one per line",
