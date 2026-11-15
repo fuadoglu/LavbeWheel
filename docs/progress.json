@@ -816,6 +816,12 @@
           "result": "PASS; 74/74 unit tests, including package file-tree tamper detection, secret file/content rejection and manifest secret rejection; all contract/config checks pass with 0 TS/Astro diagnostics.",
           "artifact": "tests/unit/release-package.test.ts and command output",
           "scope": "Local committed implementation c9aa153; CI run for this head is pending."
+        },
+        {
+          "command": "GitHub Actions CI on PR #12 head 367250fd9b90d1f413fa3860583bc62a10bb5edc",
+          "result": "PASS; both application verify runs and both documentation/contract validation runs passed. The application job included release-candidate packaging and its built-in manifest/tree/secret-pattern verification.",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/pull/12",
+          "scope": "Automated CI only; PR stays draft/unmerged, and no real host, load/security certification, legal acceptance or deployment is implied."
         }
       ],
       "blockers": [
