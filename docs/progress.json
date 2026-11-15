@@ -779,7 +779,7 @@
       "id": "WP12",
       "status": "in-progress",
       "branch": "feat/wp12-release",
-      "commit": "cf170a7",
+      "commit": "cc1c2bf",
       "evidence": [
         {
           "command": "npm run test:seo && git diff --check",
@@ -792,6 +792,18 @@
           "result": "PASS; both application verify jobs and both docs validate jobs completed successfully.",
           "artifact": "https://github.com/fuadoglu/LavbeWheel/pull/12",
           "scope": "Automated checks only; draft PR unmerged and local Apache config assertions do not validate a real hosting provider."
+        },
+        {
+          "command": "npm run release:package -- --output /tmp/lavbewheel-release-wp12-cc1c2bf && node scripts/package-release.mjs --verify /private/tmp/lavbewheel-release-wp12-cc1c2bf",
+          "result": "PASS; 374-file internal bundle assembled and re-verified; per-file SHA-256 inventory and aggregate tree digest d79f34cfbe8af9e71d53cc17e71bad73717941f7c95cdf0f5c75394f2f981383. Manifest status blocked, 36 blockers, 8 implemented of 1107 planned routes, 0 indexable.",
+          "artifact": "/private/tmp/lavbewheel-release-wp12-cc1c2bf/release-manifest.json",
+          "scope": "Package uses the committed tree at cc1c2bff45c9c8025ca163d85849296c8b037964. Secret scan uses selected patterns and is not comprehensive. Artifact is local/internal; no upload, real host, privacy certification or release approval."
+        },
+        {
+          "command": "npm run test:unit && npm run check && PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs && git diff --check",
+          "result": "PASS; 73/73 unit tests including package integrity/tampering and secret-file/pattern rejection, 0 TS/Astro diagnostics, and all docs/contracts/semantics/SEO-registry validators pass.",
+          "artifact": "tests/unit/release-package.test.ts and validation command output",
+          "scope": "Local checks; CI for package commit is pending until push."
         }
       ],
       "blockers": [
