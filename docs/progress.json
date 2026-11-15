@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01, WP02 and WP07 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local tools and draft source packs are implemented; WP08 admin publishing runner is implemented with CI evidence; WP09 has localized EN/AZ tool routes with fail-closed SEO and remains in progress; WP10 PWA artifacts and current-route browser behavior are implemented locally, with native/device acceptance open. WP11-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01, WP02 and WP07 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local tools and draft source packs are implemented; WP08 admin publishing runner is implemented with CI evidence; WP09 has localized EN/AZ tool routes with fail-closed SEO; WP10 PWA behavior passed current CI/browser checks but native/device acceptance remains open; WP11 first-party consent and fail-closed optional-tag adapters are implemented locally while provider/legal/network acceptance remains open. WP12 remains open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -703,6 +703,12 @@
           "command": "git diff --cached --check && git commit -m \"feat: add bounded offline PWA experience\"",
           "result": "PASS; reviewed 34 explicitly staged paths and recorded implementation at 07cb479. Branch CI is pending after push.",
           "artifact": "feat/wp10-pwa@07cb479"
+        },
+        {
+          "command": "GitHub Actions verify and validate on PR #10 / head commit 17ae316a4e12565a43a20af23bc191ad2954ebad",
+          "result": "PASS; both application verification jobs and both docs/contracts validation jobs succeeded.",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43682806938 and https://github.com/fuadoglu/LavbeWheel/actions/runs/43682781997; docs runs 43682806966 and 43682781953",
+          "scope": "Draft PR #10 remains open; device/hosting acceptance is not covered."
         }
       ],
       "blockers": [
@@ -712,11 +718,56 @@
     },
     {
       "id": "WP11",
-      "status": "not-started",
-      "branch": null,
-      "commit": null,
-      "evidence": [],
-      "blockers": []
+      "status": "in-progress",
+      "branch": "feat/wp11-integrations",
+      "commit": "a890df5",
+      "evidence": [
+        {
+          "command": "npm run test:e2e -- --workers=1",
+          "result": "PASS; 20/20 browser flows including dismissible first-party privacy choices, saved/reopened/revoked state, GPC, and WCAG scans with the non-modal panel visible.",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Local Chromium and default disabled provider configuration."
+        },
+        {
+          "command": "npm run test:consent",
+          "result": "PASS; 3/3 isolated Chromium flows using a synthetic GA4 ID: no request before opt-in; one configured request after analytics consent; Consent Mode denied after withdrawal; GPC overrides prior consent; advertising alone sends no request without ad-unit/CMP configuration.",
+          "artifact": "tests/consent/consent.spec.ts",
+          "scope": "Synthetic ID intercepted locally; no real Google property or external provider used."
+        },
+        {
+          "command": "npm run test:unit && npm run check && npm run test:content && PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; 71 unit tests, 0 TS/Astro diagnostics, content structure checks and docs/schema/semantic/SEO registry validation.",
+          "artifact": "command output"
+        },
+        {
+          "command": "npm run test:seo && npm run test:pwa",
+          "result": "PASS; 8 public pages stay noindex; generated PWA includes consent scripts in build-bound cache; manifest, cache/privacy checks and 3/3 offline browser flows pass.",
+          "artifact": "apps/web/dist/seo-audit.json and apps/web/dist/pwa-precache.json",
+          "scope": "No approved route or optional provider is configured."
+        },
+        {
+          "method": "Provider policy review",
+          "result": "PASS; documented external CMP/TCF requirement and kept ad execution disabled because no approved ad-unit identifiers or selected provider adapter are configured.",
+          "artifact": "docs/10-MONETIZATION.md",
+          "scope": "Not legal advice or provider certification; operator and jurisdiction review remains open."
+        },
+        {
+          "command": "npm run test:consent",
+          "result": "PASS after fixture and GPC corrections; 3/3 Chromium consent/provider flows use the synthetic fixture ID and intercept all external requests.",
+          "artifact": "tests/consent/consent.spec.ts",
+          "scope": "No real vendor property, CMP account or outbound analytics request."
+        },
+        {
+          "command": "Final local suite on feat/wp11-integrations",
+          "result": "PASS; check, 71 unit tests, content, 20/20 E2E (including Axe), 3/3 PWA, 3/3 synthetic consent, SEO build audit and docs validators; diff whitespace clean.",
+          "artifact": "command output and apps/web/dist/pwa-precache.json",
+          "scope": "No production provider configuration, legal review, native-device test or deployment."
+        }
+      ],
+      "blockers": [
+        "No real GTM/GA4/publisher configuration, approved ad-unit IDs, selected CMP provider, or provider-domain CSP/CDN allowlist exists; production third-party tags and ads remain disabled.",
+        "No production consent-state network traces, operator/legal/processor review, or region-specific CMP acceptance has been performed. The synthetic browser suite only verifies isolated behavior."
+      ]
     },
     {
       "id": "WP12",

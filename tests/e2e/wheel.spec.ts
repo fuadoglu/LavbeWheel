@@ -12,6 +12,46 @@ test('unknown paths return a useful noindex 404 instead of the home page', async
   expect(audit.violations).toEqual([]);
 });
 
+test('privacy choices are equal, reopenable, revocable and never load unconfigured tags', async ({ page }) => {
+  const optionalRequests: string[] = [];
+  await page.route(/https:\/\/(?:www\.googletagmanager\.com|www\.google-analytics\.com|pagead2\.googlesyndication\.com)\//, async (route) => {
+    optionalRequests.push(route.request().url());
+    await route.abort();
+  });
+  await page.goto('/');
+  const panel = page.getByRole('region', { name: 'Your privacy choices' });
+  await expect(panel).toBeVisible();
+  await expect(page.locator('#storage-status')).toHaveText('Saved on this device');
+  await page.getByRole('button', { name: 'Reject optional' }).click();
+  await expect(panel).toBeHidden();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('lavbe.consent.v1')!).analytics)).toBe(false);
+  await page.reload();
+  await expect(panel).toBeHidden();
+  await page.getByRole('button', { name: 'Privacy choices' }).click();
+  await page.getByRole('button', { name: 'Customize' }).click();
+  await page.getByLabel('Optional analytics').check();
+  await page.getByLabel('Advertising').check();
+  await page.getByRole('button', { name: 'Save choices' }).click();
+  await expect(panel).toBeHidden();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('lavbe.consent.v1')!).analytics)).toBe(true);
+  await page.getByRole('button', { name: 'Privacy choices' }).click();
+  await page.getByRole('button', { name: 'Reject optional' }).click();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('lavbe.consent.v1')!).advertising)).toBe(false);
+  expect(optionalRequests).toEqual([]);
+});
+
+test('Global Privacy Control keeps optional categories denied', async ({ page }) => {
+  await page.addInitScript(() => Object.defineProperty(navigator, 'globalPrivacyControl', { configurable: true, value: true }));
+  await page.goto('/');
+  await expect(page.getByText('Global Privacy Control is active; optional categories stay off.')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Allow all optional' })).toBeDisabled();
+  await page.getByRole('button', { name: 'Customize' }).click();
+  await expect(page.getByLabel('Optional analytics')).toBeDisabled();
+  await expect(page.getByLabel('Advertising')).toBeDisabled();
+  await page.getByRole('button', { name: 'Reject optional' }).click();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('lavbe.consent.v1')!).analytics)).toBe(false);
+});
+
 test('global home uses the default English locale and links to the Azerbaijani home', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
@@ -22,10 +62,13 @@ test('global home uses the default English locale and links to the Azerbaijani h
 for (const locale of ['en', 'az'] as const) {
   const english = locale === 'en';
   test(`${locale} localized bottle and group-game routes render language-matched working tools`, async ({ page }) => {
+    await page.goto(locale === 'en' ? '/' : '/az/');
+    await expect(page.getByRole('region', { name: english ? 'Your privacy choices' : 'Məxfilik seçimləriniz' })).toBeVisible();
     await page.goto(`/${locale}/spin-the-bottle/`);
     await expect(page.locator('html')).toHaveAttribute('lang', locale);
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex,follow');
     await expect(page.getByRole('heading', { name: english ? 'Bottle picker' : 'Şüşə seçimi' })).toBeVisible();
+    await expect(page.getByRole('link', { name: english ? 'AZ' : 'EN' })).toHaveAttribute('href', `/${english ? 'az' : 'en'}/spin-the-bottle/`);
     await page.getByRole('button', { name: english ? 'Set up bottle' : 'Şüşəni qur' }).click();
     await expect(page.locator('#bottle-play')).toBeVisible({ timeout: 5_000 });
     await page.getByRole('button', { name: english ? 'Spin bottle' : 'Şüşəni fırlat' }).click();
@@ -33,6 +76,7 @@ for (const locale of ['en', 'az'] as const) {
 
     await page.goto(`/${locale}/group-games/`);
     await expect(page.locator('html')).toHaveAttribute('lang', locale);
+    await expect(page.getByRole('link', { name: english ? 'AZ' : 'EN' })).toHaveAttribute('href', `/${english ? 'az' : 'en'}/group-games/`);
     await expect(page.getByText(english ? 'Prompt cards are currently in English.' : 'Kart tapşırıqları hazırda ingilis dilindədir.')).toBeVisible();
     await page.getByRole('button', { name: english ? 'Start game' : 'Oyuna başla' }).click();
     await page.getByRole('button', { name: english ? 'Draw a card' : 'Kart çək' }).click();
