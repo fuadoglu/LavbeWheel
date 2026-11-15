@@ -31,3 +31,19 @@
 .pwa-update-prompt button{min-height:2.75rem;padding:.55rem .9rem;border:0;border-radius:.7rem;background:var(--primary-token);color:var(--on-primary);font:inherit;font-weight:700;cursor:pointer}
 .pwa-update-prompt button:disabled{opacity:.6;cursor:not-allowed}
 .pwa-update-prompt span:last-child{flex-basis:100%;text-align:center;color:var(--muted-token);font-size:.9rem}
+
+.consent-panel{position:relative;z-index:1;width:min(38rem,calc(100% - 2rem));max-height:34rem;overflow:auto;margin:1rem auto;padding:1rem 1.2rem;border:1px solid var(--border-token);border-radius:1.1rem;background:var(--surface-token);color:var(--text-token);box-shadow:0 8px 32px rgb(32 24 54 / .12)}
+.consent-panel[hidden]{display:none}
+.consent-panel h2{margin:0 0 .45rem;font-size:1.15rem}
+.consent-panel p{margin:.45rem 0;color:var(--muted-token);font-size:.92rem;line-height:1.45}
+.consent-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin:.8rem 0}
+.consent-panel button{min-height:2.75rem;padding:.55rem .75rem;border:1px solid var(--border-token);border-radius:.7rem;background:var(--surface-token);color:var(--text-token);font:inherit;font-weight:650;cursor:pointer}
+.consent-panel .consent-actions button:first-child,.consent-settings button{border-color:var(--primary-token);background:var(--primary-token);color:var(--on-primary)}
+.consent-panel button:focus-visible,.privacy-choices:focus-visible{outline:3px solid var(--focus-token);outline-offset:2px}
+.consent-settings{display:grid;gap:.55rem;padding:.75rem 0;border-top:1px solid var(--border-token)}
+.consent-settings label{display:flex;align-items:center;gap:.55rem;min-height:2.75rem}
+.consent-settings input{width:1.2rem;height:1.2rem;accent-color:var(--primary-token)}
+.consent-panel .consent-withdrawal,.consent-panel .consent-gpc{font-size:.82rem}
+.consent-status:empty{display:none}
+.privacy-choices{margin-inline-start:auto;padding:.35rem .6rem;border:0;border-radius:.45rem;background:transparent;color:inherit;font:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+@media(max-width:520px){.consent-panel{width:calc(100% - 1.3rem);max-height:none;margin:.65rem auto;padding:.85rem}.consent-actions button{flex:1 1 42%}}

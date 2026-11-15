@@ -150,6 +150,22 @@
     "notFoundGames": "Browse games",
     "pwaUpdateAvailable": "An update is ready.",
     "pwaUpdateSafe": "Finish the current turn or spin in every open tab before updating.",
-    "pwaUpdateNow": "Update now"
+    "pwaUpdateNow": "Update now",
+    "consentTitle": "Your privacy choices",
+    "consentBody": "Wheel and game sessions stay on this device. Optional analytics and advertising remain off unless you choose them.",
+    "consentAllowAll": "Allow all optional",
+    "consentRejectOptional": "Reject optional",
+    "consentCustomize": "Customize",
+    "consentEssentialOnly": "Essential storage saves your sessions and stays active.",
+    "consentAnalytics": "Optional analytics",
+    "consentAdvertising": "Advertising",
+    "consentSaveChoices": "Save choices",
+    "consentGpc": "Global Privacy Control is active; optional categories stay off.",
+    "consentWithdrawal": "You can change this any time. Data already sent to a provider cannot be recalled.",
+    "consentSaved": "Your choices are saved for this browser.",
+    "consentSessionOnly": "Storage is unavailable. Your choice applies only in this tab.",
+    "consentProviderUnavailable": "An optional provider did not load; the tools remain available.",
+    "consentPrivacyChoices": "Privacy choices",
+    "consentContinue": "Continue for this tab"
   }
 }

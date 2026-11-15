@@ -150,6 +150,22 @@
     "notFoundGames": "Oyunlara bax",
     "pwaUpdateAvailable": "Yeniləmə hazırdır.",
     "pwaUpdateSafe": "Yeniləmədən əvvəl bütün açıq tablarda cari növbəni və ya fırlanmanı tamamlayın.",
-    "pwaUpdateNow": "İndi yenilə"
+    "pwaUpdateNow": "İndi yenilə",
+    "consentTitle": "Məxfilik seçimləriniz",
+    "consentBody": "Çarx və oyun sessiyaları bu cihazda qalır. İstəyə bağlı analitika və reklam yalnız seçiminizdən sonra aktivləşir.",
+    "consentAllowAll": "İstəyə bağlı hamısına icazə ver",
+    "consentRejectOptional": "İstəyə bağlı olanları rədd et",
+    "consentCustomize": "Seçimləri tənzimlə",
+    "consentEssentialOnly": "Əsas yaddaş sessiyalarınızı saxlamaq üçün aktiv qalır.",
+    "consentAnalytics": "İstəyə bağlı analitika",
+    "consentAdvertising": "Reklam",
+    "consentSaveChoices": "Seçimləri yadda saxla",
+    "consentGpc": "Global Privacy Control aktivdir; istəyə bağlı kateqoriyalar söndürülüb.",
+    "consentWithdrawal": "Seçiminizi istənilən vaxt dəyişə bilərsiniz. Provayderə artıq göndərilmiş məlumatı geri almaq mümkün deyil.",
+    "consentSaved": "Seçiminiz bu brauzerdə yadda saxlandı.",
+    "consentSessionOnly": "Yaddaş əlçatan deyil. Seçiminiz yalnız bu tabda qüvvədədir.",
+    "consentProviderUnavailable": "İstəyə bağlı provayder yüklənmədi; alətlər işləməyə davam edir.",
+    "consentPrivacyChoices": "Məxfilik seçimləri",
+    "consentContinue": "Bu tabda davam et"
   }
 }

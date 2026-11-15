@@ -17,7 +17,7 @@ Mobil, planşet və kompüter üçün sürətli, çoxdilli seçim alətləri və
 
 </div>
 
-> **Reponun hazırkı vəziyyəti:** WP01, WP02 və WP07 üçün əsas avtomatlaşdırılmış yoxlamalar CI-dən keçib. WP03-də local sessiya yaddaşı, nəticə bərpası və tablararası writer lease; WP04–WP06-da əsas çarx, hesabatlar, butulka və sosial oyun axınları tətbiq olunub, amma vizual qəbulu və bəzi alət davranışları açıqdır. WP08-də MFA admin paneli, məzmun baxışı və imzalı publish runner tətbiq olunub. WP09 üçün draft PR #9 açıqdır; indeksləmə qapısı və SEO artefaktları ilə yanaşı, lokallaşdırılmış 8 ictimai route/template yerli build-də işləyir. WP10 üçün PWA manifesti, ikonları, offline cache və istifadəçi razılığına bağlı yeniləmə axını `feat/wp10-pwa` üzərində hazırlanır; fiziki cihaz qəbulu açıqdır. 110 locale research qeydi pending, `en` və `az` UI kataloqları draft, oyun kartları isə yalnız ingiliscə draftdır. Qalan lokal marşrutlar, hüquqi səhifələr, consent inteqrasiyaları və buraxılış yoxlamaları açıqdır. Hədəf domain **lavbe.com**-dur; sayt yayımlanmayıb.
+> **Reponun hazırkı vəziyyəti:** WP01, WP02 və WP07 üçün əsas avtomatlaşdırılmış yoxlamalar CI-dən keçib. WP03-də local sessiya yaddaşı, nəticə bərpası və tablararası writer lease; WP04–WP06-da əsas çarx, hesabatlar, butulka və sosial oyun axınları tətbiq olunub, amma vizual qəbulu və bəzi alət davranışları açıqdır. WP08-də MFA admin paneli, məzmun baxışı və imzalı publish runner tətbiq olunub. WP09 üçün draft PR #9 açıqdır; indeksləmə qapısı və SEO artefaktları ilə yanaşı, lokallaşdırılmış 8 ictimai route/template yerli build-də işləyir. WP10 PWA draft PR #10-da; CI və hazırkı offline browser ssenariləri keçib, fiziki cihaz qəbulu açıqdır. WP11-də məxfilik seçimləri, GPC və razılıqdan sonra işləyən adapter hazırlanır; real provayder ID-si, CMP, reklam vahidləri və hüquqi/host təsdiqi yoxdur, buna görə xarici tag-lar sönülüdür. 110 locale research qeydi pending, `en` və `az` UI kataloqları draft, oyun kartları isə yalnız ingiliscə draftdır. Qalan lokal marşrutlar, hüquqi səhifələr, provider qəbulu və buraxılış yoxlamaları açıqdır. Hədəf domain **lavbe.com**-dur; sayt yayımlanmayıb.
 
 ## 🎯 Lavbe nə edəcək?
 
@@ -172,7 +172,7 @@ Açıq seksual məzmun, çat, açıq istifadəçi şablonları bazarı, ayrı ci
 
 **Lavbe · Seçim anı üçün düşünülmüş təcrübə.**
 
-Sənəd bazası: **14 noyabr 2026** · Tətbiq: **WP01–WP02 verified · WP03 implemented, CI passed, review pending · WP04 in progress · WP05–WP12 open**
+Sənəd bazası: **14 noyabr 2026** · Tətbiq: **WP01–WP02 verified · WP03 implemented · WP04–WP05 in progress · WP06 implemented · WP07 verified · WP08–WP11 in progress · WP12 open**
 
 </div>
 

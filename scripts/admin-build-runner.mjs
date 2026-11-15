@@ -7,6 +7,7 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import manifestSchema from '../contracts/publish-manifest.schema.json' with { type: 'json' };
 import packSchema from '../contracts/admin-pack.schema.json' with { type: 'json' };
 import uiSchema from '../contracts/admin-ui-catalog.schema.json' with { type: 'json' };
+import { optionalTagsFromManifest } from '../packages/contracts/src/optional-tags.ts';
 import seoSchema from '../contracts/admin-seo-copy.schema.json' with { type: 'json' };
 import legalSchema from '../contracts/admin-legal.schema.json' with { type: 'json' };
 import presetSchema from '../contracts/admin-preset.schema.json' with { type: 'json' };
@@ -33,6 +34,8 @@ export function publicVersions(versions) {
     return { id: version.id, revision: version.revision, payload };
   });
 }
+
+export { optionalTagsFromManifest };
 
 export async function artifactDigest(directory) {
   const hash = createHash('sha256');
@@ -206,13 +209,18 @@ async function buildArtifact(config, manifest) {
   catch (error) { if (error.code !== 'ENOENT') throw error; }
   const temporary = await mkdtemp(path.join(config.artifactRoot, `.${config.jobId}-`));
   try {
-    const env = buildEnvironment();
+    const env = {
+      ...buildEnvironment(),
+      PUBLIC_LAVBE_OPTIONAL_TAGS_JSON: JSON.stringify(optionalTagsFromManifest(manifest.versions)),
+    };
     await run('npm', ['run', 'check'], root, env);
     await run('npm', ['run', 'test:unit'], root, env);
     await run('npm', ['run', 'test:content'], root, env);
     await run('npm', ['run', 'test:e2e'], root, env);
     await run('npm', ['run', 'test:a11y'], root, env);
     await run('npm', ['run', 'seo:release-check'], root, env);
+    await run('npm', ['run', 'test:pwa'], root, env);
+    await run('npm', ['run', 'test:consent'], root, env);
     const dist = path.join(root, 'apps/web/dist');
     await cp(dist, path.join(temporary, 'site'), { recursive: true, errorOnExist: true, force: false });
     const publication = {

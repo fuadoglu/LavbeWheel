@@ -17,7 +17,7 @@ A fast, multilingual wheel and social-game platform designed for phones, tablets
 
 </div>
 
-> **Repository status:** The configured CI checks for WP01, WP02 and WP07 pass. WP03 local sessions, result recovery and cross-tab writer leases, plus the core wheel, reports, bottle and social-game flows in WP04–WP06, are implemented; visual acceptance and some tool behaviors remain open. WP08 adds the MFA admin panel, content review and signed publication runner. Draft PR #9 covers WP09’s publication-gated indexing, route/redirect/audit artifacts and strict SEO release gate for the three current templates. All 110 locale research records are pending; the `en` and `az` UI catalogs are drafts, and game cards are English-only drafts. Localized routes, legal pages, PWA, consent integrations and release checks remain open. Target domain: **lavbe.com**; the site is not deployed.
+> **Repository status:** The configured CI checks for WP01, WP02 and WP07 pass. WP03 local sessions, result recovery and cross-tab writer leases, plus the core wheel, reports, bottle and social-game flows in WP04–WP06, are implemented; visual acceptance and some tool behaviors remain open. WP08 adds the MFA admin panel, content review and signed publication runner. Draft PR #9 covers WP09’s fail-closed SEO publication gates and localized routes. WP10 PWA is in draft PR #10; current build/offline browser checks and CI pass, while physical-device acceptance remains open. WP11 adds first-party consent choices, GPC handling and a fail-closed GTM/GA4 adapter. No real provider IDs, approved ad units or CMP integration are configured, so external tags stay disabled. All 110 locale research records are pending; the `en` and `az` UI catalogs and English game cards remain drafts. Legal pages and release checks remain open. Target domain: **lavbe.com**; the site is not deployed.
 
 ## 🎯 Product promise
 
@@ -138,6 +138,6 @@ No explicit sexual content, public user-content marketplace, chat, live multi-de
 
 **Lavbe · Built around the moment of choice.**
 
-Specification baseline: **2026-11-14** · Application status: **WP01–WP02 verified · WP03 implemented, CI passed, review pending · WP04 in progress**
+Specification baseline: **2026-11-14** · Application status: **WP01–WP02 verified · WP03 implemented · WP04–WP05 in progress · WP06 implemented · WP07 verified · WP08–WP11 in progress · WP12 open**
 
 </div>

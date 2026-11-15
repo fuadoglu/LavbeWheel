@@ -3,11 +3,13 @@ import { mkdtemp, mkdir, readFile, rm, symlink, writeFile, realpath } from 'node
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { artifactDigest, publicVersions, validateManifest, validateManifestContent, verifyManifestSignature } from '../../scripts/admin-build-runner.mjs';
+import { artifactDigest, optionalTagsFromManifest, publicVersions, validateManifest, validateManifestContent, verifyManifestSignature } from '../../scripts/admin-build-runner.mjs';
 import { canonicalJson } from '../../packages/contracts/src/canonical-json.ts';
 import { createHash, generateKeyPairSync, sign as signManifestBytes } from 'node:crypto';
 import { deployLocal } from '../../scripts/deploy-local-atomic.mjs';
 import { runJob } from '../../scripts/admin-build-runner.mjs';
+import defaultOptionalTags from '../../config/integrations/optional-tags.json' with { type: 'json' };
+import { isOptionalTagsConfiguration } from '../../packages/contracts/src/optional-tags.ts';
 
 const signingPair = generateKeyPairSync('ed25519');
 const publicKeyEncoded = signingPair.publicKey.export({ format: 'der', type: 'spki' }).subarray(-32).toString('base64url');
@@ -53,6 +55,21 @@ test('public content export removes server-only review metadata and import revis
   assert.equal('status' in version!.payload.records[0]!, false);
   assert.equal('sourceHash' in version!.payload.records[0]!, false);
   assert.equal(version!.payload.records[0]!.message, 'Fırlat');
+});
+
+test('optional tag configuration is disabled by default and requires one strict reviewed record', () => {
+  const disabled = { id: 'optional_tags', enabled: false, gtmId: null, ga4Id: null, publisherId: null, cmpProvider: null, placements: [] };
+  assert.equal(isOptionalTagsConfiguration(defaultOptionalTags), true);
+  assert.equal(defaultOptionalTags.enabled, false);
+  assert.deepEqual(optionalTagsFromManifest([]), disabled);
+  const configured = { ...disabled, enabled: true, ga4Id: 'G-ABC123', placements: ['lower-content'] };
+  assert.deepEqual(optionalTagsFromManifest([{ payload: { kind: 'integration', records: [configured] } }]), configured);
+  assert.throws(() => optionalTagsFromManifest([
+    { payload: { kind: 'integration', records: [configured] } },
+    { payload: { kind: 'integration', records: [disabled] } },
+  ]), /OPTIONAL_TAG_CONFIG_AMBIGUOUS/);
+  assert.throws(() => optionalTagsFromManifest([{ payload: { kind: 'integration', records: [{ ...configured, ga4Id: 'https://evil.example' }] } }]), /OPTIONAL_TAG_CONFIG_INVALID/);
+  assert.equal(isOptionalTagsConfiguration({ ...configured, unexpected: true }), false);
 });
 
 test('artifact digest is stable across creation order and rejects symlinks', async () => {
