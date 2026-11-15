@@ -109,7 +109,7 @@
       "id": "WP03",
       "status": "implemented",
       "branch": "feat/wp03-session",
-      "commit": "616039118e1bda3e17f4dd96fdf5c5257ac24c0e",
+      "commit": "8917713a6a24dec8699f51520395d7b0643483f5",
       "evidence": [
         {
           "method": "curl -I --max-time 3 http://127.0.0.1:4322/",
@@ -129,7 +129,7 @@
         },
         {
           "command": "npm run test:e2e -- --workers=1",
-          "result": "PASS; 9 Chromium tests including local JSON export/import, separate-copy restore, session cap/deletion, migration, lease recovery and crash recovery; automated Axe scan reports no WCAG 2.1 A/AA violations",
+          "result": "PASS; 10 Chromium tests including validated JSON export/import, separate-copy restore, session cap/deletion, injected quota failure with export recovery, migration, lease recovery and crash recovery; automated Axe scan reports no WCAG 2.1 A/AA violations",
           "artifact": "tests/e2e/wheel.spec.ts",
           "scope": "Local Chromium only; not cross-browser, device or manual accessibility acceptance"
         },
@@ -209,7 +209,6 @@
       ],
       "blockers": [
         "The 10,000-result retention rule still lacks an explicit pre-prune export/confirmation flow and safe history-pruning transition; preserve committed history until that contract is implemented.",
-        "Storage quota/private-mode recovery currently surfaces a generic persistence failure; the required export or explicit ephemeral-mode recovery flow remains open.",
         "Manual testing beyond local Chromium and cross-browser/device acceptance remain open."
       ]
     },
