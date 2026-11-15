@@ -21,6 +21,7 @@ const pages = implementedPublicPages;
 const failures = [];
 for (const [label, rule] of [
   ['directory listing protection', /Options\s+-Indexes/],
+  ['custom not-found document', /ErrorDocument\s+404\s+\/404\.html/],
   ['safe content type header', /X-Content-Type-Options\s+"?nosniff"?/i],
   ['frame embedding protection', /X-Frame-Options\s+"?DENY"?/i],
   ['service worker revalidation', /<Files\s+"sw\.js">[\s\S]*?Cache-Control\s+"no-cache, must-revalidate"[\s\S]*?Service-Worker-Allowed\s+"\/"[\s\S]*?<\/Files>/i],
