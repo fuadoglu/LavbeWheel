@@ -167,6 +167,7 @@ setup.addEventListener('submit', (event) => {
 
 spinButton.addEventListener('click', () => {
   if (!session || !writerLeaseHeld || spinning) return;
+  window.dispatchEvent(new CustomEvent('lavbe:activity', { detail: { busy: true } }));
   clearError(); spinning = true; spinButton.disabled = true;
   try {
     const selected = chooseBottleSeat(wheel(), session.cycle, browserRandomSource());
@@ -186,8 +187,8 @@ spinButton.addEventListener('click', () => {
         requestAnimationFrame(frame);
       });
       await showCommittedResult();
-    })().catch(showError).finally(() => { spinning = false; render(); });
-  } catch (error) { showError(error); spinning = false; render(); }
+    })().catch(showError).finally(() => { spinning = false; render(); window.dispatchEvent(new CustomEvent('lavbe:activity', { detail: { busy: false } })); });
+  } catch (error) { showError(error); spinning = false; render(); window.dispatchEvent(new CustomEvent('lavbe:activity', { detail: { busy: false } })); }
 });
 
 resetButton.addEventListener('click', () => {

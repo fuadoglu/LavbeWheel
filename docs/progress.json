@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01, WP02 and WP07 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local tools and draft source packs are implemented; WP08 admin publishing runner is implemented with CI evidence; WP09 now serves English default and Azerbaijani home plus localized EN/AZ bottle and group-game routes with fail-closed SEO. WP10-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01, WP02 and WP07 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local tools and draft source packs are implemented; WP08 admin publishing runner is implemented with CI evidence; WP09 has localized EN/AZ tool routes with fail-closed SEO and remains in progress; WP10 PWA artifacts and current-route browser behavior are implemented locally, with native/device acceptance open. WP11-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -566,7 +566,7 @@
       "id": "WP09",
       "status": "in-progress",
       "branch": "feat/wp09-locales",
-      "commit": "1ceb76c",
+      "commit": "6b59480",
       "evidence": [
         {
           "command": "npm run check && npm run test:unit",
@@ -662,6 +662,12 @@
           "result": "PASS; 8 implemented public routes audited as noindex, 0/1107 approved; 0 TS/Astro diagnostics; 70 unit tests; content structure checks; docs/contracts/reference checks; clean whitespace.",
           "artifact": "apps/web/dist/seo-audit.json and command output",
           "scope": "SEO release readiness remains blocked by absent research/review/legal/route coverage; no production behavior claimed."
+        },
+        {
+          "command": "GitHub Actions verify and validate on PR #9 / push commit 6b59480d74361cc9e0e9d1c8318387d8ab33e8d5",
+          "result": "PASS; application verification and docs/contracts validation both succeeded on the localized route commit.",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43682001508 and https://github.com/fuadoglu/LavbeWheel/actions/runs/43682001466",
+          "scope": "PR #9 remains draft and open; no merge or production deployment."
         }
       ],
       "blockers": [
@@ -672,11 +678,32 @@
     },
     {
       "id": "WP10",
-      "status": "not-started",
-      "branch": null,
+      "status": "in-progress",
+      "branch": "feat/wp10-pwa",
       "commit": null,
-      "evidence": [],
-      "blockers": []
+      "evidence": [
+        {
+          "command": "npm run test:pwa",
+          "result": "PASS; production build emits install manifest, regular/maskable/Apple icons and build-bound worker; static validator checks private exclusions; 3 Chromium flows verify manifest/icons, offline localized route and non-home 503 fallback.",
+          "artifact": "apps/web/dist/pwa-precache.json and tests/pwa/pwa.spec.ts",
+          "scope": "Browser simulation on current local build; native device and production CDN are not represented."
+        },
+        {
+          "command": "npm run check && npm run test:unit && npm run test:content && npm run test:e2e -- --workers=1 && npm run test:seo && PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs && git diff --check",
+          "result": "PASS; zero TS/Astro diagnostics, 70 unit tests, content structural checks, 18/18 browser tests, eight public pages audited noindex, docs/contracts/reference checks and clean whitespace.",
+          "artifact": "command output and generated dist artifacts"
+        },
+        {
+          "method": "Service worker route/cache review",
+          "result": "PASS within current route set; worker caches only current public HTML and same-origin assets, applies a 30 MiB runtime-asset cap, excludes admin/API/share/preview and capability-query requests, and requires explicit safe-boundary update activation.",
+          "artifact": "apps/web/public/sw.js and scripts/generate-pwa-artifacts.mjs",
+          "scope": "Native install UX, physical storage eviction, real host headers, and two-release old-client compatibility remain unverified."
+        }
+      ],
+      "blockers": [
+        "Native iOS and Android installation behavior has not been accepted on physical devices.",
+        "Browser storage eviction/quota behavior, production cache headers, and old-client/new-server compatibility across two releases remain unverified."
+      ]
     },
     {
       "id": "WP11",

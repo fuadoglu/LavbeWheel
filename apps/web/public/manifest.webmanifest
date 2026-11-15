@@ -1,0 +1,20 @@
+{
+  "id": "/",
+  "name": "Lavbe Wheel — Choose. Spin. Play together.",
+  "short_name": "Lavbe",
+  "description": "A thoughtful, local-first wheel and group game experience.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f7f5fc",
+  "theme_color": "#5941b8",
+  "lang": "en",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    { "src": "/icons/lavbe-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/lavbe-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/lavbe-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/lavbe-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

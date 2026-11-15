@@ -147,6 +147,9 @@
     "notFoundBody": "Bu ünvan mövcud deyil və ya artıq dəyişib.",
     "notFoundHome": "Əsas səhifəyə keç",
     "notFoundBottle": "Şüşə seçimini aç",
-    "notFoundGames": "Oyunlara bax"
+    "notFoundGames": "Oyunlara bax",
+    "pwaUpdateAvailable": "Yeniləmə hazırdır.",
+    "pwaUpdateSafe": "Yeniləmədən əvvəl bütün açıq tablarda cari növbəni və ya fırlanmanı tamamlayın.",
+    "pwaUpdateNow": "İndi yenilə"
   }
 }

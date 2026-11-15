@@ -147,6 +147,9 @@
     "notFoundBody": "This address does not exist or has changed.",
     "notFoundHome": "Go to the home page",
     "notFoundBottle": "Open bottle picker",
-    "notFoundGames": "Browse games"
+    "notFoundGames": "Browse games",
+    "pwaUpdateAvailable": "An update is ready.",
+    "pwaUpdateSafe": "Finish the current turn or spin in every open tab before updating.",
+    "pwaUpdateNow": "Update now"
   }
 }

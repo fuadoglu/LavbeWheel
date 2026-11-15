@@ -24,7 +24,7 @@
     "test:a11y": "playwright test --grep @a11y",
     "test:seo": "npm run build && node scripts/validate-seo-publications.mjs && node --experimental-strip-types scripts/validate-built-site.mjs",
     "seo:release-check": "npm run build && node scripts/validate-seo-publications.mjs && node --experimental-strip-types scripts/validate-built-site.mjs --require-complete",
-    "test:pwa": "node scripts/validate-pwa.mjs",
+    "test:pwa": "npm run build && node scripts/validate-pwa.mjs && playwright test --config=playwright.pwa.config.ts",
     "test:content": "node scripts/validate-content.mjs",
     "screenshots:wp04": "node scripts/capture-wp04-screenshots.mjs",
     "validate:docs": "python3 scripts/validate_docs.py && python3 scripts/validate_contracts.py && python3 scripts/validate_semantics.py && python3 scripts/validate_seo_contract.py",

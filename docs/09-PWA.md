@@ -4,6 +4,8 @@
 
 HTTPS, web manifest, proper start_url/scope, standalone display, theme/background colors and first-party icons are required. Export regular 192/512 PNG, maskable 192/512 PNG with safe zone, apple-touch 180 PNG and favicon SVG/ICO. Documentation banner/icons are not substitutes. Native installation UX varies; Android install prompt is optional and iOS needs contextual share/add-to-home instructions. Do not promise browser-unsupported install/fullscreen/share/haptic behavior.
 
+Current implementation note (WP10): the static build emits a root-scoped manifest, regular and maskable PNG sizes, Apple touch icon, favicon and a build-bound `sw.js` precache manifest. The worker includes only current built public route HTML and same-origin assets, uses network-first for known public pages, and returns 503 for uncached offline routes instead of falling back to the home page. API, share, admin, preview and capability-query requests bypass it. A waiting update is user-activated only after all tabs report a safe boundary; active wheel spins and unresolved game cards hold the update. Browser checks cover current built paths. This does not complete native iOS/Android acceptance, real storage eviction, CDN headers or two-release client compatibility.
+
 ## Offline matrix
 
 | Feature | Offline behavior |
