@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -40,5 +40,17 @@ test('release package rejects secret files and recognizable secret values', asyn
     await rm(path.join(directory, '.env'));
     await writeFile(path.join(directory, 'public/private.pem'), '-----BEGIN PRIVATE KEY-----');
     await assert.rejects(inspect(directory), /PACKAGE_SECRET_PATTERN_DETECTED/);
+  } finally { await rm(directory, { recursive: true, force: true }); }
+});
+
+test('release package verifier scans the manifest itself for secrets', async () => {
+  const directory = await fixture();
+  try {
+    await seal(directory);
+    const manifestPath = path.join(directory, 'release-manifest.json');
+    const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+    manifest.operatorNote = '-----BEGIN PRIVATE KEY-----';
+    await writeFile(manifestPath, JSON.stringify(manifest));
+    await assert.rejects(verifyPackage(directory), /PACKAGE_SECRET_PATTERN_DETECTED:release-manifest\.json/);
   } finally { await rm(directory, { recursive: true, force: true }); }
 });

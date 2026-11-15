@@ -16,6 +16,11 @@ const forbiddenContent = [
 
 function fail(code) { throw new Error(code); }
 
+function scanSecretContent(relativePath, data) {
+  const content = data.toString('utf8');
+  if (forbiddenContent.some((pattern) => pattern.test(content))) fail(`PACKAGE_SECRET_PATTERN_DETECTED:${relativePath}`);
+}
+
 async function copyTree(source, destination) {
   const info = await lstat(source);
   if (info.isSymbolicLink()) fail('PACKAGE_SYMLINK_NOT_ALLOWED');
@@ -56,8 +61,7 @@ export async function inspect(directory) {
       fail('PACKAGE_SECRET_FILE_DETECTED');
     }
     const data = await readFile(entry.full);
-    const content = data.toString('utf8');
-    if (forbiddenContent.some((pattern) => pattern.test(content))) fail(`PACKAGE_SECRET_PATTERN_DETECTED:${entry.path}`);
+    scanSecretContent(entry.path, data);
     const digest = createHash('sha256').update(data).digest('hex');
     records.push({ path: entry.path, bytes: data.length, sha256: digest });
     const name = Buffer.from(entry.path, 'utf8');
@@ -71,7 +75,11 @@ export async function inspect(directory) {
 
 export async function verifyPackage(directory) {
   const manifestPath = path.join(directory, manifestName);
-  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+  const manifestInfo = await lstat(manifestPath);
+  if (!manifestInfo.isFile() || manifestInfo.isSymbolicLink()) fail('PACKAGE_MANIFEST_FILE_INVALID');
+  const manifestBytes = await readFile(manifestPath);
+  scanSecretContent(manifestName, manifestBytes);
+  const manifest = JSON.parse(manifestBytes.toString('utf8'));
   if (manifest.formatVersion !== 1 || manifest.kind !== 'internal-release-candidate') fail('PACKAGE_MANIFEST_INVALID');
   const actual = await inspect(directory);
   if (actual.treeSha256 !== manifest.treeSha256 || JSON.stringify(actual.files) !== JSON.stringify(manifest.files)) {
