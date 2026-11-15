@@ -720,7 +720,7 @@
       "id": "WP11",
       "status": "in-progress",
       "branch": "feat/wp11-integrations",
-      "commit": null,
+      "commit": "a890df5",
       "evidence": [
         {
           "command": "npm run test:e2e -- --workers=1",
