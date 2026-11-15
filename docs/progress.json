@@ -592,7 +592,7 @@
         },
         {
           "command": "npm run test:seo",
-          "result": "PASS; build audit protects 3 implemented public pages as noindex; 0 approved/indexable pages; 1107 planned, all 110 locale research records pending.",
+          "result": "PASS; static build emits route-manifest.json, redirect-manifest.json, seo-audit.json and robots.txt. Three existing templates are noindex; zero sitemap URLs; 1,107 public routes planned. SEO-02 intent ownership and empty-set SEO-06 sitemap equality pass within stated scope.",
           "artifact": "apps/web/dist/ and scripts/validate-built-site.mjs"
         },
         {
@@ -625,8 +625,14 @@
         },
         {
           "command": "npm run check && npm run test:unit && npm run test:content && PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
-          "result": "PASS; config/inventory checks, 0 TS/Astro diagnostics, 66 unit tests, content structure checks and documentation/contracts/reference checks.",
+          "result": "PASS; config/inventory checks, 0 TS/Astro diagnostics, 70 unit tests (including sitemap safety/chunk limits), content structure checks and docs/contracts/reference checks.",
           "artifact": "command output"
+        },
+        {
+          "command": "npm run test:unit && npm run test:seo && npm run check",
+          "result": "PASS after sitemap helper changes; 70 unit tests include empty sitemap behavior, locale submaps, 5,000 URL chunking, duplicate/query/unsafe path rejection; SEO built-site audit passes; config and TS/Astro checks have 0 diagnostics.",
+          "artifact": "tests/unit/seo-artifacts.test.ts and apps/web/dist/seo-audit.json",
+          "scope": "No approved pages exist, so populated sitemap behavior is covered by synthetic unit fixtures, not live indexed content."
         }
       ],
       "blockers": [

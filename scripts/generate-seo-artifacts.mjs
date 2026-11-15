@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { readFile, writeFile, access } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildSitemapArtifacts } from '../apps/web/src/data/seo-artifacts.ts';
 import localeRegistry from '../config/locales.json' with { type: 'json' };
 import routeRegistry from '../config/seo/routes.json' with { type: 'json' };
 import localeResearch from '../config/seo/locale-research.json' with { type: 'json' };
@@ -56,19 +57,10 @@ for (const route of available) {
   catch { route.blockers.push('published-route-html-not-built'); }
 }
 const indexableRoutes = available.filter((route) => publicationFiles.has(route.path === '/' ? 'index.html' : `${route.path.replace(/^\//, '')}index.html`));
-const sitemapFiles = [];
-for (const locale of [...new Set(indexableRoutes.map((route) => route.locale))].sort()) {
-  const filename = `sitemap-${locale}.xml`;
-  const entries = indexableRoutes.filter((route) => route.locale === locale);
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.map((route) => `  <url><loc>${new URL(route.path, origin).href}</loc></url>`).join('\n')}\n</urlset>\n`;
-  await writeFile(path.join(dist, filename), xml);
-  for (const route of entries) route.sitemap = filename;
-  sitemapFiles.push(filename);
-}
-if (sitemapFiles.length) {
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapFiles.map((filename) => `  <sitemap><loc>${new URL(`/${filename}`, origin).href}</loc></sitemap>`).join('\n')}\n</sitemapindex>\n`;
-  await writeFile(path.join(dist, 'sitemap-index.xml'), xml);
-}
+const sitemap = buildSitemapArtifacts(indexableRoutes.map(({ locale, path: pagePath }) => ({ locale, path: pagePath })), origin);
+for (const [filename, xml] of sitemap.files) await writeFile(path.join(dist, filename), xml);
+const sitemapFiles = [...sitemap.files.keys()].filter((filename) => filename !== sitemap.indexFile);
+for (const route of indexableRoutes) route.sitemap = sitemap.urlFiles.get(new URL(route.path, origin).href) ?? null;
 await writeFile(path.join(dist, 'robots.txt'), `User-agent: *\nAllow: /\n${sitemapFiles.length ? `Sitemap: ${new URL('/sitemap-index.xml', origin).href}\n` : ''}`);
 
 const buildId = process.env.GITHUB_SHA ?? process.env.VERCEL_GIT_COMMIT_SHA ?? 'local';
@@ -80,7 +72,7 @@ const routeManifest = {
   plannedPublicRouteCount: inventory,
   implementedPublicRouteCount: publicRoutes.length,
   indexablePublicRouteCount: indexableRoutes.length,
-  sitemapIndex: sitemapFiles.length ? '/sitemap-index.xml' : null,
+  sitemapIndex: sitemap.indexFile ? `/${sitemap.indexFile}` : null,
   sitemapFiles,
   routes: publicRoutes,
 };
