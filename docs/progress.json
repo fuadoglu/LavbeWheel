@@ -109,8 +109,14 @@
       "id": "WP03",
       "status": "implemented",
       "branch": "feat/wp03-session",
-      "commit": "1f50c6ecce9910dd70648a730df0d67ae58d7cbd",
+      "commit": "616039118e1bda3e17f4dd96fdf5c5257ac24c0e",
       "evidence": [
+        {
+          "method": "curl -I --max-time 3 http://127.0.0.1:4322/",
+          "result": "PASS; local dev server responds HTTP 200",
+          "artifact": "http://127.0.0.1:4322/",
+          "scope": "Local only; no deployment"
+        },
         {
           "command": "npm run check",
           "result": "PASS; generated-contract/config checks and TypeScript/Astro diagnostics report 0 errors, warnings or hints",
