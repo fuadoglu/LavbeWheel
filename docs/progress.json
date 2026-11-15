@@ -786,6 +786,12 @@
           "result": "PASS; Astro build copied Apache deployment rules into dist/.htaccess; built-site validator confirms directory listing protection, nosniff/frame headers and HTML/manifest/service-worker revalidation. SEO audit: 8 built pages, all 0 indexable; 1107 planned routes remain gated.",
           "artifact": "apps/web/dist/.htaccess and scripts/validate-built-site.mjs",
           "scope": "Static artifact configuration only; no real Apache host, CDN, headers, production route or load behavior exercised."
+        },
+        {
+          "command": "GitHub Actions CI on PR #12 head fd18268fe05bd8ffe6b49f68966af165d6a44775",
+          "result": "PASS; both application verify jobs and both docs validate jobs completed successfully.",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/pull/12",
+          "scope": "Automated checks only; draft PR unmerged and local Apache config assertions do not validate a real hosting provider."
         }
       ],
       "blockers": [
