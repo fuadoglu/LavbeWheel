@@ -41,7 +41,7 @@ const xDefaultHref = getXDefaultHref('spin-the-bottle');
           <form id="bottle-setup" class="game-setup">
             <label for="bottle-names">{m.bottleParticipants}<textarea id="bottle-names" rows="5" required>Aylin&#10;Murad&#10;Leyla&#10;Kamran</textarea></label>
             <label for="bottle-mode">{m.bottleMode}<select id="bottle-mode" class="motion-select"><option value="independent">{m.bottleModeIndependent}</option><option value="remove-winner">{m.bottleModeRemove}</option><option value="shuffled-cycle">{m.bottleModeCycle}</option></select></label>
-            <button id="bottle-start" class="spin-button" type="submit"><img class="spin-icon" src={bottleIcon.src} width="18" height="18" alt="" aria-hidden="true" />{m.bottleStart}</button>
+            <button id="bottle-start" class="spin-button" type="submit" disabled><img class="spin-icon" src={bottleIcon.src} width="18" height="18" alt="" aria-hidden="true" />{m.bottleStart}</button>
           </form>
           <div id="bottle-play" class="bottle-play" hidden>
             <label for="bottle-sessions">{m.bottleSavedSessions}<select id="bottle-sessions" class="motion-select"></select></label>

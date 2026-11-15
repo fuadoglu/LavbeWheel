@@ -5,8 +5,11 @@ import {
   listSessions, loadSession, releaseWriterLease, renewWriterLease, saveInitialSession, updateSession,
 } from '@lavbe/session';
 import { wheelSpinProgress } from './spin-motion';
-import messages from '../../../../content/locales/az.json';
+import azCatalog from '../../../../content/locales/az.json';
+import enCatalog from '../../../../content/locales/en.json';
 
+const messages = document.documentElement.lang === 'en' ? enCatalog : azCatalog;
+const locale = document.documentElement.lang || 'az';
 const text = messages.messages;
 const setup = document.querySelector<HTMLFormElement>('#bottle-setup');
 const namesInput = document.querySelector<HTMLTextAreaElement>('#bottle-names');
@@ -78,7 +81,7 @@ function renderSavedSessions(): void {
   const bottles = records.filter((record) => record.envelope.configRevisions.some((item) => item.wheel.tool === 'bottle'));
   savedSelect!.replaceChildren(...bottles.map((record) => {
     const option = document.createElement('option'); option.value = record.sessionId; option.selected = record.sessionId === session?.sessionId;
-    const date = new Intl.DateTimeFormat('az', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(record.envelope.createdAt));
+    const date = new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(record.envelope.createdAt));
     option.textContent = `Şüşə · ${date}`; return option;
   }));
   savedSelect!.disabled = bottles.length < 2;

@@ -6,8 +6,11 @@ import {
   acquireWriterLease, buildRoundReport, commitSelectionResult, createLocalGameSession,
   listSessions, loadSession, releaseWriterLease, renewWriterLease, saveInitialSession, updateSession,
 } from '@lavbe/session';
-import messages from '../../../../content/locales/az.json';
+import azCatalog from '../../../../content/locales/az.json';
+import enCatalog from '../../../../content/locales/en.json';
 
+const messages = document.documentElement.lang === 'en' ? enCatalog : azCatalog;
+const locale = document.documentElement.lang || 'az';
 const text = messages.messages;
 const setup = document.querySelector<HTMLFormElement>('#game-setup');
 const playersInput = document.querySelector<HTMLTextAreaElement>('#game-players');
@@ -59,6 +62,7 @@ let sessionRevision = 0;
 let writerLeaseHeld = false;
 let records: Awaited<ReturnType<typeof listSessions>> = [];
 let committing = false;
+let pageReady = false;
 
 function showError(error: unknown): void {
   errorText!.hidden = false;
@@ -80,7 +84,7 @@ function renderSavedSessions(): void {
     const option = document.createElement('option');
     option.value = record.sessionId;
     const family = localeFamily[record.envelope.game!.packSnapshot.family] ?? record.envelope.game!.packSnapshot.family;
-    const date = new Intl.DateTimeFormat('az', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(record.envelope.createdAt));
+    const date = new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(record.envelope.createdAt));
     option.textContent = `${family} · ${date}`;
     option.selected = record.sessionId === session?.sessionId;
     return option;
@@ -180,6 +184,7 @@ async function startNewGame(labels = playersInput!.value.split(/\r?\n/).map((nam
 setup.addEventListener('submit', (event) => {
   event.preventDefault();
   clearError();
+  if (!pageReady) return;
   const labels = playersInput.value.split(/\r?\n/).map((name) => name.trim()).filter(Boolean);
   if (labels.length < 2 || labels.length > 20) { showError(new Error(text.gameInvalidPlayers)); return; }
   startButton.disabled = true;
@@ -235,7 +240,7 @@ window.addEventListener('beforeunload', () => { if (session && writerLeaseHeld) 
 void refreshSessions().then(async () => {
   const latestGame = records.find((record) => record.envelope.game);
   if (latestGame) await useSession(latestGame.sessionId);
-}).catch(showError);
+}).catch(showError).finally(() => { pageReady = true; if (!session && !setup!.hidden) startButton!.disabled = false; });
 window.setInterval(() => {
   if (!session || !writerLeaseHeld) return;
   void renewWriterLease(session.wheelId, writerId).then((renewed) => {

@@ -7,8 +7,11 @@ import {
 import type { SessionEnvelope } from '@lavbe/contracts';
 import { limits } from '../data/config';
 import { wheelSpinProgress } from './spin-motion';
-import messages from '../../../../content/locales/az.json';
+import azCatalog from '../../../../content/locales/az.json';
+import enCatalog from '../../../../content/locales/en.json';
 
+const messages = document.documentElement.lang === 'en' ? enCatalog : azCatalog;
+const locale = document.documentElement.lang || 'az';
 const canvas = document.querySelector<HTMLCanvasElement>('#wheel-canvas');
 const input = document.querySelector<HTMLTextAreaElement>('#entries');
 const button = document.querySelector<HTMLButtonElement>('#spin');
@@ -89,7 +92,7 @@ function renderHistory(report = session && reportRoundSelect ? buildRoundReport(
     title.textContent = item.kind === 'teams' ? teams ?? '' : item.kind === 'card' ? `${item.label} — ${item.text ?? ''}` : item.kind === 'number' ? item.label : messages.messages.resultWinner.replace('{name}', item.label);
     const detail = document.createElement('small');
     const roundNumber = (session?.rounds.findIndex((candidate) => candidate.id === report?.roundId) ?? -1) + 1;
-    const time = new Intl.DateTimeFormat('az', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(item.committedAt));
+    const time = new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(item.committedAt));
     const state = item.presentation === 'pending' ? messages.messages.reportStatePending : item.presentation === 'revealed' ? messages.messages.reportStateRevealed : messages.messages.reportStateAcknowledged;
     detail.textContent = `#${item.sequence} · ${messages.messages.reportHistoryTime.replace('{time}', time)} · ${messages.messages.reportHistoryRound.replace('{number}', String(roundNumber))} · ${state}`;
     row.append(title, detail);
@@ -111,7 +114,7 @@ function renderReport(): void {
   reportRoundSelect.replaceChildren(...reports.map((report, index) => {
     const option = document.createElement('option');
     option.value = report.roundId;
-    const date = new Intl.DateTimeFormat('az', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(report.startedAt));
+    const date = new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(report.startedAt));
     option.textContent = messages.messages.reportRoundOption.replace('{number}', String(index + 1)).replace('{date}', date);
     return option;
   }));
@@ -132,7 +135,7 @@ function renderReport(): void {
   const rows = report?.rows ?? [];
   const rowPage = paginateReportRows(rows, reportRowsPage, 50);
   reportRowsPage = rowPage.page;
-  const formatPercent = (value: number | null) => value === null ? messages.messages.reportNotChance : new Intl.NumberFormat('az', { style: 'percent', maximumFractionDigits: 1 }).format(value);
+  const formatPercent = (value: number | null) => value === null ? messages.messages.reportNotChance : new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: 1 }).format(value);
   for (const item of rowPage.items) {
     const tr = document.createElement('tr');
     const participant = document.createElement('th');

@@ -12,8 +12,36 @@ test('unknown paths return a useful noindex 404 instead of the home page', async
   expect(audit.violations).toEqual([]);
 });
 
-test('classic wheel can select an entry and save the local list', async ({ page }, testInfo) => {
+test('global home uses the default English locale and links to the Azerbaijani home', async ({ page }) => {
   await page.goto('/');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await expect(page.locator('#page-title')).toHaveText("Who's taking part?");
+  await expect(page.getByRole('link', { name: 'AZ' })).toHaveAttribute('href', '/az/');
+});
+
+for (const locale of ['en', 'az'] as const) {
+  const english = locale === 'en';
+  test(`${locale} localized bottle and group-game routes render language-matched working tools`, async ({ page }) => {
+    await page.goto(`/${locale}/spin-the-bottle/`);
+    await expect(page.locator('html')).toHaveAttribute('lang', locale);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex,follow');
+    await expect(page.getByRole('heading', { name: english ? 'Bottle picker' : 'Şüşə seçimi' })).toBeVisible();
+    await page.getByRole('button', { name: english ? 'Set up bottle' : 'Şüşəni qur' }).click();
+    await expect(page.locator('#bottle-play')).toBeVisible({ timeout: 5_000 });
+    await page.getByRole('button', { name: english ? 'Spin bottle' : 'Şüşəni fırlat' }).click();
+    await expect(page.locator('#bottle-result')).toContainText(english ? 'Selected:' : 'Seçildi:');
+
+    await page.goto(`/${locale}/group-games/`);
+    await expect(page.locator('html')).toHaveAttribute('lang', locale);
+    await expect(page.getByText(english ? 'Prompt cards are currently in English.' : 'Kart tapşırıqları hazırda ingilis dilindədir.')).toBeVisible();
+    await page.getByRole('button', { name: english ? 'Start game' : 'Oyuna başla' }).click();
+    await page.getByRole('button', { name: english ? 'Draw a card' : 'Kart çək' }).click();
+    await expect(page.locator('#game-card')).toBeVisible();
+  });
+}
+
+test('classic wheel can select an entry and save the local list', async ({ page }, testInfo) => {
+  await page.goto('/az/');
   await expect(page.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır');
   const entries = page.getByRole('textbox', { name: 'İştirakçı adları, hər sətirdə bir ad' });
   await entries.fill('Aylin\nMurad\nLeyla');
@@ -70,7 +98,7 @@ test('classic wheel can select an entry and save the local list', async ({ page 
 
 test('reduced-motion preference preserves the same selection with a short reveal', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
+  await page.goto('/az/');
   await expect(page.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır');
   const started = Date.now();
   await page.getByRole('button', { name: 'Çarxı fırlat' }).click();
@@ -79,7 +107,7 @@ test('reduced-motion preference preserves the same selection with a short reveal
 });
 
 test('@a11y the root screen has no automated WCAG A/AA violations', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/az/');
   const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   expect(results.violations).toEqual([]);
   await page.getByRole('tab', { name: 'Nəticələr' }).click();
@@ -182,7 +210,7 @@ test('@a11y bottle setup and spinning surface have no automated WCAG A/AA violat
 
 test('mobile board matches the 390px screen contract and theme preference survives reload', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/az/');
   const board = await page.locator('#wheel-canvas').boundingBox();
   expect(board?.width).toBeGreaterThanOrEqual(354);
   expect(board?.width).toBeLessThanOrEqual(358);
@@ -213,7 +241,7 @@ test('mobile board matches the 390px screen contract and theme preference surviv
 
 test('tablet portrait stacks the editor and landscape preserves the 58/42 board split', async ({ page }) => {
   await page.setViewportSize({ width: 768, height: 1024 });
-  await page.goto('/');
+  await page.goto('/az/');
   const portraitBoard = await page.locator('#wheel-canvas').boundingBox();
   expect(portraitBoard?.width).toBe(560);
   expect(portraitBoard?.height).toBe(560);
@@ -237,7 +265,7 @@ test('tablet portrait stacks the editor and landscape preserves the 58/42 board 
 });
 
 test('upgrades the WP01 IndexedDB draft store to session stores without losing the saved list', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/az/');
   await expect(page.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır');
   await page.evaluate(async () => {
     await new Promise<void>((resolve, reject) => {
@@ -269,10 +297,10 @@ test('upgrades the WP01 IndexedDB draft store to session stores without losing t
 });
 
 test('uses one cross-tab writer and reacquires the lease after that tab closes', async ({ page, context }) => {
-  await page.goto('/');
+  await page.goto('/az/');
   await expect(page.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır');
   const secondTab = await context.newPage();
-  await secondTab.goto('/');
+  await secondTab.goto('/az/');
   await expect(secondTab.locator('#storage-status')).toHaveText('Yadda saxlamaq mümkün olmadı. Adlar bu səhifədə qalır.');
   await expect(secondTab.getByRole('button', { name: 'Çarxı fırlat' })).toBeDisabled();
   await page.close();
@@ -282,7 +310,7 @@ test('uses one cross-tab writer and reacquires the lease after that tab closes',
 
 test('recovers the committed result after a simulated crash before its reveal animation', async ({ page }) => {
   await page.addInitScript(() => { window.requestAnimationFrame = () => 1; });
-  await page.goto('/');
+  await page.goto('/az/');
   await expect(page.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır');
   await page.getByRole('button', { name: 'Çarxı fırlat' }).click();
   await expect.poll(() => page.evaluate(async () => new Promise<string>((resolve, reject) => {

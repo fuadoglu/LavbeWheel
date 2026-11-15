@@ -3,7 +3,12 @@
   "note": "Inventory of implemented Astro templates, not the planned localized URL matrix.",
   "pages": [
     { "file": "index.html", "path": "/", "routeId": "home" },
+    { "file": "az/index.html", "path": "/az/", "routeId": "home" },
     { "file": "bottle/index.html", "path": "/bottle/", "routeId": "spin-the-bottle" },
-    { "file": "games/index.html", "path": "/games/", "routeId": "group-games" }
+    { "file": "games/index.html", "path": "/games/", "routeId": "group-games" },
+    { "file": "az/spin-the-bottle/index.html", "path": "/az/spin-the-bottle/", "routeId": "spin-the-bottle" },
+    { "file": "en/spin-the-bottle/index.html", "path": "/en/spin-the-bottle/", "routeId": "spin-the-bottle" },
+    { "file": "az/group-games/index.html", "path": "/az/group-games/", "routeId": "group-games" },
+    { "file": "en/group-games/index.html", "path": "/en/group-games/", "routeId": "group-games" }
   ]
 }

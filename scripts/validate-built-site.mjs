@@ -6,6 +6,8 @@ import routeRegistry from '../config/seo/routes.json' with { type: 'json' };
 import localeResearch from '../config/seo/locale-research.json' with { type: 'json' };
 import pagePublications from '../config/seo/publications.json' with { type: 'json' };
 import urlCases from '../config/seo/url-cases.json' with { type: 'json' };
+import azCatalog from '../content/locales/az.json' with { type: 'json' };
+import enCatalog from '../content/locales/en.json' with { type: 'json' };
 import { getPublishedAlternates, getSeoPageState, getXDefaultHref, implementedPublicPages } from '../apps/web/src/data/seo.ts';
 
 const root = new URL('../apps/web/dist/', import.meta.url);
@@ -40,7 +42,10 @@ for (const page of pages) {
   const actualXDefault = xDefault(html).sort();
   const expectedXDefaults = expectedXDefault ? [expectedXDefault] : [];
   if (JSON.stringify(actualXDefault) !== JSON.stringify(expectedXDefaults)) failures.push(`${page.path}: x-default does not match the approved same-intent route`);
-  if (page.routeId === 'group-games' && !html.includes('Kart tapşırıqları hazırda ingilis dilindədir.')) failures.push('Azerbaijani game page does not disclose that its prompt pack is English.');
+  if (page.routeId === 'group-games') {
+    const notice = locale === 'en' ? enCatalog.messages.gamePackLanguageNotice : azCatalog.messages.gamePackLanguageNotice;
+    if (!html.includes(notice)) failures.push(`${page.path}: game page does not disclose that its prompt pack is English in the page language.`);
+  }
 }
 
 const admin = await readFile(new URL('admin/index.html', root), 'utf8');

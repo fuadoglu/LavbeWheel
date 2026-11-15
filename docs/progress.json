@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01, WP02 and WP07 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local tools and draft source packs are implemented; WP08 admin publishing runner is implemented with CI evidence; WP09 indexing controls and fail-closed SEO audit are implemented while localized routes/research remain open; WP10-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01, WP02 and WP07 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local tools and draft source packs are implemented; WP08 admin publishing runner is implemented with CI evidence; WP09 now serves English default and Azerbaijani home plus localized EN/AZ bottle and group-game routes with fail-closed SEO. WP10-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -650,11 +650,23 @@
           "command": "npm run check && npm run test:unit",
           "result": "PASS; 0 TypeScript/Astro diagnostics, 70 unit tests including sitemap size/chunking and malformed route rejection.",
           "artifact": "command output"
+        },
+        {
+          "command": "npm run test:e2e -- --config=playwright.wp09.config.ts --workers=1",
+          "result": "PASS; 18/18 Chromium flows including English default home, AZ home, localized EN/AZ bottle and group-games routes, legacy tool flows, true 404, persistence, cross-tab lease and accessibility checks.",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Local isolated Astro server at localhost:4323; config is temporary and removed after run."
+        },
+        {
+          "command": "npm run test:seo && npm run check && npm run test:unit && npm run test:content && PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs && git diff --check",
+          "result": "PASS; 8 implemented public routes audited as noindex, 0/1107 approved; 0 TS/Astro diagnostics; 70 unit tests; content structure checks; docs/contracts/reference checks; clean whitespace.",
+          "artifact": "apps/web/dist/seo-audit.json and command output",
+          "scope": "SEO release readiness remains blocked by absent research/review/legal/route coverage; no production behavior claimed."
         }
       ],
       "blockers": [
         "110 locale research records, UI catalogs and route intent remain unreviewed; no publication approvals are present.",
-        "Only three tool/home pages are implemented; 1,100 localized route pairs and six legal pages are absent. Custom static 404 works in Astro dev, but configured host redirects/statuses, sitemap crawler fetch, URL normalization and SEO-01–12 production-origin checks remain open.",
+        "Eight public templates/routes are implemented, but 1,099 of 1,107 planned public routes, including six legal pages, remain absent. Configured host redirects/statuses, sitemap crawler fetch, URL normalization and SEO-01–12 production-origin checks remain open.",
         "No page can be safely indexed until native copy and SEO review gates pass."
       ]
     },
