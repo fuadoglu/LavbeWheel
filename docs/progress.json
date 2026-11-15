@@ -771,11 +771,22 @@
     },
     {
       "id": "WP12",
-      "status": "not-started",
-      "branch": null,
+      "status": "in-progress",
+      "branch": "feat/wp12-release",
       "commit": null,
-      "evidence": [],
-      "blockers": []
+      "evidence": [
+        {
+          "command": "npm run test:seo && git diff --check",
+          "result": "PASS; Astro build copied Apache deployment rules into dist/.htaccess; built-site validator confirms directory listing protection, nosniff/frame headers and HTML/manifest/service-worker revalidation. SEO audit: 8 built pages, all 0 indexable; 1107 planned routes remain gated.",
+          "artifact": "apps/web/dist/.htaccess and scripts/validate-built-site.mjs",
+          "scope": "Static artifact configuration only; no real Apache host, CDN, headers, production route or load behavior exercised."
+        }
+      ],
+      "blockers": [
+        "Real hosting/domain access is unavailable; provider PHP/MySQL/runtime/quotas, TLS, actual Apache modules and response headers have not been accepted on staging.",
+        "Encrypted off-host backup, deletion-journal restore suppression, timed restore and rollback rehearsal have not been executed against an operator-controlled environment.",
+        "Security review/load envelope, full SEO origin gates, 110 locale/content/legal reviews, provider/CMP approvals and real-device accessibility/PWA/design acceptance remain incomplete."
+      ]
     }
   ]
 }
