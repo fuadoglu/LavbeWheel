@@ -13,3 +13,4 @@ export type { AdminLegal } from './generated/AdminLegal.js';
 export type { AdminPreset } from './generated/AdminPreset.js';
 export type { AdminSeoCopy } from './generated/AdminSeoCopy.js';
 export type { AdminUiCatalog } from './generated/AdminUiCatalog.js';
+export type { PublishedLocalizedRouteApproval as SeoPublication } from './generated/SeoPublication.js';

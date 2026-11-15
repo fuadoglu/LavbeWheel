@@ -12,6 +12,8 @@ Public baseline: global home + ten localized discovery/tool routes per locale (l
 
 Draft → content-validated → native-reviewed → SEO-reviewed → published. Persist sourceHash, reviewer/date, intent ownership, title/description/H1, examples and module coverage. Any source change marks dependent translations stale; no automatic publish from stale source. Public pages cannot display English fallback while claiming another language. Failed translation build keeps previous valid artifact. State changes produce a diff listing new/removed public routes and changed alternates/sitemaps.
 
+`config/seo/publications.json` is the build-time allowlist for route/locale publication, validated by `contracts/seo-publication.schema.json`. It may contain only pages whose locale catalog, locale research and route-intent research are reviewed and whose localized path matches the registry. Pages without a complete record render `noindex,follow` and receive no canonical or hreflang; sitemap membership is limited to eligible published pages. The current file is intentionally empty. The current Astro templates do not yet cover the planned localized route inventory, so the site audit reports that gap explicitly.
+
 config/seo/locale-research.json explicitly records pending research for all 110 locales. Research must include native terms, task intent, observed results/date/country/device, competitor format and evidence reference. Paid volume data is optional: absent volume is null, never zero or invented. Evaluate priority by user need, intent match, competition and supported monetization; do not discard useful languages merely because ads are unsupported.
 
 ## 3. Page contract
@@ -50,7 +52,7 @@ Apply motion/performance budgets with ads on/off and real fonts. Default content
 
 ## 9. Required build artifacts
 
-Generate: route-manifest.json (URL, routeId, locale, contentHash, canonical, robots, HTTP expectation, alternatives, sitemap file, source review IDs), sitemap index/submaps, robots.txt, redirect manifest and seo-audit.json. Private routes are represented by route templates only, never real IDs. Build report identifies mismatches and blocks deployment. Missing native/content review is not bypassed for a green build.
+The static build now generates `route-manifest.json`, `seo-audit.json`, `redirect-manifest.json` and `robots.txt` from the route registry, publication allowlist, URL fixtures and the explicit implemented-template inventory. Sitemap index and locale submaps are emitted only for approved pages that exist in the build. At present the redirect manifest identifies URL cases as fixtures only; host redirect behavior is not installed. The manifest reports only built templates and summarizes missing planned inventory; it does not synthesize the locale-route matrix or content. Private routes are represented by route templates only, never real IDs. Build report identifies mismatches and the signed publishing runner blocks incomplete inventory. Missing native/content review is not bypassed for a green build.
 
 ## 10. Search acquisition and operating cadence
 

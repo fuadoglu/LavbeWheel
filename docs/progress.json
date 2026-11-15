@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01, WP02 and WP07 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local bottle/game tools and draft source packs are implemented; WP08 is in progress; WP09-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01, WP02 and WP07 are verified; WP03 persistence is implemented; WP04 and WP05 remain in progress; WP06 local tools and draft source packs are implemented; WP08 admin publishing runner is implemented with CI evidence; WP09 now serves English default and Azerbaijani home plus localized EN/AZ bottle and group-game routes with fail-closed SEO. WP10-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -171,6 +171,12 @@
           "result": "PASS; all configured application checks completed",
           "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43595432275",
           "scope": "Automated CI; user-facing persistence controls and review remain open"
+        },
+        {
+          "command": "npm run test:e2e -- --config=playwright.wp09.config.ts --workers=1",
+          "result": "PASS; 14/14 Chromium browser flows on separate Astro server at localhost:4323; bottle hydration race and cross-tab lease recovery covered.",
+          "artifact": "apps/web/src/scripts/bottle.ts and tests/e2e/wheel.spec.ts",
+          "scope": "Temporary Playwright config was removed after the run; interactive preview on port 4322 remained available."
         }
       ],
       "blockers": [
@@ -551,19 +557,118 @@
         }
       ],
       "blockers": [
-        "Admin panel UI and full OpenAPI response/error conformance are not implemented.",
-        "RFC 8785 canonical JSON and shared server/runner parity vectors are implemented locally; no signed build runner or approved content exists yet.",
-        "Preset and CMP allowlists require operator-supplied reviewed IDs; empty defaults fail closed.",
-        "MySQL 8.4 CI for the publication changes, cross-device/admin UI and deployment/hosting remain unverified."
+        "WP09 localized route graph and approved content are not complete; SEO release gate therefore blocks publication.",
+        "Production runner adapter, key provisioning, hosting and operational approval remain open.",
+        "Cross-device/admin UI acceptance remains unverified."
       ]
     },
     {
       "id": "WP09",
-      "status": "not-started",
-      "branch": null,
-      "commit": null,
-      "evidence": [],
-      "blockers": []
+      "status": "in-progress",
+      "branch": "feat/wp09-locales",
+      "commit": "1ceb76c",
+      "evidence": [
+        {
+          "command": "npm run check && npm run test:unit",
+          "result": "PASS; 0 TS/Astro diagnostics; 66 unit tests, including approval gating and localized-path behavior. Design token consistency also passes.",
+          "artifact": "command output"
+        },
+        {
+          "command": "npm run test:e2e -- --config=playwright.wp09.config.ts --workers=1",
+          "result": "PASS; 14/14 Chromium browser flows on separate Astro server at localhost:4323; includes bottle saved-session hydration race, cross-tab lease recovery and mobile dark-mode contrast.",
+          "artifact": "tests/e2e/ and apps/web/src/scripts/bottle.ts",
+          "scope": "Local Chromium only."
+        },
+        {
+          "command": "npm run test:a11y",
+          "result": "PASS; 3 automated Axe scans for home, bottle and game; mobile dark mode additionally covered by full E2E Axe assertion after theme token contrast correction.",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Automated only; manual assistive technology review remains open."
+        },
+        {
+          "command": "npm run test:content",
+          "result": "PASS; 110 locale metadata unique; 2 draft catalogs structurally match; 6 English draft packs / 300 cards. Native/cultural/suitability review not inferred.",
+          "artifact": "content/locales/ and content/packs/"
+        },
+        {
+          "command": "npm run test:seo",
+          "result": "PASS; build emits route-manifest.json, redirect-manifest.json, seo-audit.json, robots.txt and a noindex 404.html. Three implemented tool/home templates are noindex; no sitemap is emitted with zero approved URLs; 1,107 public routes planned. SEO-02 and empty-set SEO-06 pass only within stated scope.",
+          "artifact": "apps/web/dist/route-manifest.json, apps/web/dist/redirect-manifest.json, apps/web/dist/seo-audit.json, apps/web/dist/robots.txt, apps/web/dist/404.html"
+        },
+        {
+          "command": "npm run seo:release-check",
+          "result": "BLOCKED as designed; 0/1107 public routes published, 1107 remain.",
+          "artifact": "scripts/validate-built-site.mjs",
+          "scope": "Prevents release until approved localized content/routes, legal pages, sitemap and crawler coverage exist."
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs && git diff --check",
+          "result": "PASS; docs, schema fixtures, semantic reference and SEO registry checks; no whitespace errors.",
+          "artifact": "docs/ and contracts/"
+        },
+        {
+          "command": "GitHub Actions verify and validate on PR #9 / push commit c16d9f2e08d882a62e744c5ff5e35a0c63dedf91",
+          "result": "PASS; MySQL 8.4 API lifecycle, app checks/unit/E2E/a11y/SEO/audit, docs/contracts and dependency audit all completed successfully.",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43679873157 and https://github.com/fuadoglu/LavbeWheel/actions/runs/43679876917",
+          "scope": "Exact commit c16d9f2; current route-manifest follow-up changes are not part of these runs."
+        },
+        {
+          "command": "npm run test:seo",
+          "result": "PASS; build emits route-manifest.json, redirect-manifest.json, seo-audit.json, robots.txt and a noindex 404.html. Three implemented tool/home templates are noindex; no sitemap is emitted with zero approved URLs; 1,107 public routes planned. SEO-02 and empty-set SEO-06 pass only within stated scope.",
+          "artifact": "apps/web/dist/route-manifest.json, apps/web/dist/redirect-manifest.json, apps/web/dist/seo-audit.json, apps/web/dist/robots.txt, apps/web/dist/404.html"
+        },
+        {
+          "command": "npm run seo:release-check",
+          "result": "BLOCKED as designed; 0/1,107 published public routes, 110/110 locale research records pending.",
+          "artifact": "scripts/validate-built-site.mjs",
+          "scope": "Requires full reviewed route/content coverage, legal pages, sitemap and crawler acceptance before release."
+        },
+        {
+          "command": "npm run check && npm run test:unit && npm run test:content && PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; config/inventory checks, 0 TS/Astro diagnostics, 70 unit tests (including sitemap safety/chunk limits), content structure checks and docs/contracts/reference checks.",
+          "artifact": "command output"
+        },
+        {
+          "command": "npm run test:unit && npm run test:seo && npm run check",
+          "result": "PASS after sitemap helper changes; 70 unit tests include empty sitemap behavior, locale submaps, 5,000 URL chunking, duplicate/query/unsafe path rejection; SEO built-site audit passes; config and TS/Astro checks have 0 diagnostics.",
+          "artifact": "tests/unit/seo-artifacts.test.ts and apps/web/dist/seo-audit.json",
+          "scope": "No approved pages exist, so populated sitemap behavior is covered by synthetic unit fixtures, not live indexed content."
+        },
+        {
+          "command": "npm run test:e2e -- --config=playwright.wp09.config.ts --workers=1",
+          "result": "PASS; 15/15 Chromium flows on isolated server, including true 404 response, recovery links, 404 Axe scan, bottle hydration/writer lease and mobile dark-mode contrast.",
+          "artifact": "tests/e2e/wheel.spec.ts and apps/web/src/pages/404.astro",
+          "scope": "Temporary Playwright config removed after run; static host 404 mapping still requires origin verification."
+        },
+        {
+          "command": "npm run test:a11y",
+          "result": "PASS; 3 automated Axe page/state scans; 404 route also has a passing dedicated Axe assertion in its E2E flow.",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Automated checks only; manual screen-reader and real-device acceptance remains open."
+        },
+        {
+          "command": "npm run check && npm run test:unit",
+          "result": "PASS; 0 TypeScript/Astro diagnostics, 70 unit tests including sitemap size/chunking and malformed route rejection.",
+          "artifact": "command output"
+        },
+        {
+          "command": "npm run test:e2e -- --config=playwright.wp09.config.ts --workers=1",
+          "result": "PASS; 18/18 Chromium flows including English default home, AZ home, localized EN/AZ bottle and group-games routes, legacy tool flows, true 404, persistence, cross-tab lease and accessibility checks.",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Local isolated Astro server at localhost:4323; config is temporary and removed after run."
+        },
+        {
+          "command": "npm run test:seo && npm run check && npm run test:unit && npm run test:content && PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs && git diff --check",
+          "result": "PASS; 8 implemented public routes audited as noindex, 0/1107 approved; 0 TS/Astro diagnostics; 70 unit tests; content structure checks; docs/contracts/reference checks; clean whitespace.",
+          "artifact": "apps/web/dist/seo-audit.json and command output",
+          "scope": "SEO release readiness remains blocked by absent research/review/legal/route coverage; no production behavior claimed."
+        }
+      ],
+      "blockers": [
+        "110 locale research records, UI catalogs and route intent remain unreviewed; no publication approvals are present.",
+        "Eight public templates/routes are implemented, but 1,099 of 1,107 planned public routes, including six legal pages, remain absent. Configured host redirects/statuses, sitemap crawler fetch, URL normalization and SEO-01–12 production-origin checks remain open.",
+        "No page can be safely indexed until native copy and SEO review gates pass."
+      ]
     },
     {
       "id": "WP10",

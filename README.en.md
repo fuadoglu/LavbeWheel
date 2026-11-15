@@ -10,14 +10,14 @@ A fast, multilingual wheel and social-game platform designed for phones, tablets
 
 **[Azərbaycan dilində](README.md) · [Start here](docs/00-START-HERE.md) · [Product specification](docs/01-PRODUCT.md) · [Codex execution](docs/15-IMPLEMENTATION.md) · [Release gates](docs/16-ACCEPTANCE.md)**
 
-![Status: WP04 visual system in progress](docs/assets/badges/status.svg)
+![Status: WP09 localization and SEO in progress](docs/assets/badges/status.svg)
 ![Release: complete scope](docs/assets/badges/release.svg)
 ![Locales: 110 planned](docs/assets/badges/locales.svg)
 ![Hosting: shared compatible](docs/assets/badges/hosting.svg)
 
 </div>
 
-> **Repository status:** WP01 foundation and WP02 selection semantics passed CI. WP03 implements local session persistence, atomic result commits/recovery, writer leases and IndexedDB migration; its configured CI passed and PR review is pending. WP04 is redesigning the classic workspace for phone/tablet/desktop, with theme, result history, motion controls and a four-second spin. The other tool layouts and real-device acceptance remain open; only the classic names wheel is currently usable. API, games, reviewed translations and integrations remain open. Badges describe implementation status, not security, accessibility or legal certification. Target domain: **lavbe.com**; the site is not deployed.
+> **Repository status:** The configured CI checks for WP01, WP02 and WP07 pass. WP03 local sessions, result recovery and cross-tab writer leases, plus the core wheel, reports, bottle and social-game flows in WP04–WP06, are implemented; visual acceptance and some tool behaviors remain open. WP08 adds the MFA admin panel, content review and signed publication runner. Draft PR #9 covers WP09’s publication-gated indexing, route/redirect/audit artifacts and strict SEO release gate for the three current templates. All 110 locale research records are pending; the `en` and `az` UI catalogs are drafts, and game cards are English-only drafts. Localized routes, legal pages, PWA, consent integrations and release checks remain open. Target domain: **lavbe.com**; the site is not deployed.
 
 ## 🎯 Product promise
 

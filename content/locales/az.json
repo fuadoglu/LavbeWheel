@@ -89,6 +89,7 @@
     "gameNav": "Oyunlar",
     "gameTitle": "Birlikdə oynayın",
     "gameDescription": "Kart dəstini seçin, iştirakçıları əlavə edin və növbə ilə oynayın. İstənilən kartı səbəb göstərmədən ötürə bilərsiniz.",
+    "gamePackLanguageNotice": "Kart tapşırıqları hazırda ingilis dilindədir.",
     "gameSetup": "Oyun quruluşu",
     "gamePackLabel": "Kart dəsti",
     "gamePlayersLabel": "İştirakçılar, hər sətrə bir ad",
@@ -141,6 +142,11 @@
     "bottleHistory": "Son seçimlər",
     "bottleReadOnly": "Bu şüşə sessiyası başqa tabda açıqdır. Nəticələrə baxa bilərsiniz, amma burada fırlada bilməzsiniz.",
     "bottleError": "Şüşə sessiyası yadda saxlanmadı. Cihazda boş yaddaş olduğunu yoxlayın.",
-    "bottleCycleCount": "Bu dövrdə {remaining} növbə qalıb"
+    "bottleCycleCount": "Bu dövrdə {remaining} növbə qalıb",
+    "notFoundTitle": "Səhifə tapılmadı",
+    "notFoundBody": "Bu ünvan mövcud deyil və ya artıq dəyişib.",
+    "notFoundHome": "Əsas səhifəyə keç",
+    "notFoundBottle": "Şüşə seçimini aç",
+    "notFoundGames": "Oyunlara bax"
   }
 }

@@ -61,6 +61,9 @@ for schema in admin['components']['schemas'].values(): Draft202012Validator.chec
 for kind in ['pack','ui-catalog','seo-copy','legal','preset','integration']:
     vv=validator(load('contracts/admin-'+kind+'.schema.json')); xx=load('contracts/examples/admin-'+kind+'.json');accept(vv,xx)
     xx['unexpected']=True;reject(vv,xx)
+seo_publication=validator(load('contracts/seo-publication.schema.json'))
+reject(seo_publication,{})
+reject(seo_publication,{'locale':'en','routeId':'home','path':'/','status':'published','unreviewed':True})
 admin_schema_checks = len(admin['components']['schemas'])
 print(f'PASS: {checks} fixture acceptance/rejection checks; {admin_schema_checks} admin schema syntax checks.')
 print('Scope: schemas and fixtures; no HTTP server, entropy engine or deployment tested.')

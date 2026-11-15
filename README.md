@@ -10,14 +10,14 @@ Mobil, planşet və kompüter üçün sürətli, çoxdilli seçim alətləri və
 
 **[English](README.en.md) · [Başlanğıc](docs/00-START-HERE.md) · [Məhsul tələbləri](docs/01-PRODUCT.md) · [Codex icra planı](docs/15-IMPLEMENTATION.md) · [Qəbul meyarları](docs/16-ACCEPTANCE.md)**
 
-![Status: WP04 visual system in progress](docs/assets/badges/status.svg)
+![Status: WP09 localization and SEO in progress](docs/assets/badges/status.svg)
 ![Buraxılış: tam funksional əhatə](docs/assets/badges/release.svg)
 ![Dillər: 110 planlaşdırılıb](docs/assets/badges/locales.svg)
 ![Yerləşdirmə: shared hosting](docs/assets/badges/hosting.svg)
 
 </div>
 
-> **Reponun hazırkı vəziyyəti:** WP01 foundation və WP02 seçim/semantika yoxlamaları CI-dən keçib. WP03-də cihazda sessiya saxlanması, fırlatma nəticəsinin atomik qeyd/bərpası, writer lease və IndexedDB migration tətbiq olunub; CI keçib, PR review gözləyir. WP04-də klassik ekranı telefon/planşet/desktop üçün yenilədim, tema, nəticə tarixçəsi, hərəkət ayarı və 4 saniyəlik fırlanma əlavə etdim; vizual paketin qalan alətləri və real cihaz qəbul yoxlaması açıqdır. Hələlik yalnız klassik ad çarxı işləkdir; API, oyunlar, nəzərdən keçirilmiş 110 tərcümə və inteqrasiyalar açıqdır. Nişanlar layihə tələblərini göstərir; təhlükəsizlik və ya hüquqi uyğunluq sertifikatı deyil. Hədəf domain **lavbe.com**-dur; sayt yayımlanmayıb.
+> **Reponun hazırkı vəziyyəti:** WP01, WP02 və WP07 üçün əsas avtomatlaşdırılmış yoxlamalar CI-dən keçib. WP03-də local sessiya yaddaşı, nəticə bərpası və tablararası writer lease; WP04–WP06-da əsas çarx, hesabatlar, butulka və sosial oyun axınları tətbiq olunub, amma vizual qəbulu və bəzi alət davranışları açıqdır. WP08-də MFA admin paneli, məzmun baxışı və imzalı publish runner tətbiq olunub. WP09 üçün draft PR #9 açıqdır; indeksləmə qapısı, route/redirect/audit artefaktları və SEO release gate qurulub. Lokal build indi ingiliscə əsas səhifəni, azərbaycanca `/az/` səhifəsini, həmçinin `en` və `az` butulka və qrup oyunu marşrutlarını təqdim edir; 8 ictimai route/template indekslənmədən yoxlanır. 110 locale research qeydi pending, `en` və `az` UI kataloqları draft, oyun kartları isə yalnız ingiliscə draftdır. Qalan lokal marşrutlar, hüquqi səhifələr, PWA, consent inteqrasiyaları və buraxılış yoxlamaları açıqdır. Hədəf domain **lavbe.com**-dur; sayt yayımlanmayıb.
 
 ## 🎯 Lavbe nə edəcək?
 

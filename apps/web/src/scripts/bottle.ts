@@ -5,8 +5,11 @@ import {
   listSessions, loadSession, releaseWriterLease, renewWriterLease, saveInitialSession, updateSession,
 } from '@lavbe/session';
 import { wheelSpinProgress } from './spin-motion';
-import messages from '../../../../content/locales/az.json';
+import azCatalog from '../../../../content/locales/az.json';
+import enCatalog from '../../../../content/locales/en.json';
 
+const messages = document.documentElement.lang === 'en' ? enCatalog : azCatalog;
+const locale = document.documentElement.lang || 'az';
 const text = messages.messages;
 const setup = document.querySelector<HTMLFormElement>('#bottle-setup');
 const namesInput = document.querySelector<HTMLTextAreaElement>('#bottle-names');
@@ -45,6 +48,7 @@ let names: string[] = [];
 let angle = 0;
 let selectedIndex: number | null = null;
 let spinning = false;
+let pageReady = false;
 
 function wheel() {
   if (!session) throw new Error('Bottle session has not loaded');
@@ -77,7 +81,7 @@ function renderSavedSessions(): void {
   const bottles = records.filter((record) => record.envelope.configRevisions.some((item) => item.wheel.tool === 'bottle'));
   savedSelect!.replaceChildren(...bottles.map((record) => {
     const option = document.createElement('option'); option.value = record.sessionId; option.selected = record.sessionId === session?.sessionId;
-    const date = new Intl.DateTimeFormat('az', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(record.envelope.createdAt));
+    const date = new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(record.envelope.createdAt));
     option.textContent = `Şüşə · ${date}`; return option;
   }));
   savedSelect!.disabled = bottles.length < 2;
@@ -155,6 +159,7 @@ async function startNew(labels = namesInput!.value.split(/\r?\n/).map((name) => 
 
 setup.addEventListener('submit', (event) => {
   event.preventDefault(); clearError();
+  if (!pageReady) return;
   const labels = namesInput.value.split(/\r?\n/).map((name) => name.trim()).filter(Boolean);
   if (labels.length < 2 || labels.length > 20) { showError(new Error(text.gameInvalidPlayers)); return; }
   startButton.disabled = true; void startNew(labels).catch(showError).finally(() => { startButton.disabled = false; });
@@ -194,13 +199,13 @@ resetButton.addEventListener('click', () => {
     void persist(next).catch(showError);
   } catch (error) { showError(error); }
 });
-newButton.addEventListener('click', () => { setup.hidden = false; playPanel.hidden = true; namesInput!.value = names.join('\n'); namesInput!.focus(); });
+newButton.addEventListener('click', () => { setup.hidden = false; playPanel.hidden = true; startButton!.disabled = false; namesInput!.value = names.join('\n'); namesInput!.focus(); });
 savedSelect.addEventListener('change', () => { void useSession(savedSelect.value).catch(showError); });
 window.addEventListener('beforeunload', () => { if (session && writerLeaseHeld) void releaseWriterLease(session.wheelId, writerId); });
 void refreshSessions().then(async () => {
   const last = records.find((record) => record.envelope.configRevisions.some((item) => item.wheel.tool === 'bottle'));
   if (last) await useSession(last.sessionId);
-}).catch(showError);
+}).catch(showError).finally(() => { pageReady = true; startButton!.disabled = false; });
 window.setInterval(() => {
   if (!session || !writerLeaseHeld) return;
   void renewWriterLease(session.wheelId, writerId).then((renewed) => { if (!renewed) { writerLeaseHeld = false; render(); } }).catch(() => { writerLeaseHeld = false; render(); });

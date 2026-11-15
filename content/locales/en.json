@@ -89,6 +89,7 @@
     "gameNav": "Games",
     "gameTitle": "Play together",
     "gameDescription": "Choose a pack, add players, then take turns. Skip any card without explaining.",
+    "gamePackLanguageNotice": "Prompt cards are currently in English.",
     "gameSetup": "Game setup",
     "gamePackLabel": "Card pack",
     "gamePlayersLabel": "Players, one per line",
@@ -141,6 +142,11 @@
     "bottleHistory": "Recent selections",
     "bottleReadOnly": "This bottle session is open in another tab. You can review results but cannot spin it here.",
     "bottleError": "The bottle session could not be saved. Check this device’s available storage.",
-    "bottleCycleCount": "{remaining} turns remain in this cycle"
+    "bottleCycleCount": "{remaining} turns remain in this cycle",
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "This address does not exist or has changed.",
+    "notFoundHome": "Go to the home page",
+    "notFoundBottle": "Open bottle picker",
+    "notFoundGames": "Browse games"
   }
 }
