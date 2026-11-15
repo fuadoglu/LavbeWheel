@@ -773,7 +773,7 @@
       "id": "WP12",
       "status": "in-progress",
       "branch": "feat/wp12-release",
-      "commit": null,
+      "commit": "cf170a7",
       "evidence": [
         {
           "command": "npm run test:seo && git diff --check",
