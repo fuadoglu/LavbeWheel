@@ -49,6 +49,26 @@ test('exports a validated JSON backup of the active local session', async ({ pag
   await expect(page.locator('#import-feedback')).toContainText('JSON faylında iştirakçı adları və sessiya tarixçəsi var');
 });
 
+test('offers a JSON backup when local storage fails and pauses further spins', async ({ page }) => {
+  await page.addInitScript(() => {
+    const put = IDBObjectStore.prototype.put;
+    IDBObjectStore.prototype.put = function (...args: Parameters<IDBObjectStore['put']>) {
+      if (this.name === 'wheelDrafts') throw new DOMException('simulated quota exhaustion', 'QuotaExceededError');
+      return put.apply(this, args);
+    };
+  });
+  await page.goto('/');
+  await page.getByRole('textbox', { name: 'İştirakçı adları, hər sətirdə bir ad' }).fill('Aylin\nMurad');
+  await expect(page.locator('#storage-status')).toContainText('sessiyanı JSON kimi yükləyin');
+  await expect(page.getByRole('button', { name: 'Çarxı fırlat' })).toBeDisabled();
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Sessiyanı JSON kimi yüklə' }).click();
+  const download = await downloadPromise;
+  const contents = JSON.parse(await readFile((await download.path())!, 'utf8'));
+  expect(contents.results).toEqual([]);
+  await expect(page.locator('#import-feedback')).toContainText('JSON faylında iştirakçı adları və sessiya tarixçəsi var');
+});
+
 test('previews and imports a separate session copy, then restores and switches sessions', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır');
@@ -210,7 +230,7 @@ test('uses one cross-tab writer and reacquires the lease after that tab closes',
   await expect(page.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır');
   const secondTab = await context.newPage();
   await secondTab.goto('/');
-  await expect(secondTab.locator('#storage-status')).toHaveText('Yadda saxlamaq mümkün olmadı. Adlar bu səhifədə qalır.');
+  await expect(secondTab.locator('#storage-status')).toHaveText('Yerli yaddaşa yazmaq mümkün olmadı. Seçimlər bloklandı; tarixçəni qorumaq üçün sessiyanı JSON kimi yükləyin.');
   await expect(secondTab.getByRole('button', { name: 'Çarxı fırlat' })).toBeDisabled();
   await page.close();
   await expect(secondTab.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır', { timeout: 5_000 });

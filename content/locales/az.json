@@ -29,7 +29,7 @@
     "savedLocally": "Bu cihazda yadda saxlanır",
     "storageReady": "Yerli yaddaş hazırdır",
     "storageSaving": "Yadda saxlanır…",
-    "storageFailed": "Yadda saxlamaq mümkün olmadı. Adlar bu səhifədə qalır.",
+    "storageFailed": "Yerli yaddaşa yazmaq mümkün olmadı. Seçimlər bloklandı; tarixçəni qorumaq üçün sessiyanı JSON kimi yükləyin.",
     "storageLoading": "Yaddaş yoxlanılır…",
     "sessionSelect": "Saxlanmış sessiya",
     "sessionUntitled": "Sessiya",

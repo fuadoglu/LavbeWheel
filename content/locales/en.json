@@ -29,7 +29,7 @@
     "savedLocally": "Saved on this device",
     "storageReady": "Local storage is ready",
     "storageSaving": "Saving…",
-    "storageFailed": "Could not save. Names remain on this page.",
+    "storageFailed": "Could not save to local storage. Spins are paused; download the session as JSON to preserve its history.",
     "storageLoading": "Checking local storage…",
     "sessionSelect": "Saved session",
     "sessionUntitled": "Session",
