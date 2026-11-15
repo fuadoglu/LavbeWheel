@@ -680,7 +680,7 @@
       "id": "WP10",
       "status": "in-progress",
       "branch": "feat/wp10-pwa",
-      "commit": null,
+      "commit": "07cb479",
       "evidence": [
         {
           "command": "npm run test:pwa",
@@ -698,6 +698,11 @@
           "result": "PASS within current route set; worker caches only current public HTML and same-origin assets, applies a 30 MiB runtime-asset cap, excludes admin/API/share/preview and capability-query requests, and requires explicit safe-boundary update activation.",
           "artifact": "apps/web/public/sw.js and scripts/generate-pwa-artifacts.mjs",
           "scope": "Native install UX, physical storage eviction, real host headers, and two-release old-client compatibility remain unverified."
+        },
+        {
+          "command": "git diff --cached --check && git commit -m \"feat: add bounded offline PWA experience\"",
+          "result": "PASS; reviewed 34 explicitly staged paths and recorded implementation at 07cb479. Branch CI is pending after push.",
+          "artifact": "feat/wp10-pwa@07cb479"
         }
       ],
       "blockers": [
