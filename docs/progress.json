@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 persistence is implemented and configured CI passed; WP04-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 session controls and persistence are implemented with local automated evidence; history retention and manual acceptance remain open; WP04-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -112,6 +112,34 @@
       "commit": "1f50c6ecce9910dd70648a730df0d67ae58d7cbd",
       "evidence": [
         {
+          "command": "npm run check",
+          "result": "PASS; generated-contract/config checks and TypeScript/Astro diagnostics report 0 errors, warnings or hints",
+          "artifact": "packages/session/src/ and apps/web/src/"
+        },
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 39 tests, including lease-checked session deletion, drafts and storage quota failure atomicity",
+          "artifact": "tests/unit/session.test.ts"
+        },
+        {
+          "command": "npm run test:e2e -- --workers=1",
+          "result": "PASS; 9 Chromium tests including local JSON export/import, separate-copy restore, session cap/deletion, migration, lease recovery and crash recovery; automated Axe scan reports no WCAG 2.1 A/AA violations",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Local Chromium only; not cross-browser, device or manual accessibility acceptance"
+        },
+        {
+          "command": "npm run test:content && npm run test:seo",
+          "result": "PASS; 110 locale metadata records and 2 draft catalogs have matching keys/placeholders (108 catalogs pending); root static page smoke passes",
+          "artifact": "apps/web/dist/index.html",
+          "scope": "SEO root smoke only; not SEO-01–12, native translation review or production-origin verification"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; documentation integrity, schema fixtures, 16 semantic reference vectors, SEO contract integrity",
+          "artifact": "scripts/validate_docs.py",
+          "scope": "Documentation/reference checks only; no API or production runtime verification"
+        },
+        {
           "command": "npm run contracts:generate && npm run contracts:check",
           "result": "PASS; generated session JSON Schema validator is deterministic",
           "artifact": "packages/session/src/generated/session-schema-validator.js"
@@ -174,9 +202,9 @@
         }
       ],
       "blockers": [
-        "JSON import/export functions are implemented but not yet exposed through user-facing controls.",
-        "Session history retention/pruning and quota recovery/export prompts remain for reports and interface work.",
-        "Manual testing beyond Chromium CI and cross-browser/device acceptance remain open."
+        "The 10,000-result retention rule still lacks an explicit pre-prune export/confirmation flow and safe history-pruning transition; preserve committed history until that contract is implemented.",
+        "Storage quota/private-mode recovery currently surfaces a generic persistence failure; the required export or explicit ephemeral-mode recovery flow remains open.",
+        "Manual testing beyond local Chromium and cross-browser/device acceptance remain open."
       ]
     },
     {

@@ -6,6 +6,7 @@ import 'fake-indexeddb/auto';
 import {
   acquireWriterLease,
   commitSelectionResult,
+  deleteSession,
   exportSessionJSON,
   importSessionJSON,
   listSessions,
@@ -14,6 +15,8 @@ import {
   releaseWriterLease,
   renewWriterLease,
   saveInitialSession,
+  saveWheelDraft,
+  loadWheelDraft,
   updateSession,
   validateSessionEnvelope,
   type SessionEnvelope,
@@ -106,6 +109,22 @@ test('IndexedDB commits, presentation recovery, leases, export and import are du
   await releaseWriterLease(fixture.wheelId, 'owner-one');
   assert.equal(await acquireWriterLease(fixture.wheelId, 'owner-two', now + 2_000), true);
   assert.equal((await loadSession(fixture.sessionId))?.revision, 4);
+});
+
+test('session deletion requires the active writer lease and clears only that session draft', async () => {
+  await cleanDatabase();
+  await saveInitialSession(structuredClone(fixture));
+  await saveWheelDraft('private draft', fixture.sessionId);
+  const now = Date.parse('2026-11-14T09:01:00Z');
+  assert.equal(await acquireWriterLease(fixture.wheelId, 'delete-owner', now), true);
+  await assert.rejects(deleteSession(fixture.sessionId, 'other-owner', 1, now), /writer lease/);
+  assert.equal((await listSessions()).length, 1);
+  assert.equal(await loadWheelDraft(fixture.sessionId), 'private draft');
+
+  await deleteSession(fixture.sessionId, 'delete-owner', 1, now);
+  assert.equal((await listSessions()).length, 0);
+  assert.equal(await loadSession(fixture.sessionId), null);
+  assert.equal(await loadWheelDraft(fixture.sessionId), null);
 });
 
 test('storage quota failures are surfaced without writing a partial session', async () => {

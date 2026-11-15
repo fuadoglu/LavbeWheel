@@ -31,8 +31,25 @@
     "storageSaving": "Yadda saxlanır…",
     "storageFailed": "Yadda saxlamaq mümkün olmadı. Adlar bu səhifədə qalır.",
     "storageLoading": "Yaddaş yoxlanılır…",
+    "sessionSelect": "Saxlanmış sessiya",
+    "sessionUntitled": "Sessiya",
+    "exportNotice": "JSON faylında iştirakçı adları və sessiya tarixçəsi var. Fayl cihazınıza endirildi.",
+    "exportSession": "Sessiyanı JSON kimi yüklə",
+    "chooseImport": "JSON ehtiyat nüsxəsi seç",
+    "importAsCopy": "Ayrı sessiya kimi əlavə et",
+    "importPreview": "Baxış: {title} · {count} nəticə. Yeni ayrı sessiya kimi əlavə ediləcək; mövcud sessiyalar dəyişməyəcək.",
+    "importInvalid": "Bu fayl etibarlı Lavbe sessiya ehtiyatı deyil. Məlumat dəyişdirilmədi.",
+    "importTooLarge": "Ehtiyat faylı 5 MiB import limitini keçir.",
+    "importReady": "Ehtiyat nüsxə etibarlıdır və import üçün hazırdır.",
+    "importSuccess": "Ehtiyat nüsxə ayrıca yerli sessiya kimi əlavə edildi.",
+    "importFull": "Sessiya limiti dolub. Yeni importdan əvvəl bəzi sessiyaları silin.",
+    "importError": "Ehtiyat nüsxəni import etmək olmadı. Mövcud sessiyalar dəyişdirilmədi.",
+    "sessionSwitchError": "Bu brauzer tabında sessiyanı dəyişmək mümkün olmadı.",
     "resetSamples": "Nümunələri qaytar",
     "footerTagline": "Seçim anı üçün düşünülmüş təcrübə",
-    "footerPromise": "Sadə. Ədalətli. Birlikdə."
+    "footerPromise": "Sadə. Ədalətli. Birlikdə.",
+    "deleteSession": "Sessiyanı sil",
+    "deleteSessionConfirm": "“{title}” sessiyasını və tarixçəsini bu cihazdan silmək istəyirsiniz? Bu əməliyyat geri qaytarılmır. Əvvəlcə JSON ehtiyat nüsxəsini endirin.",
+    "deleteSessionError": "Sessiyanı silmək mümkün olmadı. Sessiya yadda qaldı."
   }
 }

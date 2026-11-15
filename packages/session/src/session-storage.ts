@@ -141,6 +141,34 @@ export async function listSessions(): Promise<StoredSession[]> {
   } finally { database.close(); }
 }
 
+/** Removes one saved session only while the caller owns its writer lease and revision. */
+export async function deleteSession(sessionId: string, ownerId: string, expectedRevision: number, now = Date.now()): Promise<void> {
+  const database = await openDatabase();
+  let done: Promise<void> | undefined;
+  try {
+    const readTransaction = database.transaction('sessions', 'readonly');
+    const observed = await requestValue(readTransaction.objectStore('sessions').get(sessionId) as IDBRequest<StoredSession | undefined>);
+    await transactionDone(readTransaction);
+    if (!observed) throw new SessionConflictError('Session does not exist');
+    const transaction = database.transaction(['sessions', 'leases', 'wheelDrafts'], 'readwrite');
+    done = transactionDone(transaction);
+    const sessions = transaction.objectStore('sessions');
+    const [current, lease] = await Promise.all([
+      requestValue(sessions.get(sessionId) as IDBRequest<StoredSession | undefined>),
+      getLeaseInTransaction(transaction.objectStore('leases'), observed.envelope.wheelId),
+    ]);
+    if (!current || current.envelope.wheelId !== observed.envelope.wheelId || current.revision !== expectedRevision) throw new SessionConflictError('Session revision changed before deletion');
+    if (!lease || lease.ownerId !== ownerId || lease.expiresAt <= now) throw new SessionConflictError('Session writer lease is missing or expired');
+    sessions.delete(sessionId);
+    transaction.objectStore('leases').delete(current.envelope.wheelId);
+    transaction.objectStore('wheelDrafts').delete(sessionId);
+    await done;
+  } catch (error) {
+    await done?.catch(() => undefined);
+    throw error;
+  } finally { database.close(); }
+}
+
 export async function saveInitialSession(envelope: SessionEnvelope): Promise<void> {
   const validation = validateSessionEnvelope(envelope);
   if (!validation.ok) throw new TypeError(`Invalid session: ${validation.error}${validation.detail ? ` (${validation.detail})` : ''}`);

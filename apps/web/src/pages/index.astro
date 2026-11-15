@@ -40,6 +40,16 @@ Murad
 Leyla
 Kamran</textarea>
         <div class="list-footer"><span><span class="save-dot"></span> <span id="storage-status" aria-live="polite">{m.storageLoading}</span></span><button id="reset" type="button">{m.resetSamples}</button></div>
+        <div class="session-tools">
+          <label for="session-picker">{m.sessionSelect}</label>
+          <select id="session-picker" aria-label={m.sessionSelect}></select>
+          <button id="export-session" type="button">{m.exportSession}</button>
+          <label for="session-import-file">{m.chooseImport}</label>
+          <input id="session-import-file" type="file" accept=".json,application/json" />
+          <button id="confirm-import" type="button" disabled>{m.importAsCopy}</button>
+          <button id="delete-session" type="button" disabled>{m.deleteSession}</button>
+        </div>
+        <p class="import-feedback" id="import-feedback" aria-live="polite"></p>
       </section>
       <footer><span>Lavbe <span class="footer-sep">·</span> {m.footerTagline}</span><span>{m.footerPromise}</span></footer>
     </main>
