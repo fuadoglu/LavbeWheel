@@ -98,6 +98,7 @@ function render(): void {
   playPanel.hidden = false;
   renderSavedSessions();
   const game = session.game;
+  window.dispatchEvent(new CustomEvent('lavbe:activity', { detail: { busy: game.phase === 'revealing-card' || game.phase === 'awaiting-complete-or-skip' } }));
   const current = activeCard();
   cardPanel.hidden = !current;
   if (current) {

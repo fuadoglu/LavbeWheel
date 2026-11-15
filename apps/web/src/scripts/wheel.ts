@@ -437,6 +437,7 @@ function showResultAndAnimate(winnerIndex: number, selectedLabel: string): void 
         entriesInput.disabled = false;
         resetButton.disabled = false;
         refreshControls();
+        window.dispatchEvent(new CustomEvent('lavbe:activity', { detail: { busy: false } }));
       });
     }
   }
@@ -510,6 +511,7 @@ void (async () => {
 spinButton.addEventListener('click', () => {
   void (async () => {
     if (!session || !writerLeaseHeld || spinButton.disabled) return;
+    window.dispatchEvent(new CustomEvent('lavbe:activity', { detail: { busy: true } }));
     spinButton.disabled = true;
     if (configTimer) clearTimeout(configTimer);
     await pendingWrite;
@@ -536,5 +538,8 @@ spinButton.addEventListener('click', () => {
     renderHistory();
     renderReport();
     showResultAndAnimate(eligible.findIndex((entry) => entry.id === winner.id), winner.label);
-  })().catch(markPersistenceFailure);
+  })().catch(() => {
+    window.dispatchEvent(new CustomEvent('lavbe:activity', { detail: { busy: false } }));
+    markPersistenceFailure();
+  });
 });

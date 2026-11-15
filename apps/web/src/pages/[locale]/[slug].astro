@@ -37,6 +37,10 @@ const light = designTokens.themes.light;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/icons/lavbe-icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
     <meta name="theme-color" content={light.canvas} />
     <script is:inline>
       (() => {
@@ -103,6 +107,7 @@ const light = designTokens.themes.light;
         button?.addEventListener('click', () => { const next = root.dataset.theme === 'dark' ? 'light' : 'dark'; save('lavbe.theme', next); setTheme(next); });
       })();
     </script>
+    <script src="../../scripts/pwa-client.ts"></script>
     <script src="../../scripts/localized-tool.ts"></script>
   </body>
 </html>
