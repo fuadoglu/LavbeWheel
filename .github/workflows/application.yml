@@ -53,3 +53,5 @@ jobs:
       - run: npm run test:pwa
       - run: npm run test:consent
       - run: npm audit --audit-level=moderate
+      - name: Build and verify internal release candidate package
+        run: npm run release:package -- --output "$RUNNER_TEMP/lavbe-release-$GITHUB_SHA"

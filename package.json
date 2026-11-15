@@ -29,6 +29,7 @@
     "screenshots:wp04": "node scripts/capture-wp04-screenshots.mjs",
     "validate:docs": "python3 scripts/validate_docs.py && python3 scripts/validate_contracts.py && python3 scripts/validate_semantics.py && python3 scripts/validate_seo_contract.py",
     "verify:release": "node scripts/verify-release.mjs",
+    "release:package": "node scripts/package-release.mjs",
     "format:check": "prettier --check .",
     "screenshots:wp06": "node scripts/capture-wp06-screenshots.mjs",
     "test:consent": "playwright test --config=playwright.consent.config.ts"
