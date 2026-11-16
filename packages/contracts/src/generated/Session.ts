@@ -382,6 +382,10 @@ export interface PortableLavbeSessionEnvelopeV1 {
         status: 'pending' | 'completed' | 'skipped';
       }
   )[];
+  /**
+   * Highest result sequence intentionally removed by local history retention. If results remain, they begin at the next sequence.
+   */
+  historyPrunedThroughSequence?: number;
   game: {
     packId: string;
     packVersion: number;

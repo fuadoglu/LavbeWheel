@@ -6,6 +6,7 @@ import 'fake-indexeddb/auto';
 import {
   acquireWriterLease,
   commitSelectionResult,
+  deleteSession,
   exportSessionJSON,
   importSessionJSON,
   listSessions,
@@ -14,6 +15,8 @@ import {
   releaseWriterLease,
   renewWriterLease,
   saveInitialSession,
+  saveWheelDraft,
+  loadWheelDraft,
   updateSession,
   validateSessionEnvelope,
   type SessionEnvelope,
@@ -41,6 +44,9 @@ test('session envelopes validate schemas, references, results and all tool fixtu
   const missingRound = structuredClone(fixture);
   missingRound.results[0]!.roundId = 'round_missing';
   assert.deepEqual(validateSessionEnvelope(missingRound), { ok: false, error: 'MISSING_REFERENCE' });
+  const wrongPruneBoundary = structuredClone(fixture);
+  wrongPruneBoundary.historyPrunedThroughSequence = 2;
+  assert.deepEqual(validateSessionEnvelope(wrongPruneBoundary), { ok: false, error: 'INVALID_SEQUENCE' });
   const alteredLabel = structuredClone(fixture);
   if (alteredLabel.results[0]?.kind === 'entry') alteredLabel.results[0].label = 'Someone else';
   assert.deepEqual(validateSessionEnvelope(alteredLabel), { ok: false, error: 'INVALID_RESULT_MEMBER' });
@@ -106,6 +112,79 @@ test('IndexedDB commits, presentation recovery, leases, export and import are du
   await releaseWriterLease(fixture.wheelId, 'owner-one');
   assert.equal(await acquireWriterLease(fixture.wheelId, 'owner-two', now + 2_000), true);
   assert.equal((await loadSession(fixture.sessionId))?.revision, 4);
+});
+
+test('session deletion requires the active writer lease and clears only that session draft', async () => {
+  await cleanDatabase();
+  await saveInitialSession(structuredClone(fixture));
+  await saveWheelDraft('private draft', fixture.sessionId);
+  const now = Date.parse('2026-11-14T09:01:00Z');
+  assert.equal(await acquireWriterLease(fixture.wheelId, 'delete-owner', now), true);
+  await assert.rejects(deleteSession(fixture.sessionId, 'other-owner', 1, now), /writer lease/);
+  assert.equal((await listSessions()).length, 1);
+  assert.equal(await loadWheelDraft(fixture.sessionId), 'private draft');
+
+  await deleteSession(fixture.sessionId, 'delete-owner', 1, now);
+  assert.equal((await listSessions()).length, 0);
+  assert.equal(await loadSession(fixture.sessionId), null);
+  assert.equal(await loadWheelDraft(fixture.sessionId), null);
+});
+
+test('history retention prunes exactly one oldest result at the configured cap and records the sequence boundary', async () => {
+  await cleanDatabase();
+  const full = structuredClone(fixture);
+  const candidate = full.results[0]!;
+  if (candidate.kind !== 'entry') throw new Error('Names fixture must have entry results');
+  const sample = candidate;
+  const wheel = full.configRevisions.find((revision) => revision.id === full.currentRevisionId)!.wheel;
+  const entry = wheel.entries.find((item) => item.id === sample.entryId)!;
+  const baseTime = Date.parse(sample.committedAt);
+  full.results = Array.from({ length: 10_000 }, (_, index) => ({
+    ...sample,
+    id: `spin_seed_${String(index + 1).padStart(5, '0')}`,
+    sequence: index + 1,
+    committedAt: new Date(baseTime + index * 1_000).toISOString(),
+    entryId: entry.id,
+    label: entry.label,
+  }));
+  assert.equal(validateSessionEnvelope(full).ok, true);
+  await saveInitialSession(full);
+  const now = Date.parse('2026-11-14T09:01:00Z');
+  assert.equal(await acquireWriterLease(full.wheelId, 'retention-owner', now), true);
+
+  const next = structuredClone(full);
+  next.results.shift();
+  next.historyPrunedThroughSequence = next.results[0]!.sequence - 1;
+  next.results.push({
+    ...sample,
+    id: 'spin_after_cap01',
+    sequence: 10_001,
+    committedAt: new Date(baseTime + 10_000_000).toISOString(),
+    entryId: entry.id,
+    label: entry.label,
+  });
+  const originalPut = IDBObjectStore.prototype.put;
+  IDBObjectStore.prototype.put = function () { throw new DOMException('simulated retention quota', 'QuotaExceededError'); };
+  try {
+    await assert.rejects(commitSelectionResult(next, 'retention-owner', 1, now), (error: unknown) => error instanceof DOMException && error.name === 'QuotaExceededError');
+  } finally {
+    IDBObjectStore.prototype.put = originalPut;
+  }
+  const unchanged = await loadSession(full.sessionId);
+  assert.equal(unchanged?.envelope.results.length, 10_000);
+  assert.equal(unchanged?.envelope.results[0]?.sequence, 1);
+  assert.equal(unchanged?.envelope.historyPrunedThroughSequence, undefined);
+  assert.equal(unchanged?.revision, 1);
+  const committedRevision = await commitSelectionResult(next, 'retention-owner', 1, now);
+  assert.equal(committedRevision, 2);
+  const stored = await loadSession(full.sessionId);
+  assert.equal(stored?.envelope.results.length, 10_000);
+  assert.equal(stored?.envelope.results[0]?.sequence, 2);
+  assert.equal(stored?.envelope.results.at(-1)?.sequence, 10_001);
+  assert.equal(stored?.envelope.historyPrunedThroughSequence, 1);
+  assert.equal(validateSessionEnvelope(JSON.parse(exportSessionJSON(next))).ok, true);
+  const imported = await importSessionJSON(exportSessionJSON(next), { mode: 'copy' });
+  assert.equal(imported.historyPrunedThroughSequence, 1);
 });
 
 test('storage quota failures are surfaced without writing a partial session', async () => {

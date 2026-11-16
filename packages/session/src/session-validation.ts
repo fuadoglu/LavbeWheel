@@ -43,6 +43,7 @@ export function validateSessionEnvelope(input: unknown): SessionValidation {
   const resultIds = envelope.results.map((item) => item.id);
   if (!idsAreUnique(revisionIds) || !idsAreUnique(roundIds) || !idsAreUnique(resultIds)) return fail('DUPLICATE_ID');
   if (!revisionIds.includes(envelope.currentRevisionId)) return fail('MISSING_CURRENT_REVISION');
+  if (envelope.historyPrunedThroughSequence !== undefined && envelope.results.length > 0 && envelope.results[0]!.sequence !== envelope.historyPrunedThroughSequence + 1) return fail('INVALID_SEQUENCE');
 
   const revisions = new Map(envelope.configRevisions.map((item) => [item.id, item.wheel]));
   const rounds = new Set(roundIds);

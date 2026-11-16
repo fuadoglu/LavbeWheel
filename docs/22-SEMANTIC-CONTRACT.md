@@ -20,7 +20,7 @@ Numbers use range as eligibility; entries is an empty array, not phantom names. 
 
 ## Session restoration
 
-Validate the full envelope against session.schema.json, then validate every embedded wheel. All wheel/session/round/result/config IDs are unique in their respective namespaces. currentRevisionId must reference an existing revision. Every result references an existing round/revision; sequences strictly increase (gaps permitted after declared history pruning), timestamps are UTC and nondecreasing. Type must match referenced tool. Entry IDs/labels must match the immutable revision; number values must be within its range; team membership must satisfy the rules above.
+Validate the full envelope against session.schema.json, then validate every embedded wheel. All wheel/session/round/result/config IDs are unique in their respective namespaces. currentRevisionId must reference an existing revision. Every result references an existing round/revision; sequences strictly increase and timestamps are UTC and nondecreasing. When `historyPrunedThroughSequence` is present, it records the highest intentionally removed result sequence and the first retained result must be exactly the next sequence. Type must match referenced tool. Entry IDs/labels must match the immutable revision; number values must be within its range; team membership must satisfy the rules above.
 
 Cycle remaining/excluded IDs refer to current active entries, are disjoint and never introduce IDs. Independent mode remaining equals active IDs, excluded empty. Remove-winner state is derived from recorded draws and reset cycle metadata; shuffled-cycle preserves actual remaining order without rerolling after reload.
 
