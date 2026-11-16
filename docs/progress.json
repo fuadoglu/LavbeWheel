@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 session controls and persistence are implemented with local automated evidence; history retention and manual acceptance remain open; WP04-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 session controls and persistence are implemented with local automated evidence; manual acceptance remains open; WP04-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -109,7 +109,7 @@
       "id": "WP03",
       "status": "implemented",
       "branch": "feat/wp03-session",
-      "commit": "8917713a6a24dec8699f51520395d7b0643483f5",
+      "commit": "2e051ff3eb80133469648f84ec09ade49dbe5e1a",
       "evidence": [
         {
           "method": "curl -I --max-time 3 http://127.0.0.1:4322/",
@@ -123,15 +123,20 @@
           "artifact": "packages/session/src/ and apps/web/src/"
         },
         {
+          "command": "npm run contracts:generate && npm run contracts:check",
+          "result": "PASS; session schema types and runtime validator generated deterministically with the declared pruning boundary",
+          "artifact": "packages/contracts/src/generated/Session.ts and packages/session/src/generated/session-schema-validator.js"
+        },
+        {
           "command": "npm run test:unit",
-          "result": "PASS; 39 tests, including lease-checked session deletion, drafts and storage quota failure atomicity",
+          "result": "PASS; 40 tests, including exactly-one-oldest-result pruning at 10,000, invalid boundary rejection, portable export/import, and proof a failed quota write retains all 10,000 old results",
           "artifact": "tests/unit/session.test.ts"
         },
         {
-          "command": "npm run test:e2e -- --workers=1",
-          "result": "PASS; 10 Chromium tests including validated JSON export/import, separate-copy restore, session cap/deletion, injected quota failure with export recovery, migration, lease recovery and crash recovery; automated Axe scan reports no WCAG 2.1 A/AA violations",
+          "command": "npm run test:e2e",
+          "result": "PASS; 11 Chromium tests including export-before-prune, cancel-without-data-loss, 10,000-result retention, quota export recovery, import/copy, session cap/deletion and recovery flows; Axe reports no WCAG 2.1 A/AA violations on root and retention dialog",
           "artifact": "tests/e2e/wheel.spec.ts",
-          "scope": "Local Chromium only; not cross-browser, device or manual accessibility acceptance"
+          "scope": "Local Chromium with 4 workers; not cross-browser, device or manual accessibility acceptance"
         },
         {
           "command": "npm run test:content && npm run test:seo",
@@ -146,14 +151,10 @@
           "scope": "Documentation/reference checks only; no API or production runtime verification"
         },
         {
-          "command": "npm run contracts:generate && npm run contracts:check",
-          "result": "PASS; generated session JSON Schema validator is deterministic",
-          "artifact": "packages/session/src/generated/session-schema-validator.js"
-        },
-        {
-          "command": "npm run check",
-          "result": "PASS; all TypeScript/Astro diagnostics clear",
-          "artifact": "packages/session/src/"
+          "command": "GitHub Actions verify job on PR #3 at head 030a32c",
+          "result": "FAIL; quota-recovery browser test edited the draft before asynchronous session initialization completed; test now waits for storage readiness and passes locally",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43687388855",
+          "scope": "Failure is on the previous pushed head; replacement CI for the correction is pending"
         },
         {
           "command": "npm run test:unit",
@@ -208,7 +209,6 @@
         }
       ],
       "blockers": [
-        "The 10,000-result retention rule still lacks an explicit pre-prune export/confirmation flow and safe history-pruning transition; preserve committed history until that contract is implemented.",
         "Manual testing beyond local Chromium and cross-browser/device acceptance remain open."
       ]
     },
