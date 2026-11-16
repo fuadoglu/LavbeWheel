@@ -51,6 +51,17 @@ Kamran</textarea>
         </div>
         <p class="import-feedback" id="import-feedback" aria-live="polite"></p>
       </section>
+      <dialog id="history-prune-dialog" aria-labelledby="history-prune-title" aria-describedby="history-prune-warning">
+        <form method="dialog">
+          <h2 id="history-prune-title">{m.historyPruneTitle}</h2>
+          <p id="history-prune-warning">{m.historyPruneWarning}</p>
+          <div class="history-prune-actions">
+            <button id="history-prune-export" type="button">{m.historyPruneExport}</button>
+            <button type="submit" value="continue">{m.historyPruneContinue}</button>
+            <button type="submit" value="cancel">{m.historyPruneCancel}</button>
+          </div>
+        </form>
+      </dialog>
       <footer><span>Lavbe <span class="footer-sep">·</span> {m.footerTagline}</span><span>{m.footerPromise}</span></footer>
     </main>
     <script src="../scripts/wheel.ts"></script>

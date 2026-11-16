@@ -22,7 +22,9 @@ const importFile = document.querySelector<HTMLInputElement>('#session-import-fil
 const confirmImportButton = document.querySelector<HTMLButtonElement>('#confirm-import');
 const deleteSessionButton = document.querySelector<HTMLButtonElement>('#delete-session');
 const importFeedback = document.querySelector<HTMLElement>('#import-feedback');
-if (!canvas || !input || !button || !result || !count || !reset || !storageStatus || !sessionPicker || !exportButton || !importFile || !confirmImportButton || !deleteSessionButton || !importFeedback) throw new Error('Wheel interface is incomplete');
+const historyPruneDialog = document.querySelector<HTMLDialogElement>('#history-prune-dialog');
+const historyPruneExportButton = document.querySelector<HTMLButtonElement>('#history-prune-export');
+if (!canvas || !input || !button || !result || !count || !reset || !storageStatus || !sessionPicker || !exportButton || !importFile || !confirmImportButton || !deleteSessionButton || !importFeedback || !historyPruneDialog || !historyPruneExportButton) throw new Error('Wheel interface is incomplete');
 const wheelCanvas: HTMLCanvasElement = canvas;
 const entriesInput: HTMLTextAreaElement = input;
 const spinButton: HTMLButtonElement = button;
@@ -36,6 +38,8 @@ const sessionImportFile: HTMLInputElement = importFile;
 const sessionImportButton: HTMLButtonElement = confirmImportButton;
 const savedSessionDeleteButton: HTMLButtonElement = deleteSessionButton;
 const importStatus: HTMLElement = importFeedback;
+const resultPruneDialog: HTMLDialogElement = historyPruneDialog;
+const resultPruneExportButton: HTMLButtonElement = historyPruneExportButton;
 const ctx = wheelCanvas.getContext('2d');
 if (!ctx) throw new Error('Canvas is unavailable');
 const context: CanvasRenderingContext2D = ctx;
@@ -319,6 +323,15 @@ function downloadCurrentSession(): void {
   importStatus.textContent = messages.messages.exportNotice;
 }
 
+function confirmOldestResultPrune(): Promise<boolean> {
+  resultPruneDialog.returnValue = '';
+  const closed = new Promise<boolean>((resolve) => {
+    resultPruneDialog.addEventListener('close', () => resolve(resultPruneDialog.returnValue === 'continue'), { once: true });
+  });
+  resultPruneDialog.showModal();
+  return closed;
+}
+
 async function inspectImportFile(): Promise<void> {
   pendingImportJSON = null;
   sessionImportButton.disabled = true;
@@ -410,6 +423,7 @@ resultMessage.textContent = messages.messages.resultIdle;
 entriesInput.addEventListener('input', () => { editedBeforeRestore = true; sync(); });
 resetButton.addEventListener('click', () => { entriesInput.value = 'Aylin\nMurad\nLeyla\nKamran'; editedBeforeRestore = true; sync(); });
 sessionExportButton.addEventListener('click', downloadCurrentSession);
+resultPruneExportButton.addEventListener('click', downloadCurrentSession);
 sessionImportFile.addEventListener('change', () => { void inspectImportFile(); });
 sessionImportButton.addEventListener('click', () => { void importAsSeparateSession(); });
 savedSessionDeleteButton.addEventListener('click', () => { void deleteCurrentSession(); });
@@ -498,17 +512,29 @@ spinButton.addEventListener('click', () => {
     if (configTimer) clearTimeout(configTimer);
     await pendingWrite;
     await persistCurrentConfig();
+    if (session.results.length >= limits.localHistory.maxResultsPerSession && !await confirmOldestResultPrune()) {
+      refreshControls();
+      return;
+    }
     const wheel = currentWheel();
     const eligible = wheel.entries.filter((entry) => entry.active);
     if (!eligible.length) { refreshControls(); return; }
     const winnerIndex = uniformIndex(eligible.length, browserRandomSource());
     const winner = eligible[winnerIndex]!;
     const next = structuredClone(session);
+    if (next.results.length >= limits.localHistory.maxResultsPerSession) {
+      next.results.shift();
+      const retainedOldest = next.results[0];
+      next.historyPrunedThroughSequence = retainedOldest
+        ? retainedOldest.sequence - 1
+        : next.historyPrunedThroughSequence ?? 0;
+      if (!next.results.length) throw new Error('Cannot prune a result without retaining a sequence boundary');
+    }
     next.results.push({
       id: crypto.randomUUID().replaceAll('-', ''),
       roundId: next.rounds.at(-1)!.id,
       configRevisionId: next.currentRevisionId,
-      sequence: (next.results.at(-1)?.sequence ?? 0) + 1,
+      sequence: (next.results.at(-1)?.sequence ?? next.historyPrunedThroughSequence ?? 0) + 1,
       committedAt: nextTimestamp(next.results.at(-1)?.committedAt ?? next.rounds.at(-1)!.startedAt),
       presentation: 'pending',
       kind: 'entry',

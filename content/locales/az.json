@@ -50,6 +50,11 @@
     "footerPromise": "Sadə. Ədalətli. Birlikdə.",
     "deleteSession": "Sessiyanı sil",
     "deleteSessionConfirm": "“{title}” sessiyasını və tarixçəsini bu cihazdan silmək istəyirsiniz? Bu əməliyyat geri qaytarılmır. Əvvəlcə JSON ehtiyat nüsxəsini endirin.",
-    "deleteSessionError": "Sessiyanı silmək mümkün olmadı. Sessiya yadda qaldı."
+    "deleteSessionError": "Sessiyanı silmək mümkün olmadı. Sessiya yadda qaldı.",
+    "historyPruneTitle": "Tarixçənin yaddaş limiti dolub",
+    "historyPruneWarning": "Sessiyada 10 000 nəticə saxlanır. Davam etsəniz, ən köhnə nəticə silinəcək. İstəsəniz, əvvəlcə tam JSON ehtiyat nüsxəsi endirin.",
+    "historyPruneExport": "Ehtiyat nüsxəni endir",
+    "historyPruneContinue": "Davam et və ən köhnəni sil",
+    "historyPruneCancel": "Fırlatmanı ləğv et"
   }
 }

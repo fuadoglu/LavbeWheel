@@ -50,6 +50,11 @@
     "footerPromise": "Simple. Fair. Together.",
     "deleteSession": "Delete session",
     "deleteSessionConfirm": "Delete “{title}” and its history from this device? This cannot be undone. Download a JSON backup first if you may need it.",
-    "deleteSessionError": "The session could not be deleted. It remains saved."
+    "deleteSessionError": "The session could not be deleted. It remains saved.",
+    "historyPruneTitle": "Session history is full",
+    "historyPruneWarning": "This session stores 10,000 results. Continuing removes the oldest result. Download a complete JSON backup first if you want to keep it.",
+    "historyPruneExport": "Download a backup",
+    "historyPruneContinue": "Continue and remove oldest",
+    "historyPruneCancel": "Cancel spin"
   }
 }

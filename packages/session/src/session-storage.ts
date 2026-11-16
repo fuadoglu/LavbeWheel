@@ -1,4 +1,5 @@
 import type { SessionEnvelope } from '@lavbe/contracts';
+import limits from '../../../config/limits.json' with { type: 'json' };
 import { openDatabase, requestValue, transactionDone, type StoredSession, type WriterLease } from './database.ts';
 import { validateSessionEnvelope } from './session-validation.ts';
 
@@ -21,14 +22,24 @@ function assertStableSessionHistory(current: SessionEnvelope, next: SessionEnvel
 
 function assertResultsOnlyAppend(current: SessionEnvelope, next: SessionEnvelope): void {
   const appended = next.results.at(-1);
-  if (next.currentRevisionId !== current.currentRevisionId || next.results.length !== current.results.length + 1 || current.results.some((result, index) => JSON.stringify(result) !== JSON.stringify(next.results[index])) || appended?.roundId !== current.rounds.at(-1)?.id || appended?.configRevisionId !== current.currentRevisionId) {
+  const retainedOldest = current.results.at(1);
+  const normalAppend = next.results.length === current.results.length + 1
+    && current.results.every((result, index) => JSON.stringify(result) === JSON.stringify(next.results[index]))
+    && next.historyPrunedThroughSequence === current.historyPrunedThroughSequence;
+  const retentionPrune = current.results.length === limits.localHistory.maxResultsPerSession
+    && next.results.length === current.results.length
+    && current.results.slice(1).every((result, index) => JSON.stringify(result) === JSON.stringify(next.results[index]))
+    && retainedOldest !== undefined
+    && next.historyPrunedThroughSequence === retainedOldest.sequence - 1
+    && next.historyPrunedThroughSequence > (current.historyPrunedThroughSequence ?? 0);
+  if (next.currentRevisionId !== current.currentRevisionId || (!normalAppend && !retentionPrune) || appended?.roundId !== current.rounds.at(-1)?.id || appended?.configRevisionId !== current.currentRevisionId) {
     throw new SessionConflictError('A committed spin must append exactly one result to the current revision');
   }
 }
 
 function assertPresentationOnlyUpdate(current: SessionEnvelope, next: SessionEnvelope): void {
   const order = { pending: 0, revealed: 1, acknowledged: 2 } as const;
-  if (next.results.length !== current.results.length) throw new SessionConflictError('Session updates cannot add or remove committed results');
+  if (next.results.length !== current.results.length || next.historyPrunedThroughSequence !== current.historyPrunedThroughSequence) throw new SessionConflictError('Session updates cannot add, remove or prune committed results');
   for (const [index, before] of current.results.entries()) {
     const after = next.results[index]!;
     const beforeData = { ...before, presentation: undefined };
