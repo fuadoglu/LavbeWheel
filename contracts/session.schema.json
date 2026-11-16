@@ -892,6 +892,11 @@
         ]
       }
     },
+    "historyPrunedThroughSequence": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Highest result sequence intentionally removed by local history retention. If results remain, they begin at the next sequence."
+    },
     "game": {
       "anyOf": [
         {

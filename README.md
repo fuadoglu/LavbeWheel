@@ -10,14 +10,14 @@ Mobil, planşet və kompüter üçün sürətli, çoxdilli seçim alətləri və
 
 **[English](README.en.md) · [Başlanğıc](docs/00-START-HERE.md) · [Məhsul tələbləri](docs/01-PRODUCT.md) · [Codex icra planı](docs/15-IMPLEMENTATION.md) · [Qəbul meyarları](docs/16-ACCEPTANCE.md)**
 
-![Status: WP01 foundation verified](docs/assets/badges/status.svg)
+![Status: WP03 CI passed; PR review pending](docs/assets/badges/status.svg)
 ![Buraxılış: tam funksional əhatə](docs/assets/badges/release.svg)
 ![Dillər: 110 planlaşdırılıb](docs/assets/badges/locales.svg)
 ![Yerləşdirmə: shared hosting](docs/assets/badges/hosting.svg)
 
 </div>
 
-> **Reponun hazırkı vəziyyəti:** WP01 foundation qurulub və lokalda işləyən Azərbaycan dilli klassik çarx, build/check alətləri, müqavilə generasiyası və CI mövcuddur. Yeddi alətdən yalnız klassik ad çarxının ilkin dilimi işləkdir; tam saxlama, API, hesabat, oyunlar, 110 tərcümə və inteqrasiyalar hələ qarşıdadır. Nişanlar layihə tələblərini göstərir; təhlükəsizlik və ya hüquqi uyğunluq sertifikatı deyil. Hədəf domain **lavbe.com**-dur; sayt yayımlanmayıb.
+> **Reponun hazırkı vəziyyəti:** WP01 foundation və WP02 seçim/semantika yoxlamaları CI-dən keçib. WP03-də cihazda sessiya saxlanması, fırlatma nəticəsinin atomik qeyd/bərpası, writer lease və IndexedDB migration tətbiq olunub; CI keçib, PR review gözləyir. Yeddi alətdən yalnız klassik ad çarxı işləkdir; API, hesabat ekranları, oyunlar, 110 tərcümə və inteqrasiyalar hələ açıqdır. Nişanlar layihə tələblərini göstərir; təhlükəsizlik və ya hüquqi uyğunluq sertifikatı deyil. Hədəf domain **lavbe.com**-dur; sayt yayımlanmayıb.
 
 ## 🎯 Lavbe nə edəcək?
 
@@ -172,7 +172,7 @@ Açıq seksual məzmun, çat, açıq istifadəçi şablonları bazarı, ayrı ci
 
 **Lavbe · Seçim anı üçün düşünülmüş təcrübə.**
 
-Sənəd bazası: **14 noyabr 2026** · Tətbiq: **WP01 verified; qalan iş paketləri açıqdır**
+Sənəd bazası: **14 noyabr 2026** · Tətbiq: **WP01–WP02 verified · WP03 implemented, CI passed, review pending · WP04–WP12 open**
 
 </div>
 

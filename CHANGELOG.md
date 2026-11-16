@@ -1,5 +1,12 @@
 # Changelog
 
+## WP03 session persistence — 2026-11-14
+
+- Added IndexedDB session and lease stores with a v1-to-v2 migration, per-tab writer coordination, lease renewal and revision compare-and-swap.
+- Persisted each names-wheel result before animation, recorded reveal/acknowledgement transitions, and restored the committed outcome after a simulated crash without rerolling.
+- Added full session schema and cross-record validation, NFC normalization, validated JSON import/export functions and copy identity remapping.
+- Added seven tool-fixture checks, storage failure injection, migration, cross-tab and crash-recovery browser coverage. User-facing JSON controls and retention/quota recovery prompts remain open.
+
 ## WP02 selection semantics — 2026-11-14
 
 - Added unbiased integer and weighted selection, balanced teams, shuffle and recoverable no-repeat cycles with injected entropy sources.

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not documentation completion. WP01 is verified; WP02 implementation is in progress; WP03-WP12 remain unimplemented.",
+  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 session controls and persistence are implemented with local automated evidence; manual acceptance remains open; WP04-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -12,13 +12,13 @@
           "command": "npm ci",
           "result": "PASS; clean lockfile install, 0 npm audit findings",
           "artifact": "evidence/release-manifest.json#/workPackages/WP01/evidence/0",
-          "scope": "Node workspace reproducibility on local macOS ARM; GitHub Actions not run"
+          "scope": "Node workspace reproducibility on local macOS ARM; PR CI also passed"
         },
         {
           "command": "composer install --working-dir=apps/api --no-interaction --prefer-dist && composer test --working-dir=apps/api",
           "result": "PASS; PHP 8.4.10 and required extensions present",
           "artifact": "evidence/release-manifest.json#/workPackages/WP01/evidence/1",
-          "scope": "Runtime prerequisites only; no HTTP API"
+          "scope": "Runtime prerequisites only at WP01; no HTTP API"
         },
         {
           "command": "npm run contracts:generate && npm run contracts:check",
@@ -107,11 +107,121 @@
     },
     {
       "id": "WP03",
-      "status": "not-started",
-      "branch": null,
-      "commit": null,
-      "evidence": [],
-      "blockers": []
+      "status": "implemented",
+      "branch": "feat/wp03-session",
+      "commit": "3ebdd23ec5645e033ac93cd626c64519fa11cba8",
+      "evidence": [
+        {
+          "method": "curl -I --max-time 3 http://127.0.0.1:4322/",
+          "result": "PASS; local dev server responds HTTP 200",
+          "artifact": "http://127.0.0.1:4322/",
+          "scope": "Local only; no deployment"
+        },
+        {
+          "command": "npm run check",
+          "result": "PASS; generated-contract/config checks and TypeScript/Astro diagnostics report 0 errors, warnings or hints",
+          "artifact": "packages/session/src/ and apps/web/src/"
+        },
+        {
+          "command": "npm run contracts:generate && npm run contracts:check",
+          "result": "PASS; session schema types and runtime validator generated deterministically with the declared pruning boundary",
+          "artifact": "packages/contracts/src/generated/Session.ts and packages/session/src/generated/session-schema-validator.js"
+        },
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 40 tests, including exactly-one-oldest-result pruning at 10,000, invalid boundary rejection, portable export/import, and proof a failed quota write retains all 10,000 old results",
+          "artifact": "tests/unit/session.test.ts"
+        },
+        {
+          "command": "npm run test:e2e",
+          "result": "PASS; 11 Chromium tests including export-before-prune, cancel-without-data-loss, 10,000-result retention, quota export recovery, import/copy, session cap/deletion and recovery flows; Axe reports no WCAG 2.1 A/AA violations on root and retention dialog",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Local Chromium with 4 workers; not cross-browser, device or manual accessibility acceptance"
+        },
+        {
+          "command": "npm run test:content && npm run test:seo",
+          "result": "PASS; 110 locale metadata records and 2 draft catalogs have matching keys/placeholders (108 catalogs pending); root static page smoke passes",
+          "artifact": "apps/web/dist/index.html",
+          "scope": "SEO root smoke only; not SEO-01–12, native translation review or production-origin verification"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; documentation integrity, schema fixtures, 16 semantic reference vectors, SEO contract integrity",
+          "artifact": "scripts/validate_docs.py",
+          "scope": "Documentation/reference checks only; no API or production runtime verification"
+        },
+        {
+          "command": "GitHub Actions verify job on PR #3 at head 030a32c",
+          "result": "FAIL; quota-recovery browser test edited the draft before asynchronous session initialization completed; test now waits for storage readiness and passes locally",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43687388855",
+          "scope": "Failure is on the previous pushed head; replacement CI for the correction is pending"
+        },
+        {
+          "command": "GitHub Actions verify job on PR #3 at head e9596ff",
+          "result": "FAIL; session-switch test exposed that the participant editor accepted changes before the saved session draft finished restoring; editor and reset are now disabled until initialization completes",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43814602676",
+          "scope": "Failure is on the previous pushed head; 3 parallel repetitions and the full local 11-test suite pass with the fix; replacement CI is pending"
+        },
+        {
+          "command": "npx playwright test tests/e2e/wheel.spec.ts --grep 'previews and imports a separate session copy' --repeat-each=3 --workers=3",
+          "result": "PASS; all three parallel repetitions retain the per-session edit draft after switching and reload",
+          "artifact": "tests/e2e/wheel.spec.ts"
+        },
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 38 checks including seven session fixtures, transactional commit/recovery, lease/CAS, import/export, NFC and storage-failure injection",
+          "artifact": "tests/unit/session.test.ts"
+        },
+        {
+          "command": "npm run test:e2e",
+          "result": "PASS; 5 Chromium flows cover initial selection persistence/reload, v1→v2 migration, cross-tab writer/reacquisition and crash-before-reveal recovery",
+          "artifact": "tests/e2e/wheel.spec.ts"
+        },
+        {
+          "command": "npm run test:api",
+          "result": "PASS; PHP runtime and semantic vectors",
+          "artifact": "apps/api/tests/"
+        },
+        {
+          "command": "npm run test:a11y",
+          "result": "PASS; automated WCAG 2.1 A/AA root-screen scan",
+          "artifact": "tests/e2e/wheel.spec.ts"
+        },
+        {
+          "command": "npm run test:seo",
+          "result": "PASS; static root smoke and build",
+          "artifact": "apps/web/dist/index.html"
+        },
+        {
+          "command": "npm run test:content",
+          "result": "PASS; 110 locale metadata records and 2 draft catalogs; 108 catalogs pending",
+          "artifact": "content/locales/"
+        },
+        {
+          "command": "npm audit --audit-level=moderate",
+          "result": "PASS; 0 findings",
+          "artifact": "package-lock.json"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-wp01-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; docs/schema/fixture/reference semantics/SEO integrity",
+          "artifact": "scripts/validate_docs.py"
+        },
+        {
+          "command": "git diff --check",
+          "result": "PASS; clean whitespace",
+          "artifact": "working tree"
+        },
+        {
+          "command": "GitHub Actions verify job on PR #3",
+          "result": "PASS; all configured application checks completed",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43595432275",
+          "scope": "Automated CI; user-facing persistence controls and review remain open"
+        }
+      ],
+      "blockers": [
+        "Manual testing beyond local Chromium and cross-browser/device acceptance remain open."
+      ]
     },
     {
       "id": "WP04",
