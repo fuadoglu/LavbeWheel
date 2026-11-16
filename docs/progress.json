@@ -109,7 +109,7 @@
       "id": "WP03",
       "status": "implemented",
       "branch": "feat/wp03-session",
-      "commit": "2e051ff3eb80133469648f84ec09ade49dbe5e1a",
+      "commit": "3ebdd23ec5645e033ac93cd626c64519fa11cba8",
       "evidence": [
         {
           "method": "curl -I --max-time 3 http://127.0.0.1:4322/",
@@ -155,6 +155,17 @@
           "result": "FAIL; quota-recovery browser test edited the draft before asynchronous session initialization completed; test now waits for storage readiness and passes locally",
           "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43687388855",
           "scope": "Failure is on the previous pushed head; replacement CI for the correction is pending"
+        },
+        {
+          "command": "GitHub Actions verify job on PR #3 at head e9596ff",
+          "result": "FAIL; session-switch test exposed that the participant editor accepted changes before the saved session draft finished restoring; editor and reset are now disabled until initialization completes",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/actions/runs/43814602676",
+          "scope": "Failure is on the previous pushed head; 3 parallel repetitions and the full local 11-test suite pass with the fix; replacement CI is pending"
+        },
+        {
+          "command": "npx playwright test tests/e2e/wheel.spec.ts --grep 'previews and imports a separate session copy' --repeat-each=3 --workers=3",
+          "result": "PASS; all three parallel repetitions retain the per-session edit draft after switching and reload",
+          "artifact": "tests/e2e/wheel.spec.ts"
         },
         {
           "command": "npm run test:unit",
