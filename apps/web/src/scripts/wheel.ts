@@ -31,6 +31,8 @@ const spinButton: HTMLButtonElement = button;
 const resultMessage: HTMLParagraphElement = result;
 const participantCount: HTMLElement = count;
 const resetButton: HTMLButtonElement = reset;
+entriesInput.disabled = true;
+resetButton.disabled = true;
 const saveStatus: HTMLElement = storageStatus;
 const savedSessionPicker: HTMLSelectElement = sessionPicker;
 const sessionExportButton: HTMLButtonElement = exportButton;
@@ -497,10 +499,14 @@ void (async () => {
       saveStatus.textContent = messages.messages.savedLocally;
     }
     initializationComplete = true;
+    entriesInput.disabled = false;
+    resetButton.disabled = false;
     sync(false);
     refreshControls();
   } catch {
     initializationComplete = true;
+    entriesInput.disabled = false;
+    resetButton.disabled = false;
     markPersistenceFailure();
   }
 })();

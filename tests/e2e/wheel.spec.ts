@@ -185,6 +185,7 @@ test('previews and imports a separate session copy, then restores and switches s
   await expect(entries).toHaveValue('Aysel\nMurad\nLeyla');
   await page.locator('#session-picker').selectOption(originalSessionId);
   await expect(entries).toHaveValue('Aylin\nMurad\nLeyla\nKamran');
+  await expect(entries).toBeEnabled();
   await entries.fill('Original A\nOriginal B');
   await expect(page.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır');
   await page.locator('#session-picker').selectOption(copiedSessionId);
