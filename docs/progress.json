@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 session controls and persistence are implemented with local automated evidence; manual acceptance remains open; WP04-WP12 remain open.",
+  "note": "Application progress and evidence, not release approval. WP01 and WP02 are verified; WP03 session controls and persistence are implemented with local automated evidence while manual acceptance remains open; WP04 classic visual system is in progress; WP05-WP12 remain open.",
   "workPackages": [
     {
       "id": "WP01",
@@ -225,11 +225,97 @@
     },
     {
       "id": "WP04",
-      "status": "not-started",
-      "branch": null,
-      "commit": null,
-      "evidence": [],
-      "blockers": []
+      "status": "in-progress",
+      "branch": "feat/wp04-visual-system",
+      "commit": "1d30d7528ff3363c8a6ea98bf6aeab261ad51703",
+      "evidence": [
+        {
+          "command": "npm run build --workspace @lavbe/web",
+          "result": "PASS; Astro static production build completed for the first WP04 classic tool screen",
+          "artifact": "apps/web/dist/index.html",
+          "scope": "Build validation only; visual/device acceptance and other tool layouts remain open"
+        },
+        {
+          "command": "Opened http://127.0.0.1:4322/ in the local browser and inspected the accessibility tree",
+          "result": "PASS; compact navigation, wheel canvas, spin control, participant editor and theme control render in the first working screen",
+          "artifact": "Local browser session at 127.0.0.1:4322 (not a durable screenshot)",
+          "scope": "Single local Chromium-sized viewport; no real-device or keyboard acceptance"
+        },
+        {
+          "command": "WCAG relative luminance contrast calculation for wheel segment palette against white labels",
+          "result": "PASS for the eight segment pairs; contrast ratios range from 5.41:1 to 7.31:1",
+          "artifact": "apps/web/src/scripts/wheel.ts palette",
+          "scope": "Canvas segment label colors only; does not cover full interface contrast"
+        },
+        {
+          "command": "npm run test:unit",
+          "result": "PASS; 40 unit checks, including monotonic 15/50/35 spin-motion curve and continuous phase velocity",
+          "artifact": "tests/unit/spin-motion.test.ts"
+        },
+        {
+          "command": "npm run test:e2e",
+          "result": "PASS; 8 Chromium flows, including light/dark Axe, mobile/tab/landscape geometry (including the corrected 1024px 58/42 workspace split), keyboard tabs, visible mobile edit completion, theme/motion persistence, result/highlight recovery and session integrity",
+          "artifact": "tests/e2e/wheel.spec.ts",
+          "scope": "Chromium automation only; no actual mobile device or assistive-technology acceptance"
+        },
+        {
+          "command": "npm run check",
+          "result": "PASS; generated contracts, config checks, TypeScript packages and Astro diagnostics (0 errors/warnings/hints)",
+          "artifact": "command output"
+        },
+        {
+          "command": "npm run test:seo",
+          "result": "PASS; Astro build and root HTML smoke checks",
+          "artifact": "apps/web/dist/index.html",
+          "scope": "Root page only; route graph, HTTP origin and production domain not verified"
+        },
+        {
+          "command": "npm run test:content",
+          "result": "PASS; locale metadata unique and 2 draft catalogs have matching keys/placeholders",
+          "artifact": "content/locales/",
+          "scope": "No translation catalog is approved or reviewed"
+        },
+        {
+          "command": "PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; link/JSON/SVG/schema/fixture/semantic-vector/SEO-registry documentation checks",
+          "artifact": "docs/ and contracts/",
+          "scope": "Specification and fixtures only; application/API/deployment gates are separate"
+        },
+        {
+          "command": "npm run screenshots:wp04",
+          "result": "PASS; repeatable synthetic classic-ready/result/history/settings screenshots generated in Chromium",
+          "artifact": "evidence/wp04/screenshots/",
+          "scope": "Azerbaijani only; viewport screenshots, not real-device evidence or owner approval"
+        },
+        {
+          "command": "git diff --check",
+          "result": "PASS; clean whitespace",
+          "artifact": "working tree"
+        },
+        {
+          "command": "npm run check && npm run test:unit && npm run test:e2e",
+          "result": "PASS; merged WP03 session controls with WP04 visual tabs/themes; 0 diagnostics, 42 unit tests and 14 Chromium browser tests",
+          "artifact": "apps/web/src/ and tests/e2e/wheel.spec.ts",
+          "scope": "Local macOS/Chromium evidence; device, screen-reader and owner visual acceptance remain pending"
+        },
+        {
+          "command": "npm run test:content && npm run test:seo && PATH=/tmp/lavbe-docs-venv/bin:$PATH npm run validate:docs",
+          "result": "PASS; locale content, built-root SEO smoke and documentation integrity",
+          "artifact": "content/ and docs/progress.json",
+          "scope": "SEO check covers built root only; route coverage, production origin and translations remain unverified"
+        },
+        {
+          "command": "GitHub Actions verify and validate jobs on PR #4",
+          "result": "PASS; both duplicate verify runs and both documentation validation runs completed successfully at head 4e061683",
+          "artifact": "https://github.com/fuadoglu/LavbeWheel/pull/4",
+          "scope": "Configured GitHub CI only; visual owner, device and manual acceptance remain open"
+        }
+      ],
+      "blockers": [
+        "WP04 still needs bottle, social-game, reports, share and library tool-screen designs and remaining visual states; this branch currently implements the classic screen.",
+        "Actual device/browser, screen-reader, keyboard-with-native-mobile-keyboard, Arabic/RTL and long-German acceptance remains pending.",
+        "Final wordmark/app-icon deliverables, motion/audio device review and owner visual approval remain pending; screenshot evidence is not approval."
+      ]
     },
     {
       "id": "WP05",

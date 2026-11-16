@@ -10,14 +10,14 @@ A fast, multilingual wheel and social-game platform designed for phones, tablets
 
 **[Azərbaycan dilində](README.md) · [Start here](docs/00-START-HERE.md) · [Product specification](docs/01-PRODUCT.md) · [Codex execution](docs/15-IMPLEMENTATION.md) · [Release gates](docs/16-ACCEPTANCE.md)**
 
-![Status: WP03 session persistence implemented; CI pending](docs/assets/badges/status.svg)
+![Status: WP04 visual system in progress](docs/assets/badges/status.svg)
 ![Release: complete scope](docs/assets/badges/release.svg)
 ![Locales: 110 planned](docs/assets/badges/locales.svg)
 ![Hosting: shared compatible](docs/assets/badges/hosting.svg)
 
 </div>
 
-> **Repository status:** WP01 foundation and WP02 selection semantics passed CI. WP03 now implements local session persistence, atomic result commits/recovery, writer leases and IndexedDB migration; its configured CI passed and PR review is pending. Only the classic names wheel is currently usable. API, reports UI, games, reviewed translations and integrations remain open. Badges describe the specification; they are not security, accessibility or legal certifications. Target domain: **lavbe.com**; the site is not deployed.
+> **Repository status:** WP01 foundation and WP02 selection semantics passed CI. WP03 implements local session persistence, atomic result commits/recovery, writer leases and IndexedDB migration; its configured CI passed and PR review is pending. WP04 is redesigning the classic workspace for phone/tablet/desktop, with theme, result history, motion controls and a four-second spin. The other tool layouts and real-device acceptance remain open; only the classic names wheel is currently usable. API, games, reviewed translations and integrations remain open. Badges describe implementation status, not security, accessibility or legal certification. Target domain: **lavbe.com**; the site is not deployed.
 
 ## 🎯 Product promise
 
@@ -109,7 +109,7 @@ The check validates relative links, unique locale codes, SVG XML, required contr
 python3 scripts/validate_contracts.py
 ```
 
-The WP01 foundation and WP02 selection package passed CI. WP03 implements IndexedDB session storage, writer coordination, atomic result recovery and JSON import/export primitives. The classic names wheel is the only usable tool; user-facing import/export controls, reports, other tools, API, games, reviewed locales and integrations remain open. See the [implementation plan](docs/15-IMPLEMENTATION.md) and [progress evidence](docs/progress.json); a local build does not mean a public release.
+The WP01 foundation and WP02 selection package passed CI. WP03 implements IndexedDB session storage, writer coordination, atomic result recovery and JSON import/export primitives. WP04's classic workspace redesign is in progress with responsive layouts, accessible tabs, stored themes/motion settings and result history. The classic names wheel is the only usable tool; user-facing import/export controls, other tool layouts, API, games, reviewed locales and integrations remain open. See the [implementation plan](docs/15-IMPLEMENTATION.md) and [progress evidence](docs/progress.json); a local build does not mean a public release.
 
 ## 🔬 Readiness review
 
@@ -138,6 +138,6 @@ No explicit sexual content, public user-content marketplace, chat, live multi-de
 
 **Lavbe · Built around the moment of choice.**
 
-Specification baseline: **2026-11-14** · Application status: **WP01–WP02 verified · WP03 implemented, CI passed, review pending**
+Specification baseline: **2026-11-14** · Application status: **WP01–WP02 verified · WP03 implemented, CI passed, review pending · WP04 in progress**
 
 </div>

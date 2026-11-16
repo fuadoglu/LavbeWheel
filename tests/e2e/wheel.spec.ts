@@ -8,12 +8,23 @@ test('classic wheel can select an entry and save the local list', async ({ page 
   const entries = page.getByRole('textbox', { name: 'İştirakçı adları, hər sətirdə bir ad' });
   await entries.fill('Aylin\nMurad\nLeyla');
   await page.getByRole('button', { name: 'Çarxı fırlat' }).click();
-  await expect(page.getByText(/^Bu raundun seçimi: (Aylin|Murad|Leyla)$/)).toBeVisible({ timeout: 5_000 });
+  await expect(page.locator('#result')).toHaveText(/^Bu raundun seçimi: (Aylin|Murad|Leyla)$/, { timeout: 5_000 });
   const selected = await page.locator('#result').textContent();
+  const winnerIndex = ['Aylin', 'Murad', 'Leyla'].indexOf(selected!.split(': ').at(-1)!);
+  const palette = ['#5941b8', '#9b5600', '#14725d', '#b3434c', '#315eaa', '#a43f73', '#3d772f', '#a34e12'];
+  const getSelectedSectorPixel = async () => page.locator('#wheel-canvas').evaluate((canvas: HTMLCanvasElement) => [...canvas.getContext('2d')!.getImageData(320, 180, 1, 1).data].slice(0, 3));
+  const selectedPixel = await getSelectedSectorPixel();
+  const expectedPixel = palette[winnerIndex]!.match(/[\da-f]{2}/gi)!.map((channel) => Math.round(parseInt(channel, 16) * .84 + 255 * .16));
+  selectedPixel.forEach((channel, index) => expect(Math.abs(channel - expectedPixel[index]!)).toBeLessThanOrEqual(2));
+  await page.getByRole('tab', { name: 'Nəticələr' }).click();
+  await expect(page.locator('#history-list')).toContainText(selected!);
   await page.reload();
   await expect(entries).toHaveValue('Aylin\nMurad\nLeyla');
   await expect(page.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır');
   await expect(page.locator('#result')).toHaveText(selected!);
+  expect(await getSelectedSectorPixel()).toEqual(selectedPixel);
+  await page.getByRole('tab', { name: 'Nəticələr' }).click();
+  await expect(page.locator('#history-list')).toContainText(selected!);
   const stored = await page.evaluate(async () => new Promise<{ resultCount: number; presentation: string }>((resolve, reject) => {
     const request = indexedDB.open('lavbe-wheel');
     request.onerror = () => reject(request.error);
@@ -32,12 +43,22 @@ test('classic wheel can select an entry and save the local list', async ({ page 
   expect(stored).toEqual({ resultCount: 1, presentation: 'acknowledged' });
 });
 
+test('reduced-motion preference preserves the same selection with a short reveal', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await expect(page.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır');
+  const started = Date.now();
+  await page.getByRole('button', { name: 'Çarxı fırlat' }).click();
+  await expect(page.locator('#result')).toHaveText(/^Bu raundun seçimi: (Aylin|Murad|Leyla|Kamran)$/);
+  expect(Date.now() - started).toBeLessThan(1_000);
+});
+
 test('exports a validated JSON backup of the active local session', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır');
   await page.getByRole('textbox', { name: 'İştirakçı adları, hər sətirdə bir ad' }).fill('Aylin\nMurad');
   await page.getByRole('button', { name: 'Çarxı fırlat' }).click();
-  await expect(page.getByText(/^Bu raundun seçimi: (Aylin|Murad)$/)).toBeVisible({ timeout: 5_000 });
+  await expect(page.locator('#result')).toHaveText(/^Bu raundun seçimi: (Aylin|Murad)$/ , { timeout: 8_000 });
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Sessiyanı JSON kimi yüklə' }).click();
   const download = await downloadPromise;
@@ -128,6 +149,7 @@ test('offers an export before pruning and retains the newest 10,000 results', as
   expect(exported.results[0].sequence).toBe(1);
   await expect(dialog).toBeVisible();
   await page.getByRole('button', { name: 'Davam et və ən köhnəni sil' }).click();
+  await expect(page.locator('#result')).toHaveText(/^Bu raundun seçimi: /, { timeout: 8_000 });
   const readPruned = () => page.evaluate(async () => new Promise<{ length: number; first: number; last: number; prunedThrough: number; presentation: string }>((resolve, reject) => {
     const request = indexedDB.open('lavbe-wheel');
     request.onerror = () => reject(request.error);
@@ -143,7 +165,7 @@ test('offers an export before pruning and retains the newest 10,000 results', as
       };
     };
   }));
-  await expect.poll(readPruned).toEqual({ length: 10_000, first: 2, last: 10_001, prunedThrough: 1, presentation: 'acknowledged' });
+  await expect.poll(readPruned, { timeout: 12_000 }).toEqual({ length: 10_000, first: 2, last: 10_001, prunedThrough: 1, presentation: 'acknowledged' });
 });
 
 test('previews and imports a separate session copy, then restores and switches sessions', async ({ page }) => {
@@ -271,6 +293,62 @@ test('@a11y the root screen has no automated WCAG A/AA violations', async ({ pag
   expect(results.violations).toEqual([]);
 });
 
+test('mobile board matches the 390px screen contract and theme preference survives reload', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  const board = await page.locator('#wheel-canvas').boundingBox();
+  expect(board?.width).toBeGreaterThanOrEqual(354);
+  expect(board?.width).toBeLessThanOrEqual(358);
+  const editor = page.getByRole('textbox', { name: 'İştirakçı adları, hər sətirdə bir ad' });
+  await editor.focus();
+  await expect(page.getByRole('button', { name: 'Redaktəni tamamla' })).toBeVisible();
+  await page.getByRole('button', { name: 'Redaktəni tamamla' }).click();
+  await expect(editor).not.toBeFocused();
+  await expect(page.getByRole('button', { name: 'Qaranlıq mövzunu aktivləşdir' })).toHaveCSS('height', '44px');
+  await page.getByRole('button', { name: 'Qaranlıq mövzunu aktivləşdir' }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await expect(page.getByRole('button', { name: 'Açıq mövzunu aktivləşdir' })).toBeVisible();
+  const darkAudit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(darkAudit.violations).toEqual([]);
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await expect(page.getByRole('button', { name: 'Açıq mövzunu aktivləşdir' })).toBeVisible();
+  await page.getByRole('tab', { name: 'İştirakçılar' }).press('ArrowRight');
+  await expect(page.getByRole('tab', { name: 'Nəticələr' })).toHaveAttribute('aria-selected', 'true');
+  await page.getByRole('tab', { name: 'Nəticələr' }).press('ArrowRight');
+  await expect(page.getByRole('tab', { name: 'Tənzimləmələr' })).toHaveAttribute('aria-selected', 'true');
+  const settingsAudit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(settingsAudit.violations).toEqual([]);
+  await page.locator('#motion-mode').selectOption('reduced');
+  await page.reload();
+  await expect(page.locator('#motion-mode')).toHaveValue('reduced');
+});
+
+test('tablet portrait stacks the editor and landscape preserves the 58/42 board split', async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await page.goto('/');
+  const portraitBoard = await page.locator('#wheel-canvas').boundingBox();
+  expect(portraitBoard?.width).toBe(560);
+  expect(portraitBoard?.height).toBe(560);
+  const portraitPanels = await page.evaluate(() => {
+    const wheel = document.querySelector('#wheel')!.getBoundingClientRect();
+    const board = document.querySelector('.wheel-panel')!.getBoundingClientRect();
+    const editor = document.querySelector('.participant-panel')!.getBoundingClientRect();
+    return { boardTop: board.top, editorTop: editor.top, width: wheel.width };
+  });
+  expect(portraitPanels.editorTop).toBeGreaterThan(portraitPanels.boardTop);
+
+  await page.setViewportSize({ width: 1024, height: 768 });
+  await page.waitForTimeout(50);
+  const landscape = await page.evaluate(() => {
+    const wheel = document.querySelector('.wheel-panel')!.getBoundingClientRect();
+    const editor = document.querySelector('.participant-panel')!.getBoundingClientRect();
+    return wheel.width / (wheel.width + editor.width);
+  });
+  expect(landscape).toBeGreaterThan(0.57);
+  expect(landscape).toBeLessThan(0.59);
+});
+
 test('upgrades the WP01 IndexedDB draft store to session stores without losing the saved list', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır');
@@ -334,7 +412,7 @@ test('recovers the committed result after a simulated crash before its reveal an
 
   await page.reload();
   await expect(page.locator('#storage-status')).toHaveText('Bu cihazda yadda saxlanır');
-  await expect(page.getByText(/^Bu raundun seçimi: (Aylin|Murad|Leyla|Kamran)$/)).toBeVisible();
+  await expect(page.locator('#result')).toHaveText(/^Bu raundun seçimi: (Aylin|Murad|Leyla|Kamran)$/);
   const recovered = await page.evaluate(async () => new Promise<{ count: number; presentation: string }>((resolve, reject) => {
     const request = indexedDB.open('lavbe-wheel');
     request.onerror = () => reject(request.error);
